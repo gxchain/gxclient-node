@@ -18,6 +18,8 @@ client.transfer("gxb456", "GXChain NB", {
     console.log(JSON.stringify(transaction));
     console.log("txid:", txid, "fee:", transaction.operations[0][1].fee.amount / Math.pow(10, asset_precicion));
     // > txid: f28d27ac74649a76f58c9b84fb7ea700163e31c4 fee: 0.0118
+    // Since gxchain implemented dpos consensus, the transaction will be confirmed until the block becomes irreversible
+    // You can find the logic when a transfer operation was confirmed in the example of detectTransaction
 }).catch(ex => {
     console.error(ex);
 });

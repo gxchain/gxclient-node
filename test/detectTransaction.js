@@ -22,6 +22,8 @@ client.detectTransaction(10904333, function (blockHeight, txid, operation) {
             if (memo) {
                 let decryptedMsg = Aes.decrypt_with_checksum(PrivateKey.fromWif(memo_private), memo.from, memo.nonce, memo.message);
                 console.log("memo:", decryptedMsg);
+                // TODO: Persistent blockHeight, txid and operation to the database,
+                // it's recommended to use blockHeight and txid as the primary key
             } else {
                 console.log("no memo:", txid);
             }
