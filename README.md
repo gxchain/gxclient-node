@@ -27,12 +27,14 @@ client.latestBlockTask();
 // start to detect new transactions related to my account from the indicated block
 client.detectTransaction(10904333, function (blockHeight, txid, operation) {
     console.log(blockHeight, txid, operation);
-    // 10904392 '192225b26adacb71945ee71864734bd06d896376' [ 0,
-    // { fee: { amount: 1000, asset_id: '1.3.1' },
+    // eg.
+    // 10904392 '192225b26adacb71945ee71864734bd06d896376'
+    // [ 0, { fee: { amount: 1000, asset_id: '1.3.1' },
     //     from: '1.2.525166',
     //     to: '1.2.521006',
     //     amount: { amount: 24382, asset_id: '1.3.1' },
-    //     extensions: [] } ]
+    //     extensions: []
+    // }]
 
     //deal with transfer operation
     if (operation[0] === 0) {
@@ -62,9 +64,16 @@ import GXClient from "gxclient";
 
 let client = new GXClient();
 console.log(client.generateKey());
-// { brainKey: 'kiki gauntly unpanel rattish upbrow unbow slewer viduate topsoil foreman pentene pluff where lauia chinse glazier',
-//     privateKey: '5JJnDSdwVpB8HFJsYqLXsLBFMdhZo7otDUiSNJoXvDJ3UiggVRY',
-//     publicKey: 'GXC5LsiHRuZQkKwrR8eNtCNTdjziND5hZgjWx2wx3wHr8KRSKNVxp' }
+```
+
+eg.
+
+```json
+{
+    "brainKey": "unfeued kvinter setose ghetti progger sporule decanal melagra drama nephron stamp melody nounize pomace poem tannage",
+    "privateKey": "5Jpw7vEMaFL5iD8oMrRJQtuYzuytYiJ5CaX7RHSzMaeFzWnXxgG",
+    "publicKey": "GXC75MBraWJqRF7PTdqYASJJSjNve1aKZUxAyj3Nb3ayWLD9LddoL"
+}
 ```
 
 ## 3. Account register
@@ -105,7 +114,6 @@ client.transfer("gxb456", "GXChain NB", {
     let transaction = broadcast ? resp[0].trx : resp;
 
     console.log(JSON.stringify(transaction));
-    // {"ref_block_num":48921,"ref_block_prefix":781272439,"expiration":"2018-07-04T11:42:50","operations":[[0,{"fee":{"amount":1180,"asset_id":"1.3.1"},"from":"1.2.19","to":"1.2.21","amount":{"amount":1500000,"asset_id":"1.3.1"},"memo":{"from":"GXC7XzFVivuBtuc2rz3Efkb41JCN4KH7iENAx9rch9QkowEmc4UvV","to":"GXC67KQNpkkLUzBgDUkWqEBtojwqPgL78QCmTRRZSLugzKEzW4rSm","nonce":"391860365831885","message":"9122fa3fcd0709c9e9c84eef9fb7e592"},"extensions":[]}]],"extensions":[],"signatures":["203e1c264ad82c6755c9a898cf9b25bdee2ba380bd8630e48270d8f13e878f543a44098598ca99405df02e943cf9bb3f372777da04b82a290638ecce8c7faa6291"],"operation_results":[[0,{}]]}
     console.log("fee:", transaction.operations[0][1].fee.amount / Math.pow(10, asset_precicion));
     // fee: 0.0118
 }).catch(ex => {
@@ -113,7 +121,51 @@ client.transfer("gxb456", "GXChain NB", {
 });
 ```
 
+eg.
+
+```json
+{
+    "ref_block_num": 48921,
+    "ref_block_prefix": 781272439,
+    "expiration": "2018-07-04T11:42:50",
+    "operations": [
+        [
+            0,
+            {
+                "fee": {
+                    "amount": 1180,
+                    "asset_id": "1.3.1"
+                },
+                "from": "1.2.19",
+                "to": "1.2.21",
+                "amount": {
+                    "amount": 1500000,
+                    "asset_id": "1.3.1"
+                },
+                "memo": {
+                    "from": "GXC7XzFVivuBtuc2rz3Efkb41JCN4KH7iENAx9rch9QkowEmc4UvV",
+                    "to": "GXC67KQNpkkLUzBgDUkWqEBtojwqPgL78QCmTRRZSLugzKEzW4rSm",
+                    "nonce": "391860365831885",
+                    "message": "9122fa3fcd0709c9e9c84eef9fb7e592"
+                },
+                "extensions": []
+            }
+        ]
+    ],
+    "extensions": [],
+    "signatures": [
+        "203e1c264ad82c6755c9a898cf9b25bdee2ba380bd8630e48270d8f13e878f543a44098598ca99405df02e943cf9bb3f372777da04b82a290638ecce8c7faa6291"
+    ],
+    "operation_results": [
+        [
+            0,
+            {}
+        ]
+    ]
+}
+```
+
 # Other
 
-It's very welcome for developers to translate this project into different programing languages
-We are looking forward to your pull requests
+- It's very welcome for developers to translate this project into different programing languages
+- We are looking forward to your pull requests

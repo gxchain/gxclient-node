@@ -14,9 +14,10 @@ client.transfer("gxb456", "GXChain NB", {
     precision: asset_precicion
 }, broadcast).then(resp => {
     let transaction = broadcast ? resp[0].trx : resp;
-
+    let txid = broadcast ? resp[0].id : "";
     console.log(JSON.stringify(transaction));
-    console.log("fee:", transaction.operations[0][1].fee.amount / Math.pow(10, asset_precicion));
+    console.log("txid:", txid, "fee:", transaction.operations[0][1].fee.amount / Math.pow(10, asset_precicion));
+    // > txid: f28d27ac74649a76f58c9b84fb7ea700163e31c4 fee: 0.0118
 }).catch(ex => {
     console.error(ex);
 });
