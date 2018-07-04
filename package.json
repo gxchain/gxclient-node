@@ -1,0 +1,56 @@
+{
+  "name": "gxchain-client",
+  "version": "1.0.0",
+  "description": "a client to interact with gxchain",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf ./dist/* & rm -rf ./build/* & rm -rf ./es/*",
+    "prebuild": "npm run clean",
+    "build": "BABEL_ENV=cjs babel lib -d dist",
+    "build-es": "BABEL_ENV=es babel lib -d es",
+    "postbuild": "npm run browserify && npm run build-es",
+    "build:watch": "babel lib -d dist --watch",
+    "prebrowserify": "rm -rf ./build/*",
+    "browserify": "browserify --full-paths dist/browser.js --standalone des_sdk_js -o build/gxchain-client.js -d",
+    "postbrowserify": "uglifyjs --compress --mangle --sequences --drop_console --output build/gxchain-client.min.js -- build/gxchain-client.js",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gxchain/gxchain-client-node.git"
+  },
+  "keywords": [
+    "gxchain",
+    "client",
+    "exchange-api",
+    "gxs",
+    "gxc"
+  ],
+  "author": "David Lan <lanhaoxiang@qq.com> (https://github.com/lanhaoxiang)",
+  "contributors": [
+    "David Lan <lanhaoxiang@qq.com> (https://github.com/lanhaoxiang/)"
+  ],
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gxchain/gxchain-client-node/issues"
+  },
+  "homepage": "https://github.com/gxchain/gxchain-client-node#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "browserify": "^16.2.2",
+    "eslint": "^5.0.1",
+    "eslint-friendly-formatter": "^4.0.1",
+    "uglifyjs": "^2.4.11"
+  },
+  "dependencies": {
+    "gxbjs": "^1.2.80",
+    "superagent": "^3.8.3"
+  }
+}
