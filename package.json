@@ -1,5 +1,5 @@
 {
-  "name": "gxchain-client",
+  "name": "gxclient",
   "version": "1.0.0",
   "description": "A client to interact with gxchain",
   "main": "./dist/index.js",
