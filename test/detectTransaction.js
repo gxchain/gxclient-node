@@ -13,7 +13,6 @@ client.latestBlockTask();
 // start to detect new transactions related to my account from the indicated block
 client.detectTransaction(10904333, function (blockHeight, txid, operation) {
     console.log(blockHeight, txid, operation);
-
     //deal with transfer operation
     if (operation[0] === 0) {
         // deal with deposit
