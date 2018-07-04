@@ -1,8 +1,9 @@
 {
   "name": "gxchain-client",
   "version": "1.0.0",
-  "description": "a client to interact with gxchain",
-  "main": "index.js",
+  "description": "A client to interact with gxchain",
+  "main": "./dist/index.js",
+  "jsnext:main": "./es/index.js",
   "scripts": {
     "clean": "rm -rf ./dist/* & rm -rf ./build/* & rm -rf ./es/*",
     "prebuild": "npm run clean",
@@ -11,9 +12,13 @@
     "postbuild": "npm run browserify && npm run build-es",
     "build:watch": "babel lib -d dist --watch",
     "prebrowserify": "rm -rf ./build/*",
-    "browserify": "browserify --full-paths dist/browser.js --standalone des_sdk_js -o build/gxchain-client.js -d",
-    "postbrowserify": "uglifyjs --compress --mangle --sequences --drop_console --output build/gxchain-client.min.js -- build/gxchain-client.js",
-    "prepublish": "npm run build"
+    "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d",
+    "postbrowserify": "uglifyjs --compress --mangle --sequences --drop_console --output build/gxclient.min.js -- build/gxclient.js",
+    "prepublish": "npm run build",
+    "test:detectTransaction":"babel-node test/detectTransaction.js",
+    "test:transfer":"babel-node test/transfer.js",
+    "test:keyGen":"babel-node test/keyGen.js",
+    "test:register":"babel-node test/register.js"
   },
   "repository": {
     "type": "git",
@@ -50,7 +55,7 @@
     "uglifyjs": "^2.4.11"
   },
   "dependencies": {
-    "gxbjs": "^1.2.80",
+    "gxbjs": "^1.2.81",
     "superagent": "^3.8.3"
   }
 }
