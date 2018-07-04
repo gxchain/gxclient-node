@@ -1,6 +1,6 @@
 import GXClient from "../lib/src/GXClient";
 
-let client = new GXClient("", "", "ws://47.96.164.78:28090/");
+let client = new GXClient();
 let keyPair = client.generateKey();
 console.log(keyPair);
 
