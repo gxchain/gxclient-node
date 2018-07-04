@@ -1,5 +1,5 @@
 # GXClient
-GXClient is a wrap toolkit for gxbjs, a client to interact with gxchain apis
+GXClient is a wrapped toolkit of gxbjs, a client to interact with gxchain apis
 
 # Install
 
