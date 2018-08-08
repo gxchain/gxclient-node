@@ -18,7 +18,10 @@
     "test:detectTransaction": "babel-node test/detectTransaction.js",
     "test:transfer": "babel-node test/transfer.js",
     "test:keyGen": "babel-node test/keyGen.js",
-    "test:register": "babel-node test/register.js"
+    "test:register": "babel-node test/register.js",
+    "test:accountInfo": "babel-node test/accountInfo.js",
+    "test:assetInfo": "babel-node test/assetInfo.js"
+
   },
   "repository": {
     "type": "git",
