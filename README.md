@@ -7,7 +7,7 @@ GXClient is a wrapped toolkit of gxbjs, a client to interact with gxchain apis
 npm install gxclient --save
 ```
 
-# Usage
+# Usage(npm)
 
 ## 1. Transaction detect
 
@@ -164,6 +164,13 @@ eg.
         ]
     ]
 }
+```
+
+# Usage(CLI)
+
+```
+npm install gxclient -g
+gxclient ls
 ```
 
 # Other
