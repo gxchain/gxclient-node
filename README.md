@@ -3,13 +3,13 @@ GXClient is a wrapped toolkit of gxbjs, a client to interact with gxchain apis
 
 # Install
 
-```
+``` bash
 npm install gxclient --save
 ```
 
 # Usage(CLI)
 
-``` js
+``` bash
 npm install gxclient -g
 gxclient ls
 ```
