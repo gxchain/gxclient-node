@@ -21,9 +21,6 @@ const memo_private = "";
 
 let client = new GXClient(private_key, account_id);
 
-// start a task to fetching latest irreversible block
-client.latestBlockTask();
-
 // start to detect new transactions related to my account from the indicated block
 client.detectTransaction(10904333, function (blockHeight, txid, operation) {
     console.log(blockHeight, txid, operation);
