@@ -1,0 +1,174 @@
+#!/usr/bin/env node
+
+"use strict";
+
+var commander = require("commander");
+var chalk = require("chalk");
+var pkg = require("../package.json");
+var GXClient = require("../dist/index.js").GXClient;
+
+var client = new GXClient();
+
+if (process.argv.indexOf("-v") > -1) {
+    console.log(pkg.version);
+    process.exit(0);
+}
+
+commander.version(pkg.version)
+    .option("-v --version", "print gxclient version")
+    .usage("[cmd] app");
+
+
+const MSG_PREFIX = chalk.green("[GXClient]");
+
+function displayUsage() {
+    console.log("");
+    console.log(chalk.green("[USAGE]"), ": gxclient [options] <command>");
+    console.log("");
+    console.log("gxclient -h, --help             all available commands and options");
+    console.log("gxclient list               list all apis");
+    console.log("gxclient <command> -h           help on a specific command");
+    console.log("");
+}
+
+function displayExamples() {
+    console.log("- Generate key pairs:");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient generate_key"));
+    console.log("");
+    console.log("- Register an account:");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient register my-account GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
+    console.log("");
+    console.log("- Account API:");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient get_account gxchain-test-account"));
+    console.log(chalk.cyan("  $ gxclient get_account_balances gxchain-test-account"));
+    console.log("");
+    console.log("- Asset API:");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient get_asset gxs"));
+    console.log("");
+    console.log("- Block API:");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient get_block 100"));
+    console.log("");
+    console.log("- Transfer API :");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient transfer gxb123 10 GXS \"Hi There\""));
+    console.log("");
+    console.log("Check the full documentation on https://github.com/gxchain/gxclient-node");
+    console.log("");
+}
+
+commander.command("list")
+    .alias("ls")
+    .description("List all apis")
+    .action(() => {
+        console.log(MSG_PREFIX + chalk.grey(" usage examples:\n"));
+        displayExamples();
+        process.exit(1);
+    });
+
+
+commander.command("generate_key")
+    .description("Generate gxchain key pairs")
+    .usage("aaa")
+    .action(() => {
+        let result = client.generateKey();
+        console.log(chalk.green(JSON.stringify(result, null, "  ")));
+    });
+
+commander.command("register <account_name> <public_key>")
+    .description("Register gxchain account")
+    .action((account_name, public_key) => {
+        client.register(account_name, public_key).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        });
+    });
+
+commander.command("get_account <account_name>")
+    .description("Get account information by account_name")
+    .action((account_name) => {
+        client.getAccount(account_name).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        });
+    });
+
+commander.command("get_account_balances <account_name>")
+    .alias("get_account_balance")
+    .description("Get account balances by account_name")
+    .action((account_name) => {
+        client.getAccountBalances(account_name).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        });
+    });
+
+commander.command("get_asset <symbol>")
+    .description("Get asset info by asset symbol")
+    .action((symbol) => {
+        client.getAsset(symbol.toUpperCase()).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
+        }).catch(ex => {
+            console.error(chalk.red(ex));
+            process.exit(1);
+        });
+    });
+
+commander.command("get_block <block_height>")
+    .description("Get asset info by asset symbol")
+    .action((block_height) => {
+        client.getBlock(block_height).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
+        });
+    });
+
+commander.command("transfer <to> <memo> <amount> <asset> [boradcast]")
+    .option("-a --account_id [account_id]", "[string] account id")
+    .option("-p --private_key [private_key]", "[string] private key")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("send a transfer transaction")
+    .action((to, memo, amount, asset, broadcast, opt) => {
+        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        client.getAsset(asset).then(asset => {
+            client.transfer(to, memo, {
+                amount: amount,
+                asset_id: asset.id,
+                precision: asset.precision
+            }, broadcast).then(result => {
+                console.log(chalk.green(JSON.stringify(result, null, "  ")));
+                process.exit(1);
+            }).catch(ex => {
+                console.error(chalk.red(ex));
+                process.exit(1);
+            });
+        }).catch(ex => {
+            console.error(chalk.red(ex));
+            process.exit(1);
+        });
+    });
+
+//
+// Catch all
+//
+commander.command("*")
+    .action(function () {
+        console.log(MSG_PREFIX + " Command not found\n");
+        displayUsage();
+        // Check if it does not forget to close fds from RPC
+        process.exit(1);
+    });
+
+//
+// Display help if 0 arguments passed to pm2
+//
+if (process.argv.length == 2) {
+    commander.parse(process.argv);
+    displayUsage();
+    // Check if it does not forget to close fds from RPC
+    process.exit(1);
+} else {
+    commander.parse(process.argv);
+}
