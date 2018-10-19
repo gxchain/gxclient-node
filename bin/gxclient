@@ -55,7 +55,7 @@ function displayExamples() {
     console.log("");
     console.log("- Transfer API :");
     console.log("");
-    console.log(chalk.cyan("  $ gxclient transfer gxb123 10 GXS \"Hi There\""));
+    console.log(chalk.cyan("  $ gxclient transfer gxb123 10 GXS \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
     console.log("Check the full documentation on https://github.com/gxchain/gxclient-node");
     console.log("");
