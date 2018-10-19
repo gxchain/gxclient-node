@@ -16,7 +16,7 @@ client.detectTransaction(10904333, function (blockHeight, txid, operation) {
         if (operation[1].to === account_id) {
             let memo = operation[1].memo;
             // decrypt memo if assigned
-            if (memo) {
+            if (memo && memo_private) {
                 let decryptedMsg = Aes.decrypt_with_checksum(PrivateKey.fromWif(memo_private), memo.from, memo.nonce, memo.message);
                 console.log("memo:", decryptedMsg);
                 // TODO: Persistent blockHeight, txid and operation to the database,
