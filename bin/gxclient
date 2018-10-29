@@ -57,6 +57,11 @@ function displayExamples() {
     console.log("");
     console.log(chalk.cyan("  $ gxclient transfer gxb123 10 GXS \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
+    console.log("- Contract API :");
+    console.log("");
+    console.log(chalk.cyan("  $ gxclient get_contract_tables bank -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient get_table_objects redpacket packet 0 100 -t <true|false>"));
+    console.log("");
     console.log("Check the full documentation on https://github.com/gxchain/gxclient-node");
     console.log("");
 }
@@ -147,6 +152,26 @@ commander.command("transfer <to> <memo> <amount> <asset> [boradcast]")
         }).catch(ex => {
             console.error(chalk.red(ex));
             process.exit(1);
+        });
+    });
+
+commander.command("get_contract_tables <contract_name>")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("get contract table by contract name")
+    .action((contract_name, opt) => {
+        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        client.getContractTable(contract_name).then((result) => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        });
+    });
+
+commander.command("get_table_objects <contract_name> <table_name> [start] [limit]")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("get table records by contract name and table name")
+    .action((contract_name, table_name, start = 0, limit = 100, opt) => {
+        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
         });
     });
 
