@@ -88,8 +88,9 @@ commander.command("generate_key")
 
 commander.command("register <account_name> <public_key>")
     .description("Register gxchain account")
-    .action((account_name, public_key) => {
-        client.register(account_name, public_key).then(result => {
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((account_name, public_key, opt) => {
+        client.register(account_name, public_key, public_key, public_key, opt.testnet ? "https://testnet.faucet.gxchain.org" : "https://opengateway.gxb.io").then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
         });
@@ -97,7 +98,11 @@ commander.command("register <account_name> <public_key>")
 
 commander.command("get_account <account_name>")
     .description("Get account information by account_name")
-    .action((account_name) => {
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((account_name, opt) => {
+        if (opt.testnet) {
+            client = new GXClient("", "", "wss://testnet.gxchain.org");
+        }
         client.getAccount(account_name).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
@@ -106,7 +111,11 @@ commander.command("get_account <account_name>")
 
 commander.command("get_object <object_id>")
     .description("Get object by object_id")
-    .action((object_id) => {
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((object_id, opt) => {
+        if (opt.testnet) {
+            client = new GXClient("", "", "wss://testnet.gxchain.org");
+        }
         client.getObject(object_id).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
@@ -116,7 +125,11 @@ commander.command("get_object <object_id>")
 commander.command("get_account_balances <account_name>")
     .alias("get_account_balance")
     .description("Get account balances by account_name")
-    .action((account_name) => {
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((account_name, opt) => {
+        if (opt.testnet) {
+            client = new GXClient("", "", "wss://testnet.gxchain.org");
+        }
         client.getAccountBalances(account_name).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
@@ -125,7 +138,11 @@ commander.command("get_account_balances <account_name>")
 
 commander.command("get_asset <symbol>")
     .description("Get asset info by asset symbol")
-    .action((symbol) => {
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((symbol, opt) => {
+        if (opt.testnet) {
+            client = new GXClient("", "", "wss://testnet.gxchain.org");
+        }
         client.getAsset(symbol.toUpperCase()).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
@@ -137,7 +154,11 @@ commander.command("get_asset <symbol>")
 
 commander.command("get_block <block_height>")
     .description("Get asset info by asset symbol")
-    .action((block_height) => {
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((block_height,opt) => {
+        if (opt.testnet) {
+            client = new GXClient("", "", "wss://testnet.gxchain.org");
+        }
         client.getBlock(block_height).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
