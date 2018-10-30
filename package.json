@@ -17,14 +17,7 @@
     "prebrowserify": "rm -rf ./build/*",
     "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d",
     "postbrowserify": "uglifyjs --compress --mangle --sequences --drop_console --output build/gxclient.min.js -- build/gxclient.js",
-    "prepublish": "npm run build",
-    "test:detectTransaction": "babel-node test/detectTransaction.js",
-    "test:transfer": "babel-node test/transfer.js",
-    "test:keyGen": "babel-node test/keyGen.js",
-    "test:register": "babel-node test/register.js",
-    "test:accountInfo": "babel-node test/accountInfo.js",
-    "test:assetInfo": "babel-node test/assetInfo.js",
-    "test:contractInfo": "babel-node test/contractInfo.js"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -65,6 +58,7 @@
     "commander": "^2.17.1",
     "debug": "^3.1.0",
     "gxbjs": "^1.2.98",
+    "gxc-frontend-base": "github:gxchain/gxc-frontend-base",
     "superagent": "^3.8.3"
   }
 }

@@ -18,16 +18,15 @@ commander.version(pkg.version)
     .option("-v --version", "print gxclient version")
     .usage("[cmd]");
 
-
 const MSG_PREFIX = chalk.green("[GXClient]");
 
 function displayUsage() {
     console.log("");
-    console.log(chalk.green("[USAGE]"), ": gxclient [options] <command>");
+    console.log(chalk.green("[USAGE]"), ": gxclient <command> [options]");
     console.log("");
-    console.log("gxclient -h, --help             all available commands and options");
-    console.log("gxclient list               list all apis");
-    console.log("gxclient <command> -h           help on a specific command");
+    console.log("gxclient -h, --help            all available commands and options");
+    console.log("gxclient list|ls               list all apis");
+    console.log("gxclient <command> -h          help on a specific command");
     console.log("");
 }
 
@@ -44,23 +43,26 @@ function displayExamples() {
     console.log("");
     console.log(chalk.cyan("  $ gxclient get_account gxchain-test-account"));
     console.log(chalk.cyan("  $ gxclient get_account_balances gxchain-test-account"));
+    console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXS\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
     console.log("- Asset API:");
     console.log("");
-    console.log(chalk.cyan("  $ gxclient get_asset gxs"));
+    console.log(chalk.cyan("  $ gxclient get_asset GXS"));
     console.log("");
     console.log("- Block API:");
     console.log("");
     console.log(chalk.cyan("  $ gxclient get_block 100"));
     console.log("");
-    console.log("- Transfer API :");
+    console.log("- Object API:");
     console.log("");
-    console.log(chalk.cyan("  $ gxclient transfer gxb123 10 GXS \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient get_object 2.1.0"));
     console.log("");
     console.log("- Contract API :");
     console.log("");
+    console.log(chalk.cyan("  $ gxclient get_contract_abi bank -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient get_contract_tables bank -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient get_table_objects redpacket packet 0 100 -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient call_contract bank deposit \"\" \"10 GXS\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
     console.log("Check the full documentation on https://github.com/gxchain/gxclient-node");
     console.log("");
@@ -100,6 +102,14 @@ commander.command("get_account <account_name>")
         });
     });
 
+commander.command("get_object <object_id>")
+    .description("Get object by object_id")
+    .action((object_id) => {
+        client.getObject(object_id).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        });
+    });
+
 commander.command("get_account_balances <account_name>")
     .alias("get_account_balance")
     .description("Get account balances by account_name")
@@ -130,13 +140,19 @@ commander.command("get_block <block_height>")
         });
     });
 
-commander.command("transfer <to> <memo> <amount> <asset> [boradcast]")
+commander.command("transfer <to> <memo> <amount_asset> [boradcast]")
     .option("-a --account_id [account_id]", "[string] account id")
     .option("-p --private_key [private_key]", "[string] private key")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("send a transfer transaction")
-    .action((to, memo, amount, asset, broadcast, opt) => {
+    .description("Send a transfer transaction")
+    .action((to, memo, amount_asset, broadcast, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        if (amount_asset.indexOf(" ") == -1) {
+            console.error(chalk.red("Incorrect format of asset, eg. \"100 GXS\""));
+            process.exit(1);
+        }
+        let amount = Number(amount_asset.split(" ")[0]);
+        let asset = amount_asset.split(" ")[1];
         client.getAsset(asset).then(asset => {
             client.transfer(to, memo, {
                 amount: amount,
@@ -155,9 +171,40 @@ commander.command("transfer <to> <memo> <amount> <asset> [boradcast]")
         });
     });
 
+commander.command("call_contract <contract_name> <method_name> <params> [amount_asset] [boradcast]")
+    .option("-a --account_id [account_id]", "[string] account id")
+    .option("-p --private_key [private_key]", "[string] private key")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("Call smart contract method")
+    .action((contract_name, method_name, params, amount_asset, broadcast, opt) => {
+        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        if (amount_asset) {
+            if (amount_asset.indexOf(" ") == -1) {
+                console.error(chalk.red("Incorrect format of asset, eg. \"100 GXS\""));
+                process.exit(1);
+            }
+            let amount = Number(amount_asset.split(" ")[0]);
+            let asset = amount_asset.split(" ")[1];
+            client.getAsset(asset).then(asset => {
+                innerCall({amount: client._accMult(amount, Math.pow(10, asset.precision)), asset_id: asset.id});
+            });
+        } else {
+            innerCall(null);
+        }
+
+        function innerCall(asset_amout) {
+            client.callContract(contract_name, method_name, JSON.parse(params), asset_amout, broadcast).then(result => {
+                console.log(result);
+            }).catch(ex => {
+                console.error(chalk.red(ex));
+                process.exit(1);
+            });
+        }
+    });
+
 commander.command("get_contract_tables <contract_name>")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("get contract table by contract name")
+    .description("get contract table by contract_name")
     .action((contract_name, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getContractTable(contract_name).then((result) => {
@@ -165,9 +212,19 @@ commander.command("get_contract_tables <contract_name>")
         });
     });
 
+commander.command("get_contract_abi <contract_name>")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("get contract abi by contract_name")
+    .action((contract_name, opt) => {
+        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        client.getContractABI(contract_name).then((result) => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        });
+    });
+
 commander.command("get_table_objects <contract_name> <table_name> [start] [limit]")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("get table records by contract name and table name")
+    .description("get table records by contract_name and table_name")
     .action((contract_name, table_name, start = 0, limit = 100, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
