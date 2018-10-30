@@ -154,7 +154,7 @@ commander.command("get_asset <symbol>")
     });
 
 commander.command("get_block <block_height>")
-    .description("Get asset info by asset symbol")
+    .description("Get block by block height")
     .option("-t --testnet [testnet]", "[boolean] testnet")
     .action((block_height, opt) => {
         if (opt.testnet) {
@@ -201,7 +201,7 @@ commander.command("vote <account_ids> [overwrite] [fee_asset_id] [boradcast]")
     .option("-a --account_id [account_id]", "[string] account id")
     .option("-p --private_key [private_key]", "[string] private key")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Send a transfer transaction")
+    .description("Vote for TrustNodes")
     .action((account_ids, overwrite, fee_asset_id, broadcast, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         account_ids = JSON.parse(account_ids || "[]");
@@ -249,7 +249,7 @@ commander.command("call_contract <contract_name> <method_name> <params> [amount_
 
 commander.command("get_contract_tables <contract_name>")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("get contract table by contract_name")
+    .description("Get contract table by contract_name")
     .action((contract_name, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getContractTable(contract_name).then((result) => {
@@ -260,7 +260,7 @@ commander.command("get_contract_tables <contract_name>")
 
 commander.command("get_contract_abi <contract_name>")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("get contract abi by contract_name")
+    .description("Get contract abi by contract_name")
     .action((contract_name, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getContractABI(contract_name).then((result) => {
@@ -271,7 +271,7 @@ commander.command("get_contract_abi <contract_name>")
 
 commander.command("get_table_objects <contract_name> <table_name> [start] [limit]")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("get table records by contract_name and table_name")
+    .description("Get table records by contract_name and table_name")
     .action((contract_name, table_name, start = 0, limit = 100, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
