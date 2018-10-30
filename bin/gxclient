@@ -44,6 +44,7 @@ function displayExamples() {
     console.log(chalk.cyan("  $ gxclient get_account gxchain-test-account"));
     console.log(chalk.cyan("  $ gxclient get_account_balances gxchain-test-account"));
     console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXS\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient vote [\"gxb123\"] -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
     console.log("- Asset API:");
     console.log("");
@@ -155,7 +156,7 @@ commander.command("get_asset <symbol>")
 commander.command("get_block <block_height>")
     .description("Get asset info by asset symbol")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((block_height,opt) => {
+    .action((block_height, opt) => {
         if (opt.testnet) {
             client = new GXClient("", "", "wss://testnet.gxchain.org");
         }
@@ -196,6 +197,23 @@ commander.command("transfer <to> <memo> <amount_asset> [boradcast]")
         });
     });
 
+commander.command("vote <account_ids> [overwrite] [fee_asset_id] [boradcast]")
+    .option("-a --account_id [account_id]", "[string] account id")
+    .option("-p --private_key [private_key]", "[string] private key")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("Send a transfer transaction")
+    .action((account_ids, overwrite, fee_asset_id, broadcast, opt) => {
+        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        account_ids = JSON.parse(account_ids || "[]");
+        client.vote(account_ids, overwrite, fee_asset_id, broadcast).then(result => {
+            console.log(result);
+            process.exit(1);
+        }).catch(ex => {
+            console.error(chalk.red(ex));
+            process.exit(1);
+        });
+    });
+
 commander.command("call_contract <contract_name> <method_name> <params> [amount_asset] [boradcast]")
     .option("-a --account_id [account_id]", "[string] account id")
     .option("-p --private_key [private_key]", "[string] private key")
@@ -218,7 +236,8 @@ commander.command("call_contract <contract_name> <method_name> <params> [amount_
         }
 
         function innerCall(asset_amout) {
-            client.callContract(contract_name, method_name, JSON.parse(params), asset_amout, broadcast).then(result => {
+            let params = JSON.parse(params || "{}");
+            client.callContract(contract_name, method_name, params, asset_amout, broadcast).then(result => {
                 console.log(result);
                 process.exit(1);
             }).catch(ex => {

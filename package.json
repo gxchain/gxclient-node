@@ -59,6 +59,7 @@
     "debug": "^3.1.0",
     "gxbjs": "^1.2.98",
     "gxc-frontend-base": "github:gxchain/gxc-frontend-base",
+    "lodash": "^4.17.11",
     "superagent": "^3.8.3"
   }
 }
