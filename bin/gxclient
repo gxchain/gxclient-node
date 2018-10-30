@@ -80,10 +80,10 @@ commander.command("list")
 
 commander.command("generate_key")
     .description("Generate gxchain key pairs")
-    .usage("aaa")
     .action(() => {
         let result = client.generateKey();
         console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        process.exit(1);
     });
 
 commander.command("register <account_name> <public_key>")
@@ -91,6 +91,7 @@ commander.command("register <account_name> <public_key>")
     .action((account_name, public_key) => {
         client.register(account_name, public_key).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
@@ -99,6 +100,7 @@ commander.command("get_account <account_name>")
     .action((account_name) => {
         client.getAccount(account_name).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
@@ -107,6 +109,7 @@ commander.command("get_object <object_id>")
     .action((object_id) => {
         client.getObject(object_id).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
@@ -116,6 +119,7 @@ commander.command("get_account_balances <account_name>")
     .action((account_name) => {
         client.getAccountBalances(account_name).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
@@ -195,6 +199,7 @@ commander.command("call_contract <contract_name> <method_name> <params> [amount_
         function innerCall(asset_amout) {
             client.callContract(contract_name, method_name, JSON.parse(params), asset_amout, broadcast).then(result => {
                 console.log(result);
+                process.exit(1);
             }).catch(ex => {
                 console.error(chalk.red(ex));
                 process.exit(1);
@@ -209,6 +214,7 @@ commander.command("get_contract_tables <contract_name>")
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getContractTable(contract_name).then((result) => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
@@ -219,6 +225,7 @@ commander.command("get_contract_abi <contract_name>")
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getContractABI(contract_name).then((result) => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
@@ -229,6 +236,7 @@ commander.command("get_table_objects <contract_name> <table_name> [start] [limit
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         });
     });
 
