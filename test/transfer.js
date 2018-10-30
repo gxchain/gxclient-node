@@ -1,4 +1,4 @@
-import GXClient from "../lib/src/GXClient";
+import {GXClient} from "../lib";
 
 const private_key = "";
 const account_id = "1.2.19";

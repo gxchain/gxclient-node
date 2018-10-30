@@ -1,4 +1,4 @@
-import GXClient from "../lib/src/GXClient";
+import {GXClient} from "../lib";
 import {Aes, PrivateKey} from "gxbjs";
 
 const private_key = "";

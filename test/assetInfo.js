@@ -1,4 +1,4 @@
-import GXClient from "../lib/src/GXClient";
+import {GXClient} from "../lib";
 
 let client = new GXClient();
 client.getAsset("GXS").then(asset => {
