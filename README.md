@@ -15,15 +15,15 @@ $ gxclient -h
 ```
 
 ```bash
-  [USAGE] : gxclient <command> [options]
+[USAGE] : gxclient <command> [options]
 
-  Options:
+Options:
 
     -V, --version                                                                              output the version number
     -v --version                                                                               print gxclient version
     -h, --help                                                                                 output usage information
 
-  Commands:
+Commands:
 
     list|ls                                                                                    List all apis
     generate_key                                                                               Generate gxchain key pairs
