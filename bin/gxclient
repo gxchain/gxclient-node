@@ -31,11 +31,14 @@ function displayUsage() {
 }
 
 function displayExamples() {
-    console.log("- Generate key pairs:");
+    console.log("- KeyPair api:");
     console.log("");
     console.log(chalk.cyan("  $ gxclient generate_key"));
+    console.log(chalk.cyan("  $ gxclient private_to_public 5JPhC4ZqxmqVAhwphbBMahpu1KPJb2..."));
+    console.log(chalk.cyan("  $ gxclient is_valid_private 5JPhC4ZqxmqVAhwphbBMahpu1KPJb2..."));
+    console.log(chalk.cyan("  $ gxclient is_valid_public  GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
     console.log("");
-    console.log("- Register an account:");
+    console.log("- Faucet API:");
     console.log("");
     console.log(chalk.cyan("  $ gxclient register my-account GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
     console.log("");
@@ -85,6 +88,30 @@ commander.command("generate_key")
     .action(() => {
         let result = client.generateKey();
         console.log(chalk.green(JSON.stringify(result, null, "  ")));
+        process.exit(1);
+    });
+
+commander.command("private_to_public <private_key>")
+    .description("Export public key from private key")
+    .action((private_key) => {
+        let result = client.privateToPublic(private_key);
+        console.log(chalk.green(result));
+        process.exit(1);
+    });
+
+commander.command("is_valid_private <private_key>")
+    .description("Check if private key is valid")
+    .action((private_key) => {
+        let result = client.isValidPrivate(private_key);
+        console.log(chalk.green(result));
+        process.exit(1);
+    });
+
+commander.command("is_valid_public <public_key>")
+    .description("Check if public key is valid")
+    .action((public_key) => {
+        let result = client.isValidPublic(public_key);
+        console.log(chalk.green(result));
         process.exit(1);
     });
 
