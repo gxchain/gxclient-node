@@ -42,6 +42,7 @@ function displayExamples() {
     console.log("- Account API:");
     console.log("");
     console.log(chalk.cyan("  $ gxclient get_account gxchain-test-account"));
+    console.log(chalk.cyan("  $ gxclient get_account_by_public_key GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
     console.log(chalk.cyan("  $ gxclient get_account_balances gxchain-test-account"));
     console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXS\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient vote [\"gxb123\"] -p <private_key> -a <account_id> -t <true|false>"));
@@ -105,6 +106,19 @@ commander.command("get_account <account_name>")
             client = new GXClient("", "", "wss://testnet.gxchain.org");
         }
         client.getAccount(account_name).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
+        });
+    });
+
+commander.command("get_account_by_public_key <public_key>")
+    .description("Get account information by account_name")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .action((public_key, opt) => {
+        if (opt.testnet) {
+            client = new GXClient("", "", "wss://testnet.gxchain.org");
+        }
+        client.getAccountByPublicKey(public_key).then(result => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
         });
