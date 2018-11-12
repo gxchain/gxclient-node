@@ -1,6 +1,6 @@
 import {GXClient} from "../lib";
 
-const private_key = "5Ka9YjFQtfUUX2DdnqkaPWH1rVeSeby7Cj2VdjRt79S9kKLvXR7";
+const private_key = "";
 const account_id = "1.2.19";
 let client = new GXClient(private_key, account_id, "ws://47.96.164.78:28090");
 client.vote(["1.2.21"], false, "1.3.1", false).then(result => {
