@@ -1,5 +1,16 @@
 {
-    "presets": ["stage-3", "env"],
-    "plugins": ["syntax-dynamic-import"],
+    "presets": [
+        "es2015",
+        "stage-3"
+    ],
+    "plugins": [
+        [
+            "transform-runtime",
+            {
+                "regenerator": true
+            }
+        ],
+        "syntax-dynamic-import"
+    ],
     "comments": false
 }
