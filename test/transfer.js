@@ -10,6 +10,10 @@ const account_id = process.env.ACCOUNT_ID;
 const asset_precicion = 5;
 let client;
 
+if(!private_key || !account_id){
+    throw new Error("需要设置环境变量ACCOUNT_ID和PVK");
+}
+
 describe("transfer", () => {
     before(function () {
         client = new GXClient(private_key, account_id, "wss://testnet.gxchain.org");
