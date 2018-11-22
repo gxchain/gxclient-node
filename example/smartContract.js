@@ -10,7 +10,7 @@ let broadcast = true;
 let contractName = "bank";
 
 //Calling deposit method of bank contract
-client.callContract(contractName, "deposit", {}, null, broadcast).then(resp => {
+client.callContract(contractName, "deposit", "10 GXC", null, broadcast).then(resp => {
     let transaction = broadcast ? resp[0].trx : resp;
     let txid = broadcast ? resp[0].id : "";
     console.log(txid, JSON.stringify(transaction));

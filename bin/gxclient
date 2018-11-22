@@ -218,20 +218,9 @@ commander.command("transfer <to> <memo> <amount_asset> [boradcast]")
             console.error(chalk.red("Incorrect format of asset, eg. \"100 GXS\""));
             process.exit(1);
         }
-        let amount = Number(amount_asset.split(" ")[0]);
-        let asset = amount_asset.split(" ")[1];
-        client.getAsset(asset).then(asset => {
-            client.transfer(to, memo, {
-                amount: amount,
-                asset_id: asset.id,
-                precision: asset.precision
-            }, broadcast).then(result => {
-                console.log(chalk.green(JSON.stringify(result, null, "  ")));
-                process.exit(1);
-            }).catch(ex => {
-                console.error(chalk.red(ex));
-                process.exit(1);
-            });
+        client.transfer(to, memo, amount_asset, broadcast).then(result => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
         }).catch(ex => {
             console.error(chalk.red(ex));
             process.exit(1);
@@ -262,30 +251,14 @@ commander.command("call_contract <contract_name> <method_name> <params> [amount_
     .description("Call smart contract method")
     .action((contract_name, method_name, params, amount_asset, broadcast, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        if (amount_asset) {
-            if (amount_asset.indexOf(" ") == -1) {
-                console.error(chalk.red("Incorrect format of asset, eg. \"100 GXS\""));
-                process.exit(1);
-            }
-            let amount = Number(amount_asset.split(" ")[0]);
-            let asset = amount_asset.split(" ")[1];
-            client.getAsset(asset).then(asset => {
-                innerCall({amount: client._accMult(amount, Math.pow(10, asset.precision)), asset_id: asset.id});
-            });
-        } else {
-            innerCall(null);
-        }
-
-        function innerCall(asset_amout) {
-            let params = JSON.parse(params || "{}");
-            client.callContract(contract_name, method_name, params, asset_amout, broadcast).then(result => {
-                console.log(result);
-                process.exit(1);
-            }).catch(ex => {
-                console.error(chalk.red(ex));
-                process.exit(1);
-            });
-        }
+        let params = JSON.parse(params || "{}");
+        client.callContract(contract_name, method_name, params, amount_asset, broadcast).then(result => {
+            console.log(result);
+            process.exit(1);
+        }).catch(ex => {
+            console.error(chalk.red(ex));
+            process.exit(1);
+        });
     });
 
 commander.command("get_contract_tables <contract_name>")

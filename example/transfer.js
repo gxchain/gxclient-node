@@ -1,18 +1,14 @@
 import {GXClient} from "../lib";
 
 const private_key = "";
-const account_id = "1.2.19";
+const account = "gxb123";
 const asset_precicion = 5;
-let client = new GXClient(private_key, account_id, "ws://47.96.164.78:28090");
+let client = new GXClient(private_key, account, "ws://47.96.164.78:28090");
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;
 
 //Sending 15GXS to gxb456 with memo "GXChain NB"
-client.transfer("gxb456", "GXChain NB", {
-    amount: 15,
-    asset_id: "1.3.1",
-    precision: asset_precicion
-}, broadcast).then(resp => {
+client.transfer("gxb456", "GXChain NB", "10 GXC", broadcast).then(resp => {
     let transaction = broadcast ? resp[0].trx : resp;
     let txid = broadcast ? resp[0].id : "";
     console.log(JSON.stringify(transaction));

@@ -33,7 +33,7 @@ let abi = {
     "abi_extensions": []
 };
 
-client.updateContract("bank-test2", "gxb123", code, abi, true).then(result => {
+client.updateContract("bank-test3", "gxb123", code, abi, true).then(result => {
     console.log(JSON.stringify(result));
 }).catch(ex => {
     console.error(ex);
