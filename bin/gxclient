@@ -251,7 +251,7 @@ commander.command("call_contract <contract_name> <method_name> <params> [amount_
     .description("Call smart contract method")
     .action((contract_name, method_name, params, amount_asset, broadcast, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        let params = JSON.parse(params || "{}");
+        params = JSON.parse(params || "{}");
         client.callContract(contract_name, method_name, params, amount_asset, broadcast).then(result => {
             console.log(result);
             process.exit(1);
