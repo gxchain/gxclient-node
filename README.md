@@ -46,14 +46,14 @@ Commands:
 ## 1. Transaction detect
 
 ``` js
-import {GXClient} from "gxclient";
+import GXClientFactory from "gxclient";
 import {Aes, PrivateKey} from "gxbjs";
 
 const private_key = "";
 const account_id = "1.2.525166";
 const memo_private = "";
 
-let client = new GXClient(private_key, account_id);
+let client = GXClientFactory.instance({keyProvider:private_key, account:account_id});
 
 // start to detect new transactions related to my account from the indicated block
 client.detectTransaction(10904333, function (blockHeight, txid, operation) {
@@ -129,12 +129,14 @@ client.register("testaccount-5", keyPair.publicKey).then(resp => {
 ## 4. Transfer
 
 ```js
-import {GXClient} from "gxclient";
+import GXClientFactory from "gxclient";
 
 const private_key = "5Ka9YjFQtfUUX2Ddnqka...";
 const account_id = "1.2.19";
 const asset_precicion = 5;
-let client = new GXClient(private_key, account_id, "ws://47.96.164.78:28090");
+
+let client = GXClientFactory.instance({keyProvider:private_key, account:account_id,network:"ws://47.96.164.78:28090"});
+
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;
 
@@ -203,11 +205,11 @@ eg.
 ## 5. Smart Contract API
 
 ```js
-import {GXClient} from "gxclient";
+import GXClientFactory from "gxclient";
 
 const private_key = "";
 const account_id = "1.2.19";
-let client = new GXClient(private_key, account_id);
+let client = GXClientFactory.instance({keyProvider:private_key, account:account_id});
 
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;
@@ -243,11 +245,11 @@ client.callContract(contractName, "deposit", {}, null, broadcast).then(resp => {
 ## 6. Voting
 
 ```js
-import {GXClient} from "gxclient";
+import GXClientFactory from "gxclient";
 
 const private_key = "";
 const account_id = "1.2.19";
-let client = new GXClient(private_key, account_id);
+let client = GXClientFactory.instance({keyProvider:private_key, account:account_id});
 
 client.vote(["1.2.21"], false, "1.3.1", true).then(result => {
     console.log(JSON.stringify(result, null, "  "));
