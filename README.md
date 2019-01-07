@@ -141,11 +141,7 @@ let client = GXClientFactory.instance({keyProvider:private_key, account:account_
 let broadcast = true;
 
 //Sending 15GXS to gxb456 with memo "GXChain NB"
-client.transfer("gxb456", "GXChain NB", {
-    amount: 15,
-    asset_id: "1.3.1",
-    precision: asset_precicion
-}, broadcast).then(resp => {
+client.transfer("gxb456", "GXChain NB", "15 GXC", broadcast).then(resp => {
     let transaction = broadcast ? resp[0].trx : resp;
     let txid = broadcast ? resp[0].id : "";
     console.log(JSON.stringify(transaction));
