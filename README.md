@@ -1,7 +1,10 @@
 # GXClient
 GXClient is a wrapped toolkit of gxbjs, a client to interact with gxchain apis
 
-<img width="400px" src='https://raw.githubusercontent.com/gxchain/gxips/master/assets/images/task-gxclient.png'/>
+<a href="javascript:;">
+    <img width="300px" src='https://raw.githubusercontent.com/gxchain/gxips/master/assets/images/task-gxclient.png'/>
+    <img width="300px" src='https://raw.githubusercontent.com/gxchain/gxips/master/assets/images/task-gxclient-en.png'/>
+</a>
 
 # Install
 
