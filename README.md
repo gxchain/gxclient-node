@@ -144,7 +144,7 @@ const private_key = "5Ka9YjFQtfUUX2Ddnqka...";
 const account_id = "1.2.19";
 const asset_precicion = 5;
 
-let client = GXClientFactory.instance({keyProvider:private_key, account:account_id,network:"ws://47.96.164.78:28090"});
+let client = GXClientFactory.instance({keyProvider:private_key, account:account_id,network:"wss://testnet.gxchain.org"});
 
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;

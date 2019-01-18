@@ -2,7 +2,7 @@ import {GXClient} from "../lib";
 
 const private_key = "";
 const account_id = "1.2.19";
-let client = new GXClient(private_key, account_id, "ws://47.96.164.78:28090");
+let client = new GXClient(private_key, account_id, "wss://testnet.gxchain.org");
 
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;
