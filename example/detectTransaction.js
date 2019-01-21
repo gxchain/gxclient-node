@@ -2,17 +2,17 @@ import GXClientFactory from "../lib";
 import {Aes, PrivateKey} from "gxbjs";
 
 const private_key = "";
-const account_id = "gxb122";
+const account_id = "1.2.1110";
 const memo_private = "";
 
 let client = GXClientFactory.instance({
     keyProvider: private_key,
     account: account_id,
-    network: "https://testnet.gxchain.org"
+    network: "wss://testnet.gxchain.org"
 });
 
 // start to detect new transactions related to my account from the indicated block
-client.detectTransaction(10904333, function (blockHeight, txid, operation) {
+client.detectTransaction(10595260, function (blockHeight, txid, operation) {
     console.log(blockHeight, txid, operation);
     //deal with transfer operation
     if (operation[0] === 0) {
