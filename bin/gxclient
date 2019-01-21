@@ -69,6 +69,10 @@ function displayExamples() {
     console.log(chalk.cyan("  $ gxclient get_table_objects redpacket packet 0 100 -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient call_contract bank deposit \"\" \"10 GXS\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
+    console.log("- Chain API :");
+    console.log(chalk.cyan("  $ gxclient get_chain_id -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient broadcast <tx> -t <true|false>"));
+    console.log("");
     console.log("Check the full documentation on https://github.com/gxchain/gxclient-node");
     console.log("");
 }
@@ -289,6 +293,29 @@ commander.command("get_table_objects <contract_name> <table_name> [start] [limit
     .action((contract_name, table_name, start = 0, limit = 100, opt) => {
         client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
+        });
+    });
+
+commander.command("broadcast <tx>")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("broadcast transaction")
+    .action((tx, opt) => {
+        client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        tx = JSON.parse(tx || "{}");
+        client.broadcast(tx).then((result) => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
+        });
+    });
+
+commander.command("get_chain_id")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("get_chain_id")
+    .action((opt) => {
+        client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        client.getChainID().then((result) => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
         });
