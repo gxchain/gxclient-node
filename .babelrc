@@ -1,16 +1,17 @@
 {
-    "presets": [
-        "es2015",
-        "stage-3"
+  "presets": [
+    "es2015",
+    "stage-3"
+  ],
+  "plugins": [
+    [
+      "transform-runtime",
+      {
+        "regenerator": true
+      }
     ],
-    "plugins": [
-        [
-            "transform-runtime",
-            {
-                "regenerator": true
-            }
-        ],
-        "syntax-dynamic-import"
-    ],
-    "comments": false
+    "syntax-dynamic-import",
+    "transform-async-to-generator"
+  ],
+  "comments": false
 }
