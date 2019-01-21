@@ -24,30 +24,34 @@ $ gxclient -h
 ```
 
 ```bash
-[USAGE] : gxclient <command> [options]
+Usage: gxclient [cmd]
 
 Options:
-
-    -V, --version                                                                              output the version number
-    -v --version                                                                               print gxclient version
-    -h, --help                                                                                 output usage information
+  -V, --version                                                                              output the version number
+  -v --version                                                                               print gxclient version
+  -h, --help                                                                                 output usage information
 
 Commands:
-
-    list|ls                                                                                    List all apis
-    generate_key                                                                               Generate gxchain key pairs
-    register [options] <account_name> <public_key>                                             Register gxchain account
-    get_account [options] <account_name>                                                       Get account information by account_name
-    get_object [options] <object_id>                                                           Get object by object_id
-    get_account_balances|get_account_balance [options] <account_name>                          Get account balances by account_name
-    get_asset [options] <symbol>                                                               Get asset info by asset symbol
-    get_block [options] <block_height>                                                         Get asset info by asset symbol
-    transfer [options] <to> <memo> <amount_asset> [boradcast]                                  Send a transfer transaction
-    vote [options] <account_ids> [overwrite] [fee_asset_id] [boradcast]                        Send a transfer transaction
-    call_contract [options] <contract_name> <method_name> <params> [amount_asset] [boradcast]  Call smart contract method
-    get_contract_tables [options] <contract_name>                                              get contract table by contract_name
-    get_contract_abi [options] <contract_name>                                                 get contract abi by contract_name
-    get_table_objects [options] <contract_name> <table_name> [start] [limit]                   get table records by contract_name and table_name
+  list|ls                                                                                    List all apis
+  generate_key                                                                               Generate gxchain key pairs
+  private_to_public <private_key>                                                            Export public key from private key
+  is_valid_private <private_key>                                                             Check if private key is valid
+  is_valid_public <public_key>                                                               Check if public key is valid
+  register [options] <account_name> <public_key>                                             Register gxchain account
+  get_account [options] <account_name>                                                       Get account information by account_name
+  get_account_by_public_key [options] <public_key>                                           Get account information by account_name
+  get_object [options] <object_id>                                                           Get object by object_id
+  get_account_balances|get_account_balance [options] <account_name>                          Get account balances by account_name
+  get_asset [options] <symbol>                                                               Get asset info by asset symbol
+  get_block [options] <block_height>                                                         Get block by block height
+  transfer [options] <to> <memo> <amount_asset> [boradcast]                                  Send a transfer transaction
+  vote [options] <account_ids> [overwrite] [fee_asset_id] [boradcast]                        Vote for TrustNodes
+  call_contract [options] <contract_name> <method_name> <params> [amount_asset] [boradcast]  Call smart contract method
+  get_contract_tables [options] <contract_name>                                              Get contract table by contract_name
+  get_contract_abi [options] <contract_name>                                                 Get contract abi by contract_name
+  get_table_objects [options] <contract_name> <table_name> [start] [limit]                   Get table records by contract_name and table_name
+  broadcast [options] <tx>                                                                   broadcast transaction
+  get_chain_id [options]                                                                     get_chain_id
 ```
 
 # Usage(Client)

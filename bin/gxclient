@@ -300,7 +300,7 @@ commander.command("get_table_objects <contract_name> <table_name> [start] [limit
 
 commander.command("broadcast <tx>")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("broadcast transaction")
+    .description("Broadcast transaction")
     .action((tx, opt) => {
         client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         tx = JSON.parse(tx || "{}");
@@ -312,7 +312,7 @@ commander.command("broadcast <tx>")
 
 commander.command("get_chain_id")
     .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("get_chain_id")
+    .description("Get blockchain id")
     .action((opt) => {
         client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getChainID().then((result) => {
