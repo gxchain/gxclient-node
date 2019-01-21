@@ -1,6 +1,6 @@
-import {GXClient} from "../lib";
+import GXClientFactory from "../lib";
 
-let client = new GXClient();
+let client = GXClientFactory.instance({network: "https://testnet.gxchain.org"});
 /**
  * 1.2.* account object
  * 1.3.* asset object

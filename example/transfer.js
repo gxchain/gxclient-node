@@ -11,7 +11,12 @@ let broadcast = true;
 
 //Sending 15GXS to gxb456 with memo "GXChain NB"
 (async () => {
-    let transaction = await client.transfer("gxb121", "GXChain NB", "10 GXC", broadcast);
-
-    console.log(transaction);
+    try {
+        let transaction = await client.transfer("gxb121", "GXChain NB", "10 GXC", broadcast);
+        console.log(JSON.stringify(transaction, null, "  "));
+        // let txresult = await client.broadcast(transaction);
+        // console.log(txresult);
+    } catch (ex) {
+        console.error(ex);
+    }
 })();

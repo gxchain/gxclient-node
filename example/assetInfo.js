@@ -1,8 +1,8 @@
-import {GXClient} from "../lib";
+import GXClientFactory from "../lib";
 
-let client = new GXClient();
-client.getAsset("GXS").then(asset => {
+let client = GXClientFactory.instance({network: "https://testnet.gxchain.org"});
+client.getAsset("GXC").then(asset => {
     console.log(asset);
-}).catch(ex=>{
+}).catch(ex => {
     console.error(ex);
 });

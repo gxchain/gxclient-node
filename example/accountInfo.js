@@ -1,9 +1,9 @@
-import {GXClient} from "../lib";
+import GXClientFactory from "../lib";
 
-let client = new GXClient();
-client.getAccountBalances("gxb123").then(balances => {
+let client = GXClientFactory.instance({network: "https://testnet.gxchain.org"});
+client.getAccountBalances("gxb121").then(balances => {
     console.log(balances);
-    client.getAccountByPublicKey("GXC5jynfNTY35xBkFTSKDUfzRrHDmruDCwmcPAU97gyeupKZwfzUh").then(result=>{
+    client.getAccountByPublicKey("GXC5jynfNTY35xBkFTSKDUfzRrHDmruDCwmcPAU97gyeupKZwfzUh").then(result => {
         console.log(result);
     });
 });

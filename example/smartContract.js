@@ -1,8 +1,12 @@
-import {GXClient} from "../lib";
+import GXClientFactory from "../lib";
 
 const private_key = "";
-const account_id = "1.2.19";
-let client = new GXClient(private_key, account_id, "wss://testnet.gxchain.org");
+const account_id = "gxb122";
+let client = GXClientFactory.instance({
+    keyProvider: private_key,
+    account: account_id,
+    network: "https://testnet.gxchain.org"
+});
 
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;

@@ -1,18 +1,15 @@
 import GXClientFactory from "../lib";
 
-
+const private_key = "";
+const account_id = "gxb122";
 let client = GXClientFactory.instance({
-    account: "gxb121",
-    network: "wss://testnet.gxchain.org"
+    keyProvider: private_key,
+    account: account_id,
+    network: "https://testnet.gxchain.org"
 });
 
 client.getAccount("gxb121").then(acc => {
     console.log(acc.id);
-    client = GXClientFactory.instance({
-        account: "gxb121",
-        network: "wss://testnet.gxchain.org"
-    });
-    client.getAccount("gxb122").then(acc => {
-        console.log(acc.id);
-    });
+}).catch(ex=>{
+    console.error(ex);
 });
