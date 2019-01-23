@@ -43,6 +43,7 @@ function displayExamples() {
     console.log("- Chain API:");
     console.log("");
     console.log(chalk.cyan("  $ gxclient get_chain_id -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient get_dynamic_global_properties -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient get_block 100 -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXC\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient vote [\"gxb123\"] -p <private_key> -a <account_id> -t <true|false>"));
@@ -322,6 +323,17 @@ commander.command("get_chain_id")
     .action((opt) => {
         client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
         client.getChainID().then((result) => {
+            console.log(chalk.green(JSON.stringify(result, null, "  ")));
+            process.exit(1);
+        });
+    });
+
+commander.command("get_dynamic_global_properties")
+    .option("-t --testnet [testnet]", "[boolean] testnet")
+    .description("Get dynamic global properties")
+    .action((opt) => {
+        client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
+        client.getDynamicGlobalProperties().then((result) => {
             console.log(chalk.green(JSON.stringify(result, null, "  ")));
             process.exit(1);
         });
