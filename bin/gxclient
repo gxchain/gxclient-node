@@ -43,8 +43,10 @@ function displayExamples() {
     console.log("- Chain API:");
     console.log("");
     console.log(chalk.cyan("  $ gxclient get_chain_id -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient get_block 100 -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXC\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
+    console.log(chalk.cyan("  $ gxclient vote [\"gxb123\"] -p <private_key> -a <account_id> -t <true|false>"));
     console.log(chalk.cyan("  $ gxclient broadcast <tx> -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient get_block 100"));
     console.log("");
 
     console.log("- Faucet API:");
@@ -57,8 +59,6 @@ function displayExamples() {
     console.log(chalk.cyan("  $ gxclient get_account gxchain-test-account"));
     console.log(chalk.cyan("  $ gxclient get_account_by_public_key GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
     console.log(chalk.cyan("  $ gxclient get_account_balances gxchain-test-account"));
-    console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXC\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient vote [\"gxb123\"] -p <private_key> -a <account_id> -t <true|false>"));
     console.log("");
 
     console.log("- Asset API:");
