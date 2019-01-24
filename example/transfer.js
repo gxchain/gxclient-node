@@ -9,7 +9,7 @@ let client = GXClientFactory.instance({
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;
 
-//Sending 15GXS to gxb456 with memo "GXChain NB"
+//Sending 10GXC to gxb121 with memo "GXChain NB"
 (async () => {
     try {
         let transaction = await client.transfer("gxb121", "GXChain NB", "10 GXC", broadcast);
