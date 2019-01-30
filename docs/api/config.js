@@ -1,0 +1,1 @@
+exports.fileTree=[{"name":"GXClient","path":"/GXClient","fullPath":"./docs/api/GXClient"}];exports.sidebarTree = (title = 'Mainpage') => ({"/api/":[{"title":"API","collapsable":false,"children":[["",""+title+""],"GXClient"]}]});

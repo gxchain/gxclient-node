@@ -18,7 +18,11 @@
         "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d",
         "postbrowserify": "uglifyjs --compress --mangle --sequences --drop_console --output build/gxclient.min.js -- build/gxclient.js",
         "prepublish": "npm run build",
-        "test": "mocha --compilers js:babel-register --recursive --timeout 20000"
+        "test": "mocha --compilers js:babel-register --recursive --timeout 20000",
+        "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/API.md",
+        "docs:dev": "vuepress dev docs",
+        "docs:build": "vuepress build docs",
+        "deploy:doc": "gh-pages -d docs-dist"
     },
     "repository": {
         "type": "git",
@@ -57,8 +61,11 @@
         "browserify": "^16.2.3",
         "eslint": "^5.0.1",
         "eslint-friendly-formatter": "^4.0.1",
+        "gh-pages": "^2.0.1",
         "mocha": "^5.2.0",
-        "uglify-js": "^3.4.6"
+        "uglify-js": "^3.4.6",
+        "vuepress": "^0.14.8",
+        "vuepress-jsdoc": "^1.1.0"
     },
     "dependencies": {
         "axios": "^0.18.0",
