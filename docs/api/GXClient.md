@@ -1,45 +1,67 @@
 ---
 title: GXClient
 ---
+## Classes
+
+<dl>
+<dt><a href="#GXClient">GXClient</a></dt>
+<dd><p>GXClient Class</p>
+</dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#signatureProvider">signatureProvider</a> : <code>function</code></dt>
+<dd><p>This callback is displayed as a global member.</p>
+</dd>
+</dl>
+
 <a name="GXClient"></a>
 
 ## GXClient
+GXClient Class
+
 **Kind**: global class  
 
 * [GXClient](#GXClient)
-    * [new GXClient()](#new_GXClient_new)
+    * [new GXClient(private_key, account_id_or_name, entry_point, signProvider)](#new_GXClient_new)
     * [.generateKey()](#GXClient+generateKey) ⇒ <code>Object</code>
-    * [.privateToPublic(privateKey)](#GXClient+privateToPublic) ⇒ <code>\*</code>
+    * [.privateToPublic(privateKey)](#GXClient+privateToPublic) ⇒ <code>String</code>
     * [.isValidPublic(publicKey)](#GXClient+isValidPublic) ⇒ <code>boolean</code>
     * [.isValidPrivate(privateKey)](#GXClient+isValidPrivate) ⇒ <code>boolean</code>
     * [.register(account, activeKey, ownerKey, memoKey, faucet)](#GXClient+register) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [._latestBlockTask()](#GXClient+_latestBlockTask)
     * [.getObject(object_id)](#GXClient+getObject) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.getObjects(object_ids)](#GXClient+getObjects) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.getAccount(account_name)](#GXClient+getAccount) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getChainID()](#GXClient+getChainID)
-    * [.getDynamicGlobalProperties()](#GXClient+getDynamicGlobalProperties) ⇒ <code>\*</code>
-    * [.getAccountByPublicKey(publicKey)](#GXClient+getAccountByPublicKey) ⇒ <code>\*</code>
+    * [.getChainID()](#GXClient+getChainID) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
+    * [.getDynamicGlobalProperties()](#GXClient+getDynamicGlobalProperties) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
+    * [.getAccountByPublicKey(publicKey)](#GXClient+getAccountByPublicKey) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.getAccountBalances(account_name)](#GXClient+getAccountBalances) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getAsset(symbol)](#GXClient+getAsset) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getBlock(blockHeight)](#GXClient+getBlock) ⇒ <code>\*</code>
+    * [.getBlock(blockHeight)](#GXClient+getBlock) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.detectTransaction(blockHeight, callback)](#GXClient+detectTransaction)
     * [.transfer(to, memo, amount_asset, broadcast)](#GXClient+transfer) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getContractABI(contract_name)](#GXClient+getContractABI) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getContractTable(contract_name)](#GXClient+getContractTable) ⇒ <code>\*</code>
+    * [.getContractTable(contract_name)](#GXClient+getContractTable) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getTableObjects(contract_name, table_name, start, limit)](#GXClient+getTableObjects) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.createContract(contract_name, code, abi, vm_type, vm_version)](#GXClient+createContract)
+    * [.createContract(contract_name, code, abi, vm_type, vm_version, broadcast)](#GXClient+createContract) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.updateContract(contract_name, newOwner, code, abi, broadcast)](#GXClient+updateContract) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.callContract(contract_name, method_name, params, amount_asset, broadcast)](#GXClient+callContract) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.vote(account_ids, fee_paying_asset, broadcast)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.fee(operation, feeAssetId)](#GXClient+fee) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [._accMult(arg1, arg2)](#GXClient+_accMult) ⇒ <code>number</code>
-    * [._processTransaction(tr, broadcast)](#GXClient+_processTransaction) ⇒ <code>Promise.&lt;Array.&lt;any&gt;&gt;</code>
+    * [.broadcast(tx)](#GXClient+broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
 
 <a name="new_GXClient_new"></a>
 
-### new GXClient()
-GXClient Class
+### new GXClient(private_key, account_id_or_name, entry_point, signProvider)
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| private_key | <code>String</code> |  | private key |
+| account_id_or_name | <code>String</code> |  | e.g: '1.2.44'|'gxcaccount' |
+| entry_point | <code>String</code> | <code>wss://node1.gxb.io</code> | entry point network address |
+| signProvider | [<code>signatureProvider</code>](#signatureProvider) | <code></code> |  |
 
 <a name="GXClient+generateKey"></a>
 
@@ -49,14 +71,14 @@ generate key pair locally
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 <a name="GXClient+privateToPublic"></a>
 
-### gxClient.privateToPublic(privateKey) ⇒ <code>\*</code>
+### gxClient.privateToPublic(privateKey) ⇒ <code>String</code>
 export public key from private key
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| privateKey | 
+| Param | Type |
+| --- | --- |
+| privateKey | <code>String</code> | 
 
 <a name="GXClient+isValidPublic"></a>
 
@@ -65,9 +87,9 @@ check if public key is valid
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| publicKey | 
+| Param | Type |
+| --- | --- |
+| publicKey | <code>String</code> | 
 
 <a name="GXClient+isValidPrivate"></a>
 
@@ -76,14 +98,14 @@ check if private key is valid
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| privateKey | 
+| Param | Type |
+| --- | --- |
+| privateKey | <code>String</code> | 
 
 <a name="GXClient+register"></a>
 
 ### gxClient.register(account, activeKey, ownerKey, memoKey, faucet) ⇒ <code>Promise.&lt;any&gt;</code>
-register an account by faucetcurl ‘https://opengateway.gxb.io/account/register' -H 'Content-type: application/json' -H 'Accept: application/json’ -d ‘{“account”:{“name”:”gxb123”,”owner_key”:”GXC5wQ4RtjouyobBV57vTx7boBj4Kt3BUxZEMsUD3TU369d3C9DqZ”,”active_key”:”GXC7cPVyB9F1Pfiaaxw4nY3xKADo5993hEsTjFs294LKwhqsUrFZs”,”memo_key”:”GXC7cPVyB9F1Pfiaaxw4nY3xKADo5993hEsTjFs294LKwhqsUrFZs”,”refcode”:null,”referrer”:null}}’
+register an account by faucet
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
@@ -93,14 +115,12 @@ register an account by faucetcurl ‘https://opengateway.gxb.io/account/registe
 | activeKey | <code>String</code> |  | Public Key for account operator |
 | ownerKey | <code>String</code> |  | Public Key for account owner |
 | memoKey | <code>String</code> |  | Public Key for memo |
-| faucet |  | <code>https://opengateway.gxb.io</code> |  |
+| faucet | <code>String</code> | <code>https://opengateway.gxb.io</code> | faucet url |
 
-<a name="GXClient+_latestBlockTask"></a>
-
-### gxClient.\_latestBlockTask()
-fetching latest block each 3 seconds
-
-**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+**Example**  
+```js
+curl ‘https://opengateway.gxb.io/account/register' -H 'Content-type: application/json' -H 'Accept: application/json’ -d ‘{“account”:{“name”:”gxb123”,”owner_key”:”GXC5wQ4RtjouyobBV57vTx7boBj4Kt3BUxZEMsUD3TU369d3C9DqZ”,”active_key”:”GXC7cPVyB9F1Pfiaaxw4nY3xKADo5993hEsTjFs294LKwhqsUrFZs”,”memo_key”:”GXC7cPVyB9F1Pfiaaxw4nY3xKADo5993hEsTjFs294LKwhqsUrFZs”,”refcode”:null,”referrer”:null}}’
+```
 <a name="GXClient+getObject"></a>
 
 ### gxClient.getObject(object_id) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
@@ -108,9 +128,9 @@ get object by id
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| object_id | 
+| Param | Type | Description |
+| --- | --- | --- |
+| object_id | <code>String</code> | e.g: '1.2.3' |
 
 <a name="GXClient+getObjects"></a>
 
@@ -121,7 +141,7 @@ get objects
 
 | Param | Type |
 | --- | --- |
-| object_ids | <code>Array</code> | 
+| object_ids | <code>Array.&lt;String&gt;</code> | 
 
 <a name="GXClient+getAccount"></a>
 
@@ -130,32 +150,32 @@ get account info by account name
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| account_name | 
+| Param | Type |
+| --- | --- |
+| account_name | <code>String</code> | 
 
 <a name="GXClient+getChainID"></a>
 
-### gxClient.getChainID()
+### gxClient.getChainID() ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
 get current blockchain id
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 <a name="GXClient+getDynamicGlobalProperties"></a>
 
-### gxClient.getDynamicGlobalProperties() ⇒ <code>\*</code>
+### gxClient.getDynamicGlobalProperties() ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
 get dynamic global properties
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 <a name="GXClient+getAccountByPublicKey"></a>
 
-### gxClient.getAccountByPublicKey(publicKey) ⇒ <code>\*</code>
+### gxClient.getAccountByPublicKey(publicKey) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
 get account_ids by public key
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| publicKey | 
+| Param | Type |
+| --- | --- |
+| publicKey | <code>String</code> | 
 
 <a name="GXClient+getAccountBalances"></a>
 
@@ -164,9 +184,9 @@ get account balances by account name
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| account_name | 
+| Param | Type |
+| --- | --- |
+| account_name | <code>String</code> | 
 
 <a name="GXClient+getAsset"></a>
 
@@ -175,20 +195,20 @@ get asset info by symbol
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| symbol | 
+| Param | Type | Description |
+| --- | --- | --- |
+| symbol | <code>String</code> | e.g: 'GXC' |
 
 <a name="GXClient+getBlock"></a>
 
-### gxClient.getBlock(blockHeight) ⇒ <code>\*</code>
+### gxClient.getBlock(blockHeight) ⇒ <code>Promise.&lt;any&gt;</code>
 get block by block height
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| blockHeight | 
+| Param | Type | Description |
+| --- | --- | --- |
+| blockHeight | <code>Number</code> | block height |
 
 <a name="GXClient+detectTransaction"></a>
 
@@ -197,10 +217,10 @@ detect new transactions related to this.account_id
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| blockHeight | 
-| callback | 
+| Param | Type | Description |
+| --- | --- | --- |
+| blockHeight | <code>Number</code> | block height |
+| callback | <code>function</code> |  |
 
 <a name="GXClient+transfer"></a>
 
@@ -209,12 +229,12 @@ send transfer request to witness node
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Default |
-| --- | --- |
-| to |  | 
-| memo |  | 
-| amount_asset |  | 
-| broadcast | <code>false</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| to | <code>String</code> |  | to account name |
+| memo | <code>String</code> \| <code>function</code> |  | memo |
+| amount_asset | <code>String</code> |  | e.g: '1 GXC' |
+| broadcast | <code>Boolean</code> | <code>false</code> |  |
 
 <a name="GXClient+getContractABI"></a>
 
@@ -223,20 +243,20 @@ get contract abi by contract_name
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| contract_name | 
+| Param | Type |
+| --- | --- |
+| contract_name | <code>String</code> | 
 
 <a name="GXClient+getContractTable"></a>
 
-### gxClient.getContractTable(contract_name) ⇒ <code>\*</code>
+### gxClient.getContractTable(contract_name) ⇒ <code>Promise.&lt;any&gt;</code>
 get contract table by contract_name
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param |
-| --- |
-| contract_name | 
+| Param | Type |
+| --- | --- |
+| contract_name | <code>String</code> | 
 
 <a name="GXClient+getTableObjects"></a>
 
@@ -245,27 +265,28 @@ fetch contract table record by contract_name and table_name
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Default |
-| --- | --- |
-| contract_name |  | 
-| table_name |  | 
-| start | <code>0</code> | 
-| limit | <code>100</code> | 
+| Param | Type | Default |
+| --- | --- | --- |
+| contract_name | <code>String</code> |  | 
+| table_name | <code>String</code> |  | 
+| start | <code>Number</code> | <code>0</code> | 
+| limit | <code>Number</code> | <code>100</code> | 
 
 <a name="GXClient+createContract"></a>
 
-### gxClient.createContract(contract_name, code, abi, vm_type, vm_version)
+### gxClient.createContract(contract_name, code, abi, vm_type, vm_version, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
 deploy smart contract
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Default |
-| --- | --- |
-| contract_name |  | 
-| code |  | 
-| abi |  | 
-| vm_type | <code>0</code> | 
-| vm_version | <code>0</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| contract_name | <code>String</code> |  |  |
+| code | <code>String</code> |  | bytecode |
+| abi | <code>Object</code> |  | abi object |
+| vm_type | <code>String</code> | <code>0</code> |  |
+| vm_version | <code>String</code> | <code>0</code> |  |
+| broadcast | <code>Boolean</code> | <code>false</code> |  |
 
 <a name="GXClient+updateContract"></a>
 
@@ -274,13 +295,13 @@ update smart contract
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Default |
-| --- | --- |
-| contract_name |  | 
-| newOwner |  | 
-| code |  | 
-| abi |  | 
-| broadcast | <code>false</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| contract_name | <code>String</code> |  |  |
+| newOwner | <code>String</code> |  | new owner account name |
+| code | <code>String</code> |  | same to createContract |
+| abi | <code>Object</code> |  | same to createContract |
+| broadcast | <code>Boolean</code> | <code>false</code> |  |
 
 <a name="GXClient+callContract"></a>
 
@@ -294,7 +315,7 @@ call smart contract method
 | contract_name | <code>String</code> |  | The name of the smart contract |
 | method_name | <code>String</code> |  | Method/Action name |
 | params | <code>JSON</code> |  | parameters |
-| amount_asset |  |  | "100 GXC" - The amount of asset for payable action |
+| amount_asset | <code>String</code> |  | same to transfer |
 | broadcast | <code>Boolean</code> | <code>false</code> | Broadcast the transaction or just return a serialized transaction |
 
 <a name="GXClient+vote"></a>
@@ -304,11 +325,11 @@ vote for accounts
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Description |
-| --- | --- |
-| account_ids | An array of account_id to vote |
-| fee_paying_asset | The asset to pay the fee |
-| broadcast |  |
+| Param | Type | Description |
+| --- | --- | --- |
+| account_ids | <code>Array.&lt;String&gt;</code> | An array of account_id to vote |
+| fee_paying_asset | <code>String</code> | The asset to pay the fee |
+| broadcast | <code>Boolean</code> |  |
 
 <a name="GXClient+fee"></a>
 
@@ -317,32 +338,31 @@ calculate fee of a operation
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Default |
+| Param | Type | Default |
+| --- | --- | --- |
+| operation | <code>Object</code> |  | 
+| feeAssetId | <code>String</code> | <code>1.3.1</code> | 
+
+<a name="GXClient+broadcast"></a>
+
+### gxClient.broadcast(tx) ⇒ <code>Promise.&lt;any&gt;</code>
+broadcast transaction
+
+**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+
+| Param | Type |
 | --- | --- |
-| operation |  | 
-| feeAssetId | <code>1.3.1</code> | 
+| tx | <code>TransactionBuilder</code> | 
 
-<a name="GXClient+_accMult"></a>
+<a name="signatureProvider"></a>
 
-### gxClient.\_accMult(arg1, arg2) ⇒ <code>number</code>
-accurate multiply - fix the accurate issue of javascript
+## signatureProvider : <code>function</code>
+This callback is displayed as a global member.
 
-**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+**Kind**: global typedef  
 
-| Param |
-| --- |
-| arg1 | 
-| arg2 | 
-
-<a name="GXClient+_processTransaction"></a>
-
-### gxClient.\_processTransaction(tr, broadcast) ⇒ <code>Promise.&lt;Array.&lt;any&gt;&gt;</code>
-process transaction
-
-**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
-
-| Param |
-| --- |
-| tr | 
-| broadcast | 
+| Param | Type | Description |
+| --- | --- | --- |
+| transaction | <code>TransactionBuilder</code> |  |
+| chain_id | <code>String</code> | Chain Id |
 

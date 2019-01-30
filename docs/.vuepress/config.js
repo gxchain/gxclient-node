@@ -65,7 +65,7 @@ function genSidebarConfig(link) {
                 collapsable: false,
                 children: [
                     '',
-                    'demo'
+                    'example'
                 ]
             }]
     }
