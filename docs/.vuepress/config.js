@@ -2,7 +2,11 @@ const { sidebarTree } = require('../api/config');
 module.exports = {
     contentLoading: true,
     title: 'Hello vuepress-jsdoc',
+    base: '/gxclient-node/',
     dest: './docs-dist',    // 设置输出目录
+    head: [
+        ['link', { rel: 'icon', href: '/favicon.ico' }]
+    ],
     locales: {
         '/': {
             lang: 'zh-CN',

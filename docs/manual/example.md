@@ -88,10 +88,10 @@ client.register("testaccount-5", keyPair.publicKey).then(resp => {
 import GXClientFactory from "gxclient";
 
 const private_key = "5Ka9YjFQtfUUX2Ddnqka...";
-const account_id = "1.2.19";
+const account_name = "gxcaccount";
 const asset_precicion = 5;
 
-let client = GXClientFactory.instance({keyProvider:private_key, account:account_id,network:"wss://testnet.gxchain.org"});
+let client = GXClientFactory.instance({keyProvider:private_key, account:account_name,network:"wss://testnet.gxchain.org"});
 
 // set broadcast to false so we could calculate the fee before broadcasting
 let broadcast = true;
@@ -101,7 +101,7 @@ client.transfer("gxb456", "GXChain NB", "15 GXC", broadcast).then(resp => {
     let transaction = broadcast ? resp[0].trx : resp;
     let txid = broadcast ? resp[0].id : "";
     console.log(JSON.stringify(transaction));
-    console.log("txid:", txid, "fee:", transaction.operations[0][1].fee.amount / Math.pow(10, asset_precicion));
+    console.log("txid:", txid, "fee:", transaction.operations0.fee.amount / Math.pow(10, asset_precicion));
     // > txid: f28d27ac74649a76f58c9b84fb7ea700163e31c4 fee: 0.0118
     // Since gxchain implemented dpos consensus, the transaction will be confirmed until the block becomes irreversible
     // You can find the logic when a transfer operation was confirmed in the example of detectTransaction
