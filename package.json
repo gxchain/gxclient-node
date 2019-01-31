@@ -20,8 +20,8 @@
         "prepublish": "npm run build",
         "test": "mocha --compilers js:babel-register --recursive --timeout 20000",
         "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/API.md",
-        "docs:dev": "vuepress dev docs",
-        "docs:build": "vuepress build docs",
+        "dev:doc": "vuepress dev docs",
+        "build:doc": "vuepress build docs",
         "deploy:doc": "gh-pages -d docs-dist"
     },
     "repository": {
