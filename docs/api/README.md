@@ -1,8 +1,8 @@
-# 概览
+# Overview
 ## constructor
 [GXClient](/api/GXClient.html#gxclient)
 
-## 单例
+## Singleton
 [GXClientFactory](/api/GXClientFactory.html#gxclientfactory)
 
 ## Keypair API

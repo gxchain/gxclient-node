@@ -9,9 +9,9 @@ module.exports = {
     ],
     locales: {
         '/': {
-            lang: 'zh-CN',
+            lang: 'en-US',
             title: 'gxclient',
-            description: 'gxclient desc'
+            description: 'A wrapped toolkit of gxbjs, a client to interact with gxchain apis'
         }
     },
     themeConfig: {
@@ -25,13 +25,13 @@ module.exports = {
         },
         locales: {
             '/': {
-                label: '简体中文',
-                selectText: '选择语言',
-                editLinkText: '在 GitHub 上编辑此页',
-                lastUpdated: '上次更新',
+                label: 'English',
+                selectText: 'Languages',
+                editLinkText: 'Edit this page on GitHub',
+                lastUpdated: 'Last Updated',
                 nav: [
                     {
-                        text: '介绍',
+                        text: 'Introduce',
                         link: '/introduce/',
                     },
                     {
@@ -39,14 +39,14 @@ module.exports = {
                         link: '/api/',
                     },
                     {
-                        text: '手册',
+                        text: 'Manual',
                         link: '/manual/',
                     }
                 ],
                 sidebar: {
                     '/introduce/': genSidebarConfig('introduce'),
                     '/manual/': genSidebarConfig('manual'),
-                    ...sidebarTree('概览')
+                    ...sidebarTree('Overview')
                 }
             }
         }

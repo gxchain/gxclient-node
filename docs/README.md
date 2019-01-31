@@ -1,6 +1,6 @@
 ---
 home: true
-actionText: 快速上手 →
+actionText: Quick Start →
 actionLink: /introduce/
 footer: Copyright © 2018 - 2019 Powered by GXChain
 ---

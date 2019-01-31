@@ -1,2 +1,2 @@
-# 手册
-如何使用Gxclient
+# Overview
+You could learn how to use gxclient here
