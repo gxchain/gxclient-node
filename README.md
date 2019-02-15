@@ -85,7 +85,9 @@ client.transfer("gxb456", "GXChain NB", "15 GXC", broadcast).then(resp => {
 
 ```
 
+## APIs
 
+[API documents](https://gxchain.github.io/gxclient-node/api/)
 
 ## Other
 
