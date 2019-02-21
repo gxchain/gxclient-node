@@ -48,7 +48,7 @@ GXClient Class
     * [.createContract(contract_name, code, abi, vm_type, vm_version, broadcast)](#GXClient+createContract) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.updateContract(contract_name, newOwner, code, abi, broadcast)](#GXClient+updateContract) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.callContract(contract_name, method_name, params, amount_asset, broadcast)](#GXClient+callContract) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.vote(account_ids, fee_paying_asset, broadcast)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.vote(accounts, fee_paying_asset, broadcast)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.fee(operation, feeAssetId)](#GXClient+fee) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.broadcast(tx)](#GXClient+broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
 
@@ -315,21 +315,21 @@ call smart contract method
 | contract_name | <code>String</code> |  | The name of the smart contract |
 | method_name | <code>String</code> |  | Method/Action name |
 | params | <code>JSON</code> |  | parameters |
-| amount_asset | <code>String</code> |  | same to transfer |
+| amount_asset | <code>String</code> |  | same to transfer eg."100 GXC" |
 | broadcast | <code>Boolean</code> | <code>false</code> | Broadcast the transaction or just return a serialized transaction |
 
 <a name="GXClient+vote"></a>
 
-### gxClient.vote(account_ids, fee_paying_asset, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
+### gxClient.vote(accounts, fee_paying_asset, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
 vote for accounts
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| account_ids | <code>Array.&lt;String&gt;</code> | An array of account_id to vote |
-| fee_paying_asset | <code>String</code> | The asset to pay the fee |
-| broadcast | <code>Boolean</code> |  |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| accounts | <code>Array.&lt;String&gt;</code> |  | An array of account_names to vote |
+| fee_paying_asset | <code>String</code> | <code>GXC</code> | The asset to pay the fee |
+| broadcast | <code>Boolean</code> | <code>false</code> |  |
 
 <a name="GXClient+fee"></a>
 

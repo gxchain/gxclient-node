@@ -1,4 +1,11 @@
 const { sidebarTree } = require('../api/config');
+let apiSideBar = sidebarTree('Core Overview')
+apiSideBar['/api/'][0].title = 'Core'
+apiSideBar['/api/'].unshift({
+    title: 'Guide',
+    children:['Overview'],
+    collapsable:false
+})
 module.exports = {
     contentLoading: true,
     title: 'Hello vuepress-jsdoc',
@@ -46,7 +53,7 @@ module.exports = {
                 sidebar: {
                     '/introduce/': genSidebarConfig('introduce'),
                     '/manual/': genSidebarConfig('manual'),
-                    ...sidebarTree('Overview')
+                    ...apiSideBar
                 }
             }
         }

@@ -19,10 +19,11 @@
         "postbrowserify": "uglifyjs --compress --mangle --sequences --drop_console --output build/gxclient.min.js -- build/gxclient.js",
         "prepublish": "npm run build",
         "test": "mocha --compilers js:babel-register --recursive --timeout 20000",
-        "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/API.md",
+        "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/copy/API.md && npm run copy:doc",
         "dev:doc": "vuepress dev docs",
         "build:doc": "vuepress build docs",
-        "deploy:doc": "gh-pages -d docs-dist"
+        "deploy:doc": "gh-pages -d docs-dist",
+        "copy:doc": "./docs/bin/copy.sh"
     },
     "repository": {
         "type": "git",
