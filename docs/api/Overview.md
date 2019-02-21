@@ -3,5 +3,5 @@ Core, const, util and others categories are just classfied by function, not by c
 
 You can import them by:
 ```javascript
-import {GXClient, Types, Signature, serialize}
+import {GXClient, Types, Signature, serialize} from 'gxclient'
 ```
