@@ -261,7 +261,9 @@ var GXClient = function () {
             var _this4 = this;
 
             var broadcast = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+            var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
 
+            var fee_id = options.fee_id;
             var memo_private = this.private_key;
             var isMemoProvider = false;
 
@@ -383,7 +385,7 @@ var GXClient = function () {
                                                 tr.add_operation(tr.get_type_operation("transfer", {
                                                     fee: {
                                                         amount: 0,
-                                                        asset_id: amount.asset_id
+                                                        asset_id: fee_id || amount.asset_id
                                                     },
                                                     from: fromAcc.id,
                                                     to: toAcc.id,
@@ -400,7 +402,7 @@ var GXClient = function () {
                                 }, _callee, _this4, [[22, 28]]);
                             }));
 
-                            return function (_x5) {
+                            return function (_x6) {
                                 return _ref.apply(this, arguments);
                             };
                         }());
@@ -496,7 +498,9 @@ var GXClient = function () {
             var _this8 = this;
 
             var broadcast = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+            var options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 
+            var fee_id = options.fee_id;
             return this._connect().then(function () {
                 if (amount_asset) {
                     if (amount_asset.indexOf(" ") == -1) {
@@ -530,7 +534,7 @@ var GXClient = function () {
                         var opts = {
                             "fee": {
                                 "amount": 0,
-                                "asset_id": amount.asset_id
+                                "asset_id": fee_id || amount.asset_id
                             },
                             "account": _this8.account_id,
                             "contract_id": acc.id,
