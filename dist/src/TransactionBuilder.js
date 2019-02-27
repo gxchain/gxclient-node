@@ -579,7 +579,6 @@ function _broadcast() {
 
 
                             resolve(_this5.rpc.broadcast(tr_object).catch(function (error) {
-                                console.log(error);
                                 var message = error.message;
                                 if (!message) {
                                     message = "";

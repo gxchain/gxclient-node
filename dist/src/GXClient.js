@@ -263,7 +263,7 @@ var GXClient = function () {
             var broadcast = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
             var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
 
-            var fee_id = options.fee_id;
+            var fee_symbol = options.fee_symbol;
             var memo_private = this.private_key;
             var isMemoProvider = false;
 
@@ -282,9 +282,14 @@ var GXClient = function () {
                         return !!o;
                     })[1];
                     resolve(_this4._connect().then(function () {
-                        return _promise2.default.all([_this4._query("get_objects", [[_this4.account_id]]), _this4.getAccount(to), _this4.getAsset(asset)]).then(function () {
+                        var promises = [_this4._query("get_objects", [[_this4.account_id]]), _this4.getAccount(to), _this4.getAsset(asset)];
+                        if (fee_symbol) {
+                            promises.push(_this4.getAsset(fee_symbol));
+                        }
+
+                        return _promise2.default.all(promises).then(function () {
                             var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(results) {
-                                var memo_object, fromAcc, toAcc, assetInfo, memo_from_public, memo_to_public, fromPrivate, nonce, tr;
+                                var memo_object, fromAcc, toAcc, assetInfo, feeInfo, memo_from_public, memo_to_public, fromPrivate, nonce, tr;
                                 return _regenerator2.default.wrap(function _callee$(_context) {
                                     while (1) {
                                         switch (_context.prev = _context.next) {
@@ -293,37 +298,38 @@ var GXClient = function () {
                                                 fromAcc = results[0][0];
                                                 toAcc = results[1];
                                                 assetInfo = results[2];
+                                                feeInfo = results[3] || {};
 
                                                 if (toAcc) {
-                                                    _context.next = 6;
+                                                    _context.next = 7;
                                                     break;
                                                 }
 
                                                 throw new Error("Account " + to + " not exist");
 
-                                            case 6:
+                                            case 7:
                                                 if (assetInfo) {
-                                                    _context.next = 8;
+                                                    _context.next = 9;
                                                     break;
                                                 }
 
                                                 throw new Error("Asset " + asset + " not exist");
 
-                                            case 8:
+                                            case 9:
                                                 amount = {
                                                     amount: _this4._accMult(amount, Math.pow(10, assetInfo.precision)),
                                                     asset_id: assetInfo.id
                                                 };
 
                                                 if (isMemoProvider) {
-                                                    _context.next = 22;
+                                                    _context.next = 23;
                                                     break;
                                                 }
 
                                                 memo_from_public = void 0, memo_to_public = void 0;
 
                                                 if (!memo) {
-                                                    _context.next = 19;
+                                                    _context.next = 20;
                                                     break;
                                                 }
 
@@ -340,13 +346,13 @@ var GXClient = function () {
                                                 fromPrivate = _gxbjs.PrivateKey.fromWif(memo_private);
 
                                                 if (!(memo_from_public != fromPrivate.toPublicKey().toPublicKeyString())) {
-                                                    _context.next = 19;
+                                                    _context.next = 20;
                                                     break;
                                                 }
 
                                                 throw new Error("memo signer not exist");
 
-                                            case 19:
+                                            case 20:
 
                                                 if (memo && memo_to_public && memo_from_public) {
                                                     nonce = _gxbjs.TransactionHelper.unique_nonce_uint64();
@@ -358,34 +364,34 @@ var GXClient = function () {
                                                         message: _gxbjs.Aes.encrypt_with_checksum(_gxbjs.PrivateKey.fromWif(memo_private), memo_to_public, nonce, new Buffer(memo, "utf-8"))
                                                     };
                                                 }
-                                                _context.next = 32;
+                                                _context.next = 33;
                                                 break;
 
-                                            case 22:
-                                                _context.prev = 22;
-                                                _context.next = 25;
+                                            case 23:
+                                                _context.prev = 23;
+                                                _context.next = 26;
                                                 return memo(fromAcc, toAcc);
 
-                                            case 25:
+                                            case 26:
                                                 memo_object = _context.sent;
-                                                _context.next = 32;
+                                                _context.next = 33;
                                                 break;
 
-                                            case 28:
-                                                _context.prev = 28;
-                                                _context.t0 = _context["catch"](22);
+                                            case 29:
+                                                _context.prev = 29;
+                                                _context.t0 = _context["catch"](23);
 
                                                 reject(_context.t0);
                                                 return _context.abrupt("return");
 
-                                            case 32:
+                                            case 33:
                                                 tr = _this4._createTransaction();
 
 
                                                 tr.add_operation(tr.get_type_operation("transfer", {
                                                     fee: {
                                                         amount: 0,
-                                                        asset_id: fee_id || amount.asset_id
+                                                        asset_id: feeInfo.id || amount.asset_id
                                                     },
                                                     from: fromAcc.id,
                                                     to: toAcc.id,
@@ -394,12 +400,12 @@ var GXClient = function () {
                                                 }));
                                                 return _context.abrupt("return", _this4._processTransaction(tr, broadcast));
 
-                                            case 35:
+                                            case 36:
                                             case "end":
                                                 return _context.stop();
                                         }
                                     }
-                                }, _callee, _this4, [[22, 28]]);
+                                }, _callee, _this4, [[23, 29]]);
                             }));
 
                             return function (_x6) {
@@ -500,7 +506,7 @@ var GXClient = function () {
             var broadcast = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
             var options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 
-            var fee_id = options.fee_id;
+            var fee_symbol = options.fee_symbol;
             return this._connect().then(function () {
                 if (amount_asset) {
                     if (amount_asset.indexOf(" ") == -1) {
@@ -513,9 +519,15 @@ var GXClient = function () {
                 var asset = amount_asset ? amount_asset.split(" ").filter(function (o) {
                     return !!o;
                 })[1] : "GXC";
-                return _promise2.default.all([_this8.getAccount(contract_name), _this8.getAsset(asset)]).then(function (results) {
+                var promises = [_this8.getAccount(contract_name), _this8.getAsset(asset)];
+                if (fee_symbol) {
+                    promises.push(_this8.getAsset(fee_symbol));
+                }
+
+                return _promise2.default.all(promises).then(function (results) {
                     var acc = results[0];
                     var assetInfo = results[1];
+                    var feeInfo = results[2] || {};
                     if (!assetInfo) {
                         throw new Error("Asset " + asset + " not exist");
                     }
@@ -534,7 +546,7 @@ var GXClient = function () {
                         var opts = {
                             "fee": {
                                 "amount": 0,
-                                "asset_id": fee_id || amount.asset_id
+                                "asset_id": feeInfo.id || amount.asset_id
                             },
                             "account": _this8.account_id,
                             "contract_id": acc.id,
