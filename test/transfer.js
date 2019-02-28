@@ -1,5 +1,6 @@
 // export PVK="xxxx" && export account="xxxx" && npm run test -- ./test/transfer
 import { GXClient } from "../lib";
+import {assert} from "chai";
 import {
     Aes, PrivateKey,
     TransactionHelper
@@ -7,7 +8,6 @@ import {
 
 const private_key = process.env.PVK;
 const account = process.env.ACCOUNT;
-const asset_precicion = 5;
 let client;
 
 if (!private_key || !account) {
@@ -107,8 +107,8 @@ describe("transfer", () => {
 
     it("transfer with custom fee", () => {
         return new Promise((resolve, reject) => {
-            client.transfer("youxiu123", "hahah", "0.5 GXC", true, { fee_symbol: "GXC" }).then(resp => {
-                resolve();
+            client.transfer("youxiu123", "hahah", "0.5 GXC", true, { fee_symbol: "BTC" }).then(resp => {
+                resolve(assert.equal(resp[0].trx.operations[0][1].fee.asset_id, "1.3.4"));
             }).catch(ex => {
                 reject(ex);
             });
