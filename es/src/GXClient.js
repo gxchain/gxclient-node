@@ -278,11 +278,11 @@ var GXClient = function () {
                     var amount = Number(amount_asset.split(" ").filter(function (o) {
                         return !!o;
                     })[0]);
-                    var _asset = amount_asset.split(" ").filter(function (o) {
+                    var asset = amount_asset.split(" ").filter(function (o) {
                         return !!o;
                     })[1];
                     resolve(_this4._connect().then(function () {
-                        var promises = [_this4._query("get_objects", [[_this4.account_id]]), _this4.getAccount(to), _this4.getAsset(_asset)];
+                        var promises = [_this4._query("get_objects", [[_this4.account_id]]), _this4.getAccount(to), _this4.getAsset(asset)];
                         if (fee_symbol) {
                             promises.push(_this4.getAsset(fee_symbol));
                         }
@@ -300,36 +300,38 @@ var GXClient = function () {
                                                 assetInfo = results[2];
                                                 feeInfo = results[3] || {};
 
+                                                console.log("feeinfo", feeInfo);
+
                                                 if (toAcc) {
-                                                    _context.next = 7;
+                                                    _context.next = 8;
                                                     break;
                                                 }
 
                                                 throw new Error("Account " + to + " not exist");
 
-                                            case 7:
+                                            case 8:
                                                 if (assetInfo) {
-                                                    _context.next = 9;
+                                                    _context.next = 10;
                                                     break;
                                                 }
 
-                                                throw new Error("Asset " + _asset + " not exist");
+                                                throw new Error("Asset " + asset + " not exist");
 
-                                            case 9:
+                                            case 10:
                                                 amount = {
                                                     amount: _this4._accMult(amount, Math.pow(10, assetInfo.precision)),
                                                     asset_id: assetInfo.id
                                                 };
 
                                                 if (isMemoProvider) {
-                                                    _context.next = 23;
+                                                    _context.next = 24;
                                                     break;
                                                 }
 
                                                 memo_from_public = void 0, memo_to_public = void 0;
 
                                                 if (!memo) {
-                                                    _context.next = 20;
+                                                    _context.next = 21;
                                                     break;
                                                 }
 
@@ -346,13 +348,13 @@ var GXClient = function () {
                                                 fromPrivate = _gxbjs.PrivateKey.fromWif(memo_private);
 
                                                 if (!(memo_from_public != fromPrivate.toPublicKey().toPublicKeyString())) {
-                                                    _context.next = 20;
+                                                    _context.next = 21;
                                                     break;
                                                 }
 
                                                 throw new Error("memo signer not exist");
 
-                                            case 20:
+                                            case 21:
 
                                                 if (memo && memo_to_public && memo_from_public) {
                                                     nonce = _gxbjs.TransactionHelper.unique_nonce_uint64();
@@ -364,27 +366,27 @@ var GXClient = function () {
                                                         message: _gxbjs.Aes.encrypt_with_checksum(_gxbjs.PrivateKey.fromWif(memo_private), memo_to_public, nonce, new Buffer(memo, "utf-8"))
                                                     };
                                                 }
-                                                _context.next = 33;
+                                                _context.next = 34;
                                                 break;
 
-                                            case 23:
-                                                _context.prev = 23;
-                                                _context.next = 26;
+                                            case 24:
+                                                _context.prev = 24;
+                                                _context.next = 27;
                                                 return memo(fromAcc, toAcc);
 
-                                            case 26:
+                                            case 27:
                                                 memo_object = _context.sent;
-                                                _context.next = 33;
+                                                _context.next = 34;
                                                 break;
 
-                                            case 29:
-                                                _context.prev = 29;
-                                                _context.t0 = _context["catch"](23);
+                                            case 30:
+                                                _context.prev = 30;
+                                                _context.t0 = _context["catch"](24);
 
                                                 reject(_context.t0);
                                                 return _context.abrupt("return");
 
-                                            case 33:
+                                            case 34:
                                                 tr = _this4._createTransaction();
 
 
@@ -400,12 +402,12 @@ var GXClient = function () {
                                                 }));
                                                 return _context.abrupt("return", _this4._processTransaction(tr, broadcast));
 
-                                            case 36:
+                                            case 37:
                                             case "end":
                                                 return _context.stop();
                                         }
                                     }
-                                }, _callee, _this4, [[23, 29]]);
+                                }, _callee, _this4, [[24, 30]]);
                             }));
 
                             return function (_x6) {
@@ -472,7 +474,7 @@ var GXClient = function () {
                                 }
 
                                 _context2.next = 5;
-                                return this.getAsset(asset);
+                                return this.getAsset(fee_symbol);
 
                             case 5:
                                 feeInfo = _context2.sent;
@@ -642,116 +644,88 @@ var GXClient = function () {
         key: "vote",
         value: function vote() {
             var accounts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-            var fee_paying_asset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "GXC";
 
             var _this9 = this;
 
+            var fee_symbol = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "GXC";
             var broadcast = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-            var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-            var fee_symbol = options.fee_symbol;
             return new _promise2.default(function (resolve) {
-                resolve(_this9._connect().then((0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4() {
-                    var accountPromises, feeInfo;
-                    return _regenerator2.default.wrap(function _callee4$(_context4) {
-                        while (1) {
-                            switch (_context4.prev = _context4.next) {
-                                case 0:
-                                    accountPromises = accounts.map(function (a) {
-                                        return _this9.getAccount(a);
-                                    });
-                                    feeInfo = {};
-
-                                    if (!fee_symbol) {
-                                        _context4.next = 6;
-                                        break;
-                                    }
-
-                                    _context4.next = 5;
-                                    return _this9.getAsset(fee_symbol);
-
-                                case 5:
-                                    feeInfo = _context4.sent;
-
-                                case 6:
-                                    return _context4.abrupt("return", _promise2.default.all(accountPromises).then(function (accounts) {
-                                        var account_ids = accounts.map(function (a) {
-                                            return a.id;
-                                        });
-                                        return _promise2.default.all([_this9._query("get_objects", [[_this9.account_id, "2.0.0"]]), _this9.getAsset(fee_paying_asset)]).then(function (results) {
-                                            var acc = results[0][0];
-                                            var globalObject = results[0][1];
-                                            var fee_asset = results[1];
-                                            if (!acc) {
-                                                throw Error("account_id " + _this9.account_id + " not exist");
-                                            }
-                                            if (!fee_asset) {
-                                                throw Error("asset " + fee_paying_asset + " not exist");
-                                            }
-
-                                            var new_options = {
-                                                memo_key: acc.options.memo_key,
-                                                voting_account: acc.options.voting_account || "1.2.5"
-                                            };
-
-                                            var promises = [];
-
-                                            account_ids.forEach(function (account_id) {
-                                                promises.push(_this9._query("get_witness_by_account", [account_id]));
-                                                promises.push(_this9._query("get_committee_member_by_account", [account_id]));
-                                            });
-
-                                            return _promise2.default.all(promises).then(function (results) {
-                                                var votes = results.filter(function (r) {
-                                                    return r;
-                                                }).map(function (r) {
-                                                    return r.vote_id;
-                                                });
-
-                                                new_options.votes = (0, _uniq2.default)(votes.concat(acc.options.votes));
-
-                                                var num_witness = 0;
-                                                var num_committee = 0;
-                                                new_options.votes.forEach(function (v) {
-                                                    var vote_type = v.split(":")[0];
-                                                    if (vote_type == "0") {
-                                                        num_committee += 1;
-                                                    }
-                                                    if (vote_type == 1) {
-                                                        num_witness += 1;
-                                                    }
-                                                });
-                                                new_options.num_committee = Math.min(num_committee, globalObject.parameters.maximum_committee_count);
-                                                new_options.num_witness = Math.min(num_witness, globalObject.parameters.maximum_witness_count);
-                                                new_options.votes = new_options.votes.sort(function (a, b) {
-                                                    var a_split = a.split(":");
-                                                    var b_split = b.split(":");
-                                                    return parseInt(a_split[1]) - parseInt(b_split[1]);
-                                                });
-
-                                                var tr = _this9._createTransaction();
-
-                                                tr.add_operation(tr.get_type_operation("account_update", {
-                                                    fee: {
-                                                        amount: 0,
-                                                        asset_id: feeInfo.id || fee_asset.id
-                                                    },
-                                                    account: _this9.account_id,
-                                                    new_options: new_options
-                                                }));
-
-                                                return _this9._processTransaction(tr, broadcast);
-                                            });
-                                        });
-                                    }));
-
-                                case 7:
-                                case "end":
-                                    return _context4.stop();
+                resolve(_this9._connect().then(function () {
+                    var accountPromises = accounts.map(function (a) {
+                        return _this9.getAccount(a);
+                    });
+                    return _promise2.default.all(accountPromises).then(function (accounts) {
+                        var account_ids = accounts.map(function (a) {
+                            return a.id;
+                        });
+                        return _promise2.default.all([_this9._query("get_objects", [[_this9.account_id, "2.0.0"]]), _this9.getAsset(fee_symbol)]).then(function (results) {
+                            var acc = results[0][0];
+                            var globalObject = results[0][1];
+                            var fee_asset = results[1];
+                            if (!acc) {
+                                throw Error("account_id " + _this9.account_id + " not exist");
                             }
-                        }
-                    }, _callee4, _this9);
-                }))));
+                            if (!fee_asset) {
+                                throw Error("asset " + fee_symbol + " not exist");
+                            }
+
+                            var new_options = {
+                                memo_key: acc.options.memo_key,
+                                voting_account: acc.options.voting_account || "1.2.5"
+                            };
+
+                            var promises = [];
+
+                            account_ids.forEach(function (account_id) {
+                                promises.push(_this9._query("get_witness_by_account", [account_id]));
+                                promises.push(_this9._query("get_committee_member_by_account", [account_id]));
+                            });
+
+                            return _promise2.default.all(promises).then(function (results) {
+                                var votes = results.filter(function (r) {
+                                    return r;
+                                }).map(function (r) {
+                                    return r.vote_id;
+                                });
+
+                                new_options.votes = (0, _uniq2.default)(votes.concat(acc.options.votes));
+
+                                var num_witness = 0;
+                                var num_committee = 0;
+                                new_options.votes.forEach(function (v) {
+                                    var vote_type = v.split(":")[0];
+                                    if (vote_type == "0") {
+                                        num_committee += 1;
+                                    }
+                                    if (vote_type == 1) {
+                                        num_witness += 1;
+                                    }
+                                });
+                                new_options.num_committee = Math.min(num_committee, globalObject.parameters.maximum_committee_count);
+                                new_options.num_witness = Math.min(num_witness, globalObject.parameters.maximum_witness_count);
+                                new_options.votes = new_options.votes.sort(function (a, b) {
+                                    var a_split = a.split(":");
+                                    var b_split = b.split(":");
+                                    return parseInt(a_split[1]) - parseInt(b_split[1]);
+                                });
+
+                                var tr = _this9._createTransaction();
+
+                                tr.add_operation(tr.get_type_operation("account_update", {
+                                    fee: {
+                                        amount: 0,
+                                        asset_id: fee_asset.id
+                                    },
+                                    account: _this9.account_id,
+                                    new_options: new_options
+                                }));
+
+                                return _this9._processTransaction(tr, broadcast);
+                            });
+                        });
+                    });
+                }));
             });
         }
     }, {

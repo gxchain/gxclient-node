@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _stringify = require("babel-runtime/core-js/json/stringify");
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _regenerator = require("babel-runtime/regenerator");
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -583,7 +579,7 @@ function _broadcast() {
                                 if (!message) {
                                     message = "";
                                 }
-                                return new Error(message + "\n" + "gxb-crypto " + " digest " + _gxbjs.hash.sha256(_this5.tr_buffer).toString("hex") + " transaction " + _this5.tr_buffer.toString("hex") + " " + (0, _stringify2.default)(tr_object));
+                                throw new Error(message);
                             }));
 
                         case 18:
