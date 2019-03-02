@@ -32,9 +32,9 @@ var _TransactionBuilder = require("./TransactionBuilder");
 
 var _TransactionBuilder2 = _interopRequireDefault(_TransactionBuilder);
 
-var _dictionary = require("./dictionary");
+var _bip = require("bip39");
 
-var _dictionary2 = _interopRequireDefault(_dictionary);
+var _bip2 = _interopRequireDefault(_bip);
 
 var _uniq = require("lodash/uniq");
 
@@ -76,7 +76,7 @@ var GXClient = function () {
     (0, _createClass3.default)(GXClient, [{
         key: "generateKey",
         value: function generateKey(brainKey) {
-            brainKey = brainKey || _gxbjs.key.suggest_brain_key(_dictionary2.default);
+            brainKey = brainKey || _bip2.default.generateMnemonic();
             var privateKey = _gxbjs.key.get_brainPrivateKey(brainKey);
             var publicKey = privateKey.toPublicKey().toPublicKeyString();
             return {
@@ -300,38 +300,36 @@ var GXClient = function () {
                                                 assetInfo = results[2];
                                                 feeInfo = results[3] || {};
 
-                                                console.log("feeinfo", feeInfo);
-
                                                 if (toAcc) {
-                                                    _context.next = 8;
+                                                    _context.next = 7;
                                                     break;
                                                 }
 
                                                 throw new Error("Account " + to + " not exist");
 
-                                            case 8:
+                                            case 7:
                                                 if (assetInfo) {
-                                                    _context.next = 10;
+                                                    _context.next = 9;
                                                     break;
                                                 }
 
                                                 throw new Error("Asset " + asset + " not exist");
 
-                                            case 10:
+                                            case 9:
                                                 amount = {
                                                     amount: _this4._accMult(amount, Math.pow(10, assetInfo.precision)),
                                                     asset_id: assetInfo.id
                                                 };
 
                                                 if (isMemoProvider) {
-                                                    _context.next = 24;
+                                                    _context.next = 23;
                                                     break;
                                                 }
 
                                                 memo_from_public = void 0, memo_to_public = void 0;
 
                                                 if (!memo) {
-                                                    _context.next = 21;
+                                                    _context.next = 20;
                                                     break;
                                                 }
 
@@ -348,13 +346,13 @@ var GXClient = function () {
                                                 fromPrivate = _gxbjs.PrivateKey.fromWif(memo_private);
 
                                                 if (!(memo_from_public != fromPrivate.toPublicKey().toPublicKeyString())) {
-                                                    _context.next = 21;
+                                                    _context.next = 20;
                                                     break;
                                                 }
 
                                                 throw new Error("memo signer not exist");
 
-                                            case 21:
+                                            case 20:
 
                                                 if (memo && memo_to_public && memo_from_public) {
                                                     nonce = _gxbjs.TransactionHelper.unique_nonce_uint64();
@@ -366,27 +364,27 @@ var GXClient = function () {
                                                         message: _gxbjs.Aes.encrypt_with_checksum(_gxbjs.PrivateKey.fromWif(memo_private), memo_to_public, nonce, new Buffer(memo, "utf-8"))
                                                     };
                                                 }
-                                                _context.next = 34;
+                                                _context.next = 33;
                                                 break;
 
-                                            case 24:
-                                                _context.prev = 24;
-                                                _context.next = 27;
+                                            case 23:
+                                                _context.prev = 23;
+                                                _context.next = 26;
                                                 return memo(fromAcc, toAcc);
 
-                                            case 27:
+                                            case 26:
                                                 memo_object = _context.sent;
-                                                _context.next = 34;
+                                                _context.next = 33;
                                                 break;
 
-                                            case 30:
-                                                _context.prev = 30;
-                                                _context.t0 = _context["catch"](24);
+                                            case 29:
+                                                _context.prev = 29;
+                                                _context.t0 = _context["catch"](23);
 
                                                 reject(_context.t0);
                                                 return _context.abrupt("return");
 
-                                            case 34:
+                                            case 33:
                                                 tr = _this4._createTransaction();
 
 
@@ -402,12 +400,12 @@ var GXClient = function () {
                                                 }));
                                                 return _context.abrupt("return", _this4._processTransaction(tr, broadcast));
 
-                                            case 37:
+                                            case 36:
                                             case "end":
                                                 return _context.stop();
                                         }
                                     }
-                                }, _callee, _this4, [[24, 30]]);
+                                }, _callee, _this4, [[23, 29]]);
                             }));
 
                             return function (_x6) {
