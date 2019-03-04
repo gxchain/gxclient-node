@@ -60,16 +60,6 @@ describe("contract", () => {
         });
     });
 
-    it("createContract with custom fee", () => {
-        return new Promise((resolve, reject) => {
-            client.createContract(contractName + "x", wasm2, abi2, undefined, undefined, true, { fee_symbol: "BTC" }).then(resp => {
-                resolve(assert.equal(resp[0].trx.operations[0][1].fee.asset_id, "1.3.4"));
-            }).catch(ex => {
-                reject(ex);
-            });
-        });
-    });
-
     it("updateContract", () => {
         return new Promise((resolve, reject) => {
             client.updateContract(contractName, "", wasm, abi, true).then(resp => {
