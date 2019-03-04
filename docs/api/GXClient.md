@@ -41,14 +41,14 @@ GXClient Class
     * [.getAsset(symbol)](#GXClient+getAsset) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getBlock(blockHeight)](#GXClient+getBlock) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.detectTransaction(blockHeight, callback)](#GXClient+detectTransaction)
-    * [.transfer(to, memo, amount_asset, broadcast)](#GXClient+transfer) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.transfer(to, memo, amount_asset, broadcast, options)](#GXClient+transfer) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getContractABI(contract_name)](#GXClient+getContractABI) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getContractTable(contract_name)](#GXClient+getContractTable) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getTableObjects(contract_name, table_name, start, limit)](#GXClient+getTableObjects) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.createContract(contract_name, code, abi, vm_type, vm_version, broadcast)](#GXClient+createContract) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.updateContract(contract_name, newOwner, code, abi, broadcast)](#GXClient+updateContract) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
-    * [.callContract(contract_name, method_name, params, amount_asset, broadcast)](#GXClient+callContract) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.vote(accounts, fee_paying_asset, broadcast)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.createContract(contract_name, code, abi, vm_type, vm_version, broadcast, options)](#GXClient+createContract) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.updateContract(contract_name, newOwner, code, abi, broadcast, options)](#GXClient+updateContract) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
+    * [.callContract(contract_name, method_name, params, amount_asset, broadcast, options)](#GXClient+callContract) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.vote(accounts, broadcast, options)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.fee(operation, feeAssetId)](#GXClient+fee) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.broadcast(tx)](#GXClient+broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
 
@@ -224,7 +224,7 @@ detect new transactions related to this.account_id
 
 <a name="GXClient+transfer"></a>
 
-### gxClient.transfer(to, memo, amount_asset, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
+### gxClient.transfer(to, memo, amount_asset, broadcast, options) ⇒ <code>Promise.&lt;any&gt;</code>
 send transfer request to witness node
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
@@ -235,6 +235,8 @@ send transfer request to witness node
 | memo | <code>String</code> \| <code>function</code> |  | memo |
 | amount_asset | <code>String</code> |  | e.g: '1 GXC' |
 | broadcast | <code>Boolean</code> | <code>false</code> |  |
+| options | <code>Object</code> |  |  |
+| options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
 <a name="GXClient+getContractABI"></a>
 
@@ -274,7 +276,7 @@ fetch contract table record by contract_name and table_name
 
 <a name="GXClient+createContract"></a>
 
-### gxClient.createContract(contract_name, code, abi, vm_type, vm_version, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
+### gxClient.createContract(contract_name, code, abi, vm_type, vm_version, broadcast, options) ⇒ <code>Promise.&lt;any&gt;</code>
 deploy smart contract
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
@@ -287,10 +289,12 @@ deploy smart contract
 | vm_type | <code>String</code> | <code>0</code> |  |
 | vm_version | <code>String</code> | <code>0</code> |  |
 | broadcast | <code>Boolean</code> | <code>false</code> |  |
+| options | <code>Object</code> |  |  |
+| options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
 <a name="GXClient+updateContract"></a>
 
-### gxClient.updateContract(contract_name, newOwner, code, abi, broadcast) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
+### gxClient.updateContract(contract_name, newOwner, code, abi, broadcast, options) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
 update smart contract
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
@@ -302,10 +306,12 @@ update smart contract
 | code | <code>String</code> |  | same to createContract |
 | abi | <code>Object</code> |  | same to createContract |
 | broadcast | <code>Boolean</code> | <code>false</code> |  |
+| options | <code>Object</code> |  |  |
+| options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
 <a name="GXClient+callContract"></a>
 
-### gxClient.callContract(contract_name, method_name, params, amount_asset, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
+### gxClient.callContract(contract_name, method_name, params, amount_asset, broadcast, options) ⇒ <code>Promise.&lt;any&gt;</code>
 call smart contract method
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
@@ -317,10 +323,12 @@ call smart contract method
 | params | <code>JSON</code> |  | parameters |
 | amount_asset | <code>String</code> |  | same to transfer eg."100 GXC" |
 | broadcast | <code>Boolean</code> | <code>false</code> | Broadcast the transaction or just return a serialized transaction |
+| options | <code>Object</code> |  |  |
+| options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
 <a name="GXClient+vote"></a>
 
-### gxClient.vote(accounts, fee_paying_asset, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
+### gxClient.vote(accounts, broadcast, options) ⇒ <code>Promise.&lt;any&gt;</code>
 vote for accounts
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
@@ -328,8 +336,9 @@ vote for accounts
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | accounts | <code>Array.&lt;String&gt;</code> |  | An array of account_names to vote |
-| fee_paying_asset | <code>String</code> | <code>GXC</code> | The asset to pay the fee |
 | broadcast | <code>Boolean</code> | <code>false</code> |  |
+| options | <code>Object</code> |  |  |
+| options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
 <a name="GXClient+fee"></a>
 

@@ -76,7 +76,7 @@ var GXClient = function () {
     (0, _createClass3.default)(GXClient, [{
         key: "generateKey",
         value: function generateKey(brainKey) {
-            brainKey = brainKey || _bip2.default.generateMnemonic();
+            brainKey = brainKey || _bip2.default.generateMnemonic(160);
             var privateKey = _gxbjs.key.get_brainPrivateKey(brainKey);
             var publicKey = privateKey.toPublicKey().toPublicKeyString();
             return {
