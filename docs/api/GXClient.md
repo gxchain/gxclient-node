@@ -48,7 +48,7 @@ GXClient Class
     * [.createContract(contract_name, code, abi, vm_type, vm_version, broadcast, options)](#GXClient+createContract) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.updateContract(contract_name, newOwner, code, abi, broadcast, options)](#GXClient+updateContract) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.callContract(contract_name, method_name, params, amount_asset, broadcast, options)](#GXClient+callContract) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.vote(accounts, fee_symbol, broadcast)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.vote(accounts, broadcast, options)](#GXClient+vote) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.fee(operation, feeAssetId)](#GXClient+fee) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.broadcast(tx)](#GXClient+broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
 
@@ -328,7 +328,7 @@ call smart contract method
 
 <a name="GXClient+vote"></a>
 
-### gxClient.vote(accounts, fee_symbol, broadcast) ⇒ <code>Promise.&lt;any&gt;</code>
+### gxClient.vote(accounts, broadcast, options) ⇒ <code>Promise.&lt;any&gt;</code>
 vote for accounts
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
@@ -336,8 +336,9 @@ vote for accounts
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | accounts | <code>Array.&lt;String&gt;</code> |  | An array of account_names to vote |
-| fee_symbol | <code>String</code> | <code>GXC</code> | The asset to pay the fee |
 | broadcast | <code>Boolean</code> | <code>false</code> |  |
+| options | <code>Object</code> |  |  |
+| options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
 <a name="GXClient+fee"></a>
 

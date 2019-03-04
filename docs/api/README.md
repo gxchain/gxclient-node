@@ -27,7 +27,7 @@
 
 [transfer(to, memo, amount_asset, broadcast, options)](/api/GXClient.html#gxclient-transfer-to-memo-amount-asset-broadcast-options-⇒-promise-any) ⇒ <code>Promise.&lt;any&gt;</code>
 
-[vote(account_ids, fee_symbol, broadcast)](/api/GXClient.html#gxclient-vote-accounts-fee-symbol-broadcast-⇒-promise-any) ⇒ <code>Promise.&lt;any&gt;</code>
+[vote(account_ids, broadcast, options)](/api/GXClient.html#gxclient-vote-accounts-broadcast-options-⇒-promise-any) ⇒ <code>Promise.&lt;any&gt;</code>
 
 [broadcast(tx)](/api/GXClient.html#gxclient-broadcast-tx-⇒-promise-any) ⇒ <code>Promise.&lt;any&gt;</code>
 

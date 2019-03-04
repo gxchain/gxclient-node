@@ -23,7 +23,8 @@
         "dev:doc": "vuepress dev docs",
         "build:doc": "vuepress build docs",
         "deploy:doc": "gh-pages -d docs-dist",
-        "copy:doc": "./docs/bin/copy.sh"
+        "copy:doc": "./docs/bin/copy.sh",
+        "analysis": "browserify-breakdown build/gxclient.js"
     },
     "repository": {
         "type": "git",
@@ -60,6 +61,7 @@
         "babel-preset-stage-3": "^6.24.1",
         "babel-runtime": "^6.26.0",
         "browserify": "^16.2.3",
+        "browserify-breakdown": "^1.0.4",
         "chai": "^4.2.0",
         "eslint": "^5.0.1",
         "eslint-friendly-formatter": "^4.0.1",
