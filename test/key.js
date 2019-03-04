@@ -1,13 +1,12 @@
-// export PVK="xxxx" && export account="xxxx" && npm run test -- ./test/transfer
 import { GXClient } from "../lib";
 var client;
 
-describe("transfer", () => {
+describe("keypair", () => {
     before(function () {
         client = new GXClient("", "", "wss://testnet.gxchain.org");
     });
 
-    it("transfer without memo", () => {
+    it("generateKey", () => {
         console.log(client.generateKey());
     });
 
