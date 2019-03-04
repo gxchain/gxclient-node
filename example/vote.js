@@ -8,7 +8,7 @@ let client = GXClientFactory.instance({
     network: "https://testnet.gxchain.org"
 });
 
-client.vote(["init1"], "GXC", true).then(result => {
+client.vote(["init1"], true, {fee_symbol: "GXC"}).then(result => {
     console.log(JSON.stringify(result, null, "  "));
 }).catch(ex => {
     console.error(ex);
