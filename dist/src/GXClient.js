@@ -645,9 +645,10 @@ var GXClient = function () {
 
             var _this9 = this;
 
-            var fee_symbol = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "GXC";
-            var broadcast = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+            var broadcast = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+            var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+            var fee_symbol = options.fee_symbol || "GXC";
             return new _promise2.default(function (resolve) {
                 resolve(_this9._connect().then(function () {
                     var accountPromises = accounts.map(function (a) {
