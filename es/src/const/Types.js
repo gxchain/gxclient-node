@@ -3,15 +3,31 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _extends2 = require("babel-runtime/helpers/extends");
+require("core-js/modules/es6.array.for-each");
 
-var _extends3 = _interopRequireDefault(_extends2);
+require("core-js/modules/es6.array.filter");
+
+require("core-js/modules/web.dom.iterable");
+
+require("core-js/modules/es6.array.iterator");
+
+require("core-js/modules/es6.object.keys");
+
+require("core-js/modules/es6.object.define-property");
 
 var _gxbjs = require("gxbjs");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
-var Types = (0, _extends3.default)({}, _gxbjs.types, _gxbjs.ops);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-exports.default = Types;
+/**
+ * @module Types
+ * you can reference any types from [types](https://github.com/gxchain/gxbjs/blob/master/lib/serializer/src/types.js) or [operations](https://github.com/gxchain/gxbjs/blob/master/lib/serializer/src/operations.js)
+ */
+var Types = _objectSpread({}, _gxbjs.types, _gxbjs.ops);
+
+var _default = Types;
+exports.default = _default;

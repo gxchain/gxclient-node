@@ -1,22 +1,5 @@
 {
-  "presets": [
-    "es2015",
-    "stage-3"
-  ],
-  "plugins": [
-    [
-      "transform-runtime",
-      {
-        "regenerator": true
-      }
-    ],
-    "syntax-dynamic-import",
-    "transform-async-to-generator"
-  ],
-  "env": {
-    "browser": true,
-    "node": true,
-    "es6": true
-  },
-  "comments": false
+    "presets": [
+        ["@babel/preset-env", {"useBuiltIns":"usage"}]
+    ]
 }

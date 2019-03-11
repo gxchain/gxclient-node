@@ -1,24 +1,31 @@
 "use strict";
 
+require("core-js/modules/es6.object.define-property");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GXRPC = exports.GXClient = undefined;
+Object.defineProperty(exports, "GXClient", {
+  enumerable: true,
+  get: function get() {
+    return _GXClient.default;
+  }
+});
+Object.defineProperty(exports, "GXRPC", {
+  enumerable: true,
+  get: function get() {
+    return _GXRPC.default;
+  }
+});
+exports.default = void 0;
 
-var _GXClient = require("./src/GXClient");
+var _GXClient = _interopRequireDefault(require("./src/GXClient"));
 
-var _GXClient2 = _interopRequireDefault(_GXClient);
+var _GXClientFactory = _interopRequireDefault(require("./src/GXClientFactory"));
 
-var _GXClientFactory = require("./src/GXClientFactory");
-
-var _GXClientFactory2 = _interopRequireDefault(_GXClientFactory);
-
-var _GXRPC = require("./src/GXRPC");
-
-var _GXRPC2 = _interopRequireDefault(_GXRPC);
+var _GXRPC = _interopRequireDefault(require("./src/GXRPC"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.GXClient = _GXClient2.default;
-exports.GXRPC = _GXRPC2.default;
-exports.default = _GXClientFactory2.default;
+var _default = _GXClientFactory.default;
+exports.default = _default;
