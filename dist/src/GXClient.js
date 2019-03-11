@@ -37,9 +37,9 @@ require("core-js/modules/es6.promise");
 
 require("core-js/modules/es6.regexp.replace");
 
-var _gxbjs = require("gxbjs");
+var _index = require("gxbjs/es/index");
 
-var _tx_serializer = require("gxbjs/dist/tx_serializer");
+var _tx_serializer = require("gxbjs/es/tx_serializer");
 
 var _TransactionBuilder = _interopRequireDefault(require("./TransactionBuilder"));
 
@@ -120,7 +120,7 @@ function () {
 
       console.log("bbk", brainKey);
 
-      var privateKey = _gxbjs.key.get_brainPrivateKey(brainKey);
+      var privateKey = _index.key.get_brainPrivateKey(brainKey);
 
       var publicKey = privateKey.toPublicKey().toPublicKeyString();
       return {
@@ -138,7 +138,7 @@ function () {
   }, {
     key: "privateToPublic",
     value: function privateToPublic(privateKey) {
-      return _gxbjs.PrivateKey.fromWif(privateKey).toPublicKey().toPublicKeyString();
+      return _index.PrivateKey.fromWif(privateKey).toPublicKey().toPublicKeyString();
     }
     /**
      * check if public key is valid
@@ -149,7 +149,7 @@ function () {
   }, {
     key: "isValidPublic",
     value: function isValidPublic(publicKey) {
-      return !!_gxbjs.PublicKey.fromPublicKeyString(publicKey);
+      return !!_index.PublicKey.fromPublicKeyString(publicKey);
     }
     /**
      * check if private key is valid
@@ -161,7 +161,7 @@ function () {
     key: "isValidPrivate",
     value: function isValidPrivate(privateKey) {
       try {
-        return !!_gxbjs.PrivateKey.fromWif(privateKey);
+        return !!_index.PrivateKey.fromWif(privateKey);
       } catch (ex) {
         return false;
       }
@@ -501,7 +501,7 @@ function () {
                           memo_to_public = null;
                         }
 
-                        fromPrivate = _gxbjs.PrivateKey.fromWif(memo_private);
+                        fromPrivate = _index.PrivateKey.fromWif(memo_private);
 
                         if (!(memo_from_public != fromPrivate.toPublicKey().toPublicKeyString())) {
                           _context.next = 18;
@@ -512,12 +512,12 @@ function () {
 
                       case 18:
                         if (memo && memo_to_public && memo_from_public) {
-                          nonce = _gxbjs.TransactionHelper.unique_nonce_uint64();
+                          nonce = _index.TransactionHelper.unique_nonce_uint64();
                           memo_object = {
                             from: memo_from_public,
                             to: memo_to_public,
                             nonce: nonce,
-                            message: _gxbjs.Aes.encrypt_with_checksum(_gxbjs.PrivateKey.fromWif(memo_private), memo_to_public, nonce, new Buffer(memo, "utf-8"))
+                            message: _index.Aes.encrypt_with_checksum(_index.PrivateKey.fromWif(memo_private), memo_to_public, nonce, new Buffer(memo, "utf-8"))
                           };
                         }
 
@@ -614,8 +614,8 @@ function () {
       var limit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
       return this.getAccount(contract_name).then(function (acc) {
         if (acc) {
-          var contract_id = (0, _gxbjs.object_id_type)(acc.id).toString();
-          return _this5._query("get_table_objects", [contract_id, contract_id, (0, _gxbjs.string_to_name)(table_name).toString(), start, -1, limit]);
+          var contract_id = (0, _index.object_id_type)(acc.id).toString();
+          return _this5._query("get_table_objects", [contract_id, contract_id, (0, _index.string_to_name)(table_name).toString(), start, -1, limit]);
         } else {
           throw new Error("Contract not found");
         }
@@ -1078,7 +1078,7 @@ function () {
       return new Promise(function (resolve) {
         resolve(Promise.all([tr.update_head_block(), tr.set_required_fees()]).then(function () {
           if (!_this11.signProvider) {
-            _this11.private_key && tr.add_signer(_gxbjs.PrivateKey.fromWif(_this11.private_key));
+            _this11.private_key && tr.add_signer(_index.PrivateKey.fromWif(_this11.private_key));
           }
 
           tr.set_expire_seconds(_const.DEFUALT_EXPIRE_SEC);

@@ -39,7 +39,7 @@ require("core-js/modules/es6.function.bind");
 
 var _assert = _interopRequireDefault(require("assert"));
 
-var _gxbjs = require("gxbjs");
+var _index = require("gxbjs/es/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -141,7 +141,7 @@ function () {
             }
           }
 
-          _this.tr_buffer = _gxbjs.ops.transaction.toBuffer(_this);
+          _this.tr_buffer = _index.ops.transaction.toBuffer(_this);
         }));
       });
     }
@@ -154,7 +154,7 @@ function () {
         throw new Error("not finalized");
       }
 
-      return _gxbjs.hash.sha256(this.tr_buffer).toString("hex").substring(0, 40);
+      return _index.hash.sha256(this.tr_buffer).toString("hex").substring(0, 40);
     }
     /**
      Typically one will use {@link this.add_type_operation} instead.
@@ -186,9 +186,9 @@ function () {
 
       (0, _assert.default)(name, "name");
       (0, _assert.default)(operation, "operation");
-      var _type = _gxbjs.ops[name];
+      var _type = _index.ops[name];
       (0, _assert.default)(_type, "Unknown operation ".concat(name));
-      var operation_id = _gxbjs.ChainTypes.operations[_type.operation_name];
+      var operation_id = _index.ChainTypes.operations[_type.operation_name];
 
       if (operation_id === undefined) {
         throw new Error("unknown operation: ".concat(_type.operation_name));
@@ -363,7 +363,7 @@ function () {
 
       for (var i = 0, op; i < this.operations.length; i++) {
         op = this.operations[i];
-        operations.push(_gxbjs.ops.operation.toObject(op));
+        operations.push(_index.ops.operation.toObject(op));
       }
 
       if (!asset_id) {
@@ -467,7 +467,7 @@ function () {
       }
 
       if (!public_key.Q) {
-        public_key = _gxbjs.PublicKey.fromPublicKeyString(public_key);
+        public_key = _index.PublicKey.fromPublicKeyString(public_key);
       } // prevent duplicates
 
 
@@ -548,7 +548,7 @@ function () {
 
                   for (i = 0; 0 < end ? i < end : i > end; 0 < end ? i++ : i++) {
                     _this3$signer_private = _slicedToArray(_this3.signer_private_keys[i], 2), private_key = _this3$signer_private[0], public_key = _this3$signer_private[1];
-                    sig = _gxbjs.Signature.signBuffer(Buffer.concat([Buffer.from(_this3.chain_id, "hex"), _this3.tr_buffer]), private_key, public_key);
+                    sig = _index.Signature.signBuffer(Buffer.concat([Buffer.from(_this3.chain_id, "hex"), _this3.tr_buffer]), private_key, public_key);
 
                     _this3.signatures.push(sig.toBuffer());
                   }
@@ -593,12 +593,12 @@ function () {
   }, {
     key: "serialize",
     value: function serialize() {
-      return _gxbjs.ops.signed_transaction.toObject(this);
+      return _index.ops.signed_transaction.toObject(this);
     }
   }, {
     key: "toObject",
     value: function toObject() {
-      return _gxbjs.ops.signed_transaction.toObject(this);
+      return _index.ops.signed_transaction.toObject(this);
     }
   }, {
     key: "broadcast",
@@ -690,7 +690,7 @@ function _broadcast() {
               throw new Error("no operations");
 
             case 16:
-              tr_object = _gxbjs.ops.signed_transaction.toObject(_this5);
+              tr_object = _index.ops.signed_transaction.toObject(_this5);
               resolve(_this5.rpc.broadcast(tr_object).catch(function (error) {
                 var message = error.message;
 

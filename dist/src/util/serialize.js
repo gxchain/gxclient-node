@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = serialize;
 
-var _gxbjs = require("gxbjs");
+var _index = require("gxbjs/es/index");
 
 /**
  * @module serialize
@@ -24,12 +24,12 @@ var _gxbjs = require("gxbjs");
  * serialize('hello', Types.string).toString('hex') // => 0568656c6c6f
  */
 function serialize(data) {
-  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _gxbjs.types.string;
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _index.types.string;
 
-  if (type instanceof _gxbjs.Serializer) {
+  if (type instanceof _index.Serializer) {
     return type.toBuffer(data);
   } else {
-    var ser = new _gxbjs.Serializer("temp", {
+    var ser = new _index.Serializer("temp", {
       temp: type
     });
     return ser.toBuffer({

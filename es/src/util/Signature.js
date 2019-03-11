@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.signBuffer = void 0;
 
-var _gxbjs = require("gxbjs");
+var _index = require("gxbjs/es/index");
 
 /**
  * @module Signature
@@ -32,7 +32,7 @@ var _gxbjs = require("gxbjs");
  * Signature.signBuffer(buf, '5KQNge45iAFohAJFnXowuPk3ob3eiGbAQMCtff7tM78i5RNywMe')
  */
 var signBuffer = function signBuffer(buf, pvk) {
-  return _gxbjs.Signature.signBuffer(buf, _gxbjs.PrivateKey.fromWif(pvk));
+  return _index.Signature.signBuffer(buf, _index.PrivateKey.fromWif(pvk));
 };
 
 exports.signBuffer = signBuffer;
