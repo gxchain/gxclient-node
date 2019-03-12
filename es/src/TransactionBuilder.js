@@ -39,7 +39,7 @@ require("core-js/modules/es6.function.bind");
 
 var _assert = _interopRequireDefault(require("assert"));
 
-var _index = require("gxbjs/es/index");
+var _index = require("gxbjs/dist/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

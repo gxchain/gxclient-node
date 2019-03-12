@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = serialize;
 
-var _index = require("gxbjs/es/index");
+var _index = require("gxbjs/dist/index");
 
 /**
  * @module serialize

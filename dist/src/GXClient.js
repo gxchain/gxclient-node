@@ -37,9 +37,9 @@ require("core-js/modules/es6.promise");
 
 require("core-js/modules/es6.regexp.replace");
 
-var _index = require("gxbjs/es/index");
+var _index = require("gxbjs/dist/index");
 
-var _tx_serializer = require("gxbjs/es/tx_serializer");
+var _tx_serializer = require("gxbjs/dist/tx_serializer");
 
 var _TransactionBuilder = _interopRequireDefault(require("./TransactionBuilder"));
 
