@@ -1,6 +1,6 @@
 {
     "name": "gxclient",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "description": "A client to interact with gxchain via http",
     "main": "./dist/index.js",
     "jsnext:main": "./es/index.js",
@@ -16,7 +16,7 @@
         "build:watch": "babel lib -d dist --watch",
         "webpack": "webpack",
         "prepublish": "npm run build",
-        "test": "mocha --compilers js:@babel/register --timeout 20000",
+        "test": "mocha --compilers js:@babel/register --recursive --timeout 20000",
         "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/copy/API.md && npm run copy:doc",
         "dev:doc": "vuepress dev docs",
         "build:doc": "vuepress build docs",
