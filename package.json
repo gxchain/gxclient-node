@@ -65,7 +65,7 @@
         "mocha": "^5.2.0",
         "uglify-js": "^3.4.6",
         "unminified-webpack-plugin": "^2.0.0",
-        "vuepress": "^0.14.9",
+        "vuepress": "^0.14.10",
         "vuepress-jsdoc": "^1.1.0",
         "webpack": "^4.29.6",
         "webpack-bundle-analyzer": "^3.1.0",
