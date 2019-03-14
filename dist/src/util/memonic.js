@@ -1,23 +1,13 @@
 "use strict";
 
-require("core-js/modules/es6.object.define-property");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.generateMnemonic = generateMnemonic;
 
-require("core-js/modules/es6.regexp.match");
-
-require("core-js/modules/es6.regexp.to-string");
-
-require("core-js/modules/es6.date.to-string");
-
-require("core-js/modules/es6.array.map");
-
 var _englishWords = _interopRequireDefault(require("../const/englishWords"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var randomBytes = require("randombytes");
 

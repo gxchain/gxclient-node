@@ -1,23 +1,17 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-require("core-js/modules/es6.object.define-property");
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-require("core-js/modules/es6.promise");
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _axios = _interopRequireDefault(require("axios"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var callID = 0;
 
@@ -25,12 +19,11 @@ var GXRPC =
 /*#__PURE__*/
 function () {
   function GXRPC(service) {
-    _classCallCheck(this, GXRPC);
-
+    (0, _classCallCheck2.default)(this, GXRPC);
     this.service = service;
   }
 
-  _createClass(GXRPC, [{
+  (0, _createClass2.default)(GXRPC, [{
     key: "query",
     value: function query(method, params) {
       return _axios.default.post(this.service, {
@@ -69,7 +62,6 @@ function () {
       return new GXRPC(service);
     }
   }]);
-
   return GXRPC;
 }();
 

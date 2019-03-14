@@ -1,5 +1,12 @@
 {
     "presets": [
-        ["@babel/preset-env", {"useBuiltIns":"usage"}]
+        [
+            "@babel/env"
+        ]
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-transform-runtime"
+        ]
     ]
 }

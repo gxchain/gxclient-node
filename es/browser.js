@@ -1,6 +1,6 @@
 "use strict";
 
-require("core-js/modules/es6.object.define-property");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -24,8 +24,6 @@ var _GXClient = _interopRequireDefault(require("./src/GXClient"));
 var _GXClientFactory = _interopRequireDefault(require("./src/GXClientFactory"));
 
 var _GXRPC = _interopRequireDefault(require("./src/GXRPC"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = _GXClientFactory.default;
 exports.default = _default;

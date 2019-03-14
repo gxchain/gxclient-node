@@ -1,65 +1,25 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-require("core-js/modules/es6.date.now");
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-require("core-js/modules/es6.object.define-property");
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-require("regenerator-runtime/runtime");
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
-require("core-js/modules/es7.symbol.async-iterator");
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-require("core-js/modules/es6.symbol");
-
-require("core-js/modules/es6.array.map");
-
-require("core-js/modules/es6.array.iterator");
-
-require("core-js/modules/es6.string.iterator");
-
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/es6.array.for-each");
-
-require("core-js/modules/es6.function.name");
-
-require("core-js/modules/es6.array.is-array");
-
-require("core-js/modules/es6.regexp.to-string");
-
-require("core-js/modules/es6.date.to-string");
-
-require("core-js/modules/es6.promise");
-
-require("core-js/modules/es6.function.bind");
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _assert = _interopRequireDefault(require("assert"));
 
 var _index = require("gxbjs/dist/index");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var expire_in_secs = 15;
 var expire_in_secs_proposal = 24 * 60 * 60;
@@ -73,8 +33,7 @@ function () {
     var signProvider = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var rpc = arguments.length > 1 ? arguments[1] : undefined;
     var chain_id = arguments.length > 2 ? arguments[2] : undefined;
-
-    _classCallCheck(this, TransactionBuilder);
+    (0, _classCallCheck2.default)(this, TransactionBuilder);
 
     if (!!signProvider) {
       // a function,first param is transaction instance,second is chain_id, must return array buffer like [buffer,buffer]
@@ -104,7 +63,7 @@ function () {
    */
 
 
-  _createClass(TransactionBuilder, [{
+  (0, _createClass2.default)(TransactionBuilder, [{
     key: "add_type_operation",
     value: function add_type_operation(name, operation) {
       this.add_operation(this.get_type_operation(name, operation));
@@ -296,7 +255,7 @@ function () {
     key: "update_head_block",
     value: function update_head_block() {
       return Promise.all([this.rpc.query("get_objects", [["2.0.0"]]), this.rpc.query("get_objects", [["2.1.0"]])]).then(function (res) {
-        var _res = _slicedToArray(res, 2),
+        var _res = (0, _slicedToArray2.default)(res, 2),
             g = _res[0],
             r = _res[1];
 
@@ -386,7 +345,7 @@ function () {
       }
 
       return Promise.all(promises).then(function (results) {
-        var _results = _slicedToArray(results, 3),
+        var _results = (0, _slicedToArray2.default)(results, 3),
             fees = _results[0],
             coreFees = _results[1],
             asset = _results[2];
@@ -450,8 +409,8 @@ function () {
             }
           };
 
-          for (var _i2 = 0; _i2 < _this2.operations.length; _i2++) {
-            set_fee(_this2.operations[_i2][1]);
+          for (var _i = 0; _i < _this2.operations.length; _i++) {
+            set_fee(_this2.operations[_i][1]);
           }
         });
       });
@@ -506,12 +465,12 @@ function () {
       return new Promise(
       /*#__PURE__*/
       function () {
-        var _ref = _asyncToGenerator(
+        var _ref = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        regeneratorRuntime.mark(function _callee(resolve, reject) {
+        _regenerator.default.mark(function _callee(resolve, reject) {
           var end, i, _this3$signer_private, private_key, public_key, sig;
 
-          return regeneratorRuntime.wrap(function _callee$(_context) {
+          return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
@@ -547,7 +506,7 @@ function () {
                   end = _this3.signer_private_keys.length;
 
                   for (i = 0; 0 < end ? i < end : i > end; 0 < end ? i++ : i++) {
-                    _this3$signer_private = _slicedToArray(_this3.signer_private_keys[i], 2), private_key = _this3$signer_private[0], public_key = _this3$signer_private[1];
+                    _this3$signer_private = (0, _slicedToArray2.default)(_this3.signer_private_keys[i], 2), private_key = _this3$signer_private[0], public_key = _this3$signer_private[1];
                     sig = _index.Signature.signBuffer(Buffer.concat([Buffer.from(_this3.chain_id, "hex"), _this3.tr_buffer]), private_key, public_key);
 
                     _this3.signatures.push(sig.toBuffer());
@@ -614,7 +573,6 @@ function () {
       }
     }
   }]);
-
   return TransactionBuilder;
 }();
 
@@ -637,11 +595,11 @@ function _broadcast() {
   return new Promise(
   /*#__PURE__*/
   function () {
-    var _ref2 = _asyncToGenerator(
+    var _ref2 = (0, _asyncToGenerator2.default)(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(resolve, reject) {
+    _regenerator.default.mark(function _callee2(resolve, reject) {
       var tr_object;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return _regenerator.default.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
