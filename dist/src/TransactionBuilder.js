@@ -21,7 +21,7 @@ var _assert = _interopRequireDefault(require("assert"));
 
 var _index = require("gxbjs/dist/index");
 
-var expire_in_secs = 15;
+var expire_in_secs = 120;
 var expire_in_secs_proposal = 24 * 60 * 60;
 var review_in_secs_committee = 24 * 60 * 60;
 var head_block_time_string, committee_min_review;

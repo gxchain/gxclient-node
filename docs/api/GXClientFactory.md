@@ -1,6 +1,9 @@
 ---
 title: GXClientFactory
 ---
+
+# GXClientFactory
+
 ## Modules
 
 <dl>

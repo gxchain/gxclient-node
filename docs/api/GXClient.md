@@ -1,6 +1,9 @@
 ---
 title: GXClient
 ---
+
+# GXClient
+
 ## Classes
 
 <dl>
