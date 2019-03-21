@@ -88,19 +88,22 @@ function () {
             _this.expiration = base_expiration_sec() + expire_in_secs;
           }
 
-          _this.ref_block_num = r[0].head_block_number & 0xFFFF;
-          _this.ref_block_prefix = Buffer.from(r[0].head_block_id, "hex").readUInt32LE(4);
-          var iterable = _this.operations;
+          var last_irreversible_block_num = r[0].last_irreversible_block_num;
+          return _this.rpc.query("get_block", [last_irreversible_block_num]).then(function (block) {
+            _this.ref_block_num = last_irreversible_block_num & 0xFFFF;
+            _this.ref_block_prefix = Buffer.from(block.block_id, "hex").readUInt32LE(4);
+            var iterable = _this.operations;
 
-          for (var i = 0, op; i < iterable.length; i++) {
-            op = iterable[i];
+            for (var i = 0, op; i < iterable.length; i++) {
+              op = iterable[i];
 
-            if (op[1]["finalize"]) {
-              op[1].finalize();
+              if (op[1]["finalize"]) {
+                op[1].finalize();
+              }
             }
-          }
 
-          _this.tr_buffer = _index.ops.transaction.toBuffer(_this);
+            _this.tr_buffer = _index.ops.transaction.toBuffer(_this);
+          });
         }));
       });
     }
