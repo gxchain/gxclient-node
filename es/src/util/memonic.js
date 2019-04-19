@@ -41,7 +41,6 @@ function deriveChecksumBits(entropyBuffer) {
 }
 
 function entropyToMnemonic(entropy, wordlist) {
-  debugger;
   if (!Buffer.isBuffer(entropy)) entropy = Buffer.from(entropy, "hex");
   wordlist = wordlist || _englishWords.default; // 128 <= ENT <= 256
 
