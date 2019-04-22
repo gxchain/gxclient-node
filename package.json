@@ -1,6 +1,6 @@
 {
     "name": "gxclient",
-    "version": "2.1.9",
+    "version": "2.1.10",
     "description": "A client to interact with gxchain via http",
     "main": "./dist/index.js",
     "jsnext:main": "./es/index.js",

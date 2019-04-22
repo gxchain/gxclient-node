@@ -586,6 +586,31 @@ function () {
       });
     }
     /**
+     * fetch contract table record by contract_name and table_name
+     * @param contract_name
+     * @param table_name
+     * @param lower_bound
+     * @param upper_bound
+     * @param limit
+     * @param reverse
+     * @returns {*}
+     */
+
+  }, {
+    key: "getTableObjectsEX",
+    value: function getTableObjectsEX(contract_name, table_name) {
+      var lower_bound = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var upper_bound = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : -1;
+      var limit = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 100;
+      var reverse = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+      return this._query("get_table_rows_ex", [contract_name, table_name, {
+        lower_bound: lower_bound,
+        upper_bound: upper_bound,
+        reverse: reverse,
+        limit: limit
+      }]);
+    }
+    /**
      * deploy smart contract
      * @param contract_name {String}
      * @param code {String} - bytecode
