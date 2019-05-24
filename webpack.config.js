@@ -1,5 +1,5 @@
 const path = require("path");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
 
 module.exports = {
