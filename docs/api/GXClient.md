@@ -48,6 +48,7 @@ GXClient Class
     * [.getContractABI(contract_name)](#GXClient+getContractABI) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getContractTable(contract_name)](#GXClient+getContractTable) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getTableObjects(contract_name, table_name, start, limit)](#GXClient+getTableObjects) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getTableObjectsEX(contract_name, table_name, lower_bound, upper_bound, limit, reverse)](#GXClient+getTableObjectsEX) ⇒ <code>\*</code>
     * [.createContract(contract_name, code, abi, vm_type, vm_version, broadcast, options)](#GXClient+createContract) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.updateContract(contract_name, newOwner, code, abi, broadcast, options)](#GXClient+updateContract) ⇒ <code>Request</code> \| <code>PromiseLike.&lt;T&gt;</code> \| <code>Promise.&lt;T&gt;</code>
     * [.callContract(contract_name, method_name, params, amount_asset, broadcast, options)](#GXClient+callContract) ⇒ <code>Promise.&lt;any&gt;</code>
@@ -277,6 +278,22 @@ fetch contract table record by contract_name and table_name
 | start | <code>Number</code> | <code>0</code> | 
 | limit | <code>Number</code> | <code>100</code> | 
 
+<a name="GXClient+getTableObjectsEX"></a>
+
+### gxClient.getTableObjectsEX(contract_name, table_name, lower_bound, upper_bound, limit, reverse) ⇒ <code>\*</code>
+fetch contract table record by contract_name and table_name
+
+**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+
+| Param | Default |
+| --- | --- |
+| contract_name |  | 
+| table_name |  | 
+| lower_bound | <code>0</code> | 
+| upper_bound |  | 
+| limit | <code>100</code> | 
+| reverse | <code>false</code> | 
+
 <a name="GXClient+createContract"></a>
 
 ### gxClient.createContract(contract_name, code, abi, vm_type, vm_version, broadcast, options) ⇒ <code>Promise.&lt;any&gt;</code>
@@ -335,6 +352,7 @@ call smart contract method
 vote for accounts
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+**Params**: options.append {bool}  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |

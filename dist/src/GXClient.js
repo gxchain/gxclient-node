@@ -863,6 +863,7 @@ function () {
      * @param broadcast {Boolean}
      * @param options {Object}
      * @param options.fee_symbol {String} - e.g: 'GXC'
+     * @params options.append {bool}
      * @returns {Promise<any>}
      */
 
@@ -873,8 +874,12 @@ function () {
 
       var accounts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var broadcast = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+        fee_symbol: "GXC",
+        append: true
+      };
       var fee_symbol = options.fee_symbol || "GXC";
+      console.log(options);
       return new Promise(function (resolve) {
         resolve(_this9._connect().then(function () {
           var accountPromises = accounts.map(function (a) {
@@ -913,11 +918,14 @@ function () {
                   return r;
                 }).map(function (r) {
                   return r.vote_id;
-                }); // only merge you votes into current selections
-                // if you want cancel your votes, please operate it in your wallet
-                // eg. Visit https://wallet.gxb.io
+                });
 
-                new_options.votes = (0, _uniq.default)(votes.concat(acc.options.votes));
+                if (options.append) {
+                  new_options.votes = (0, _uniq.default)(votes.concat(acc.options.votes));
+                } else {
+                  new_options.votes = (0, _uniq.default)(votes);
+                }
+
                 var num_witness = 0;
                 var num_committee = 0;
                 new_options.votes.forEach(function (v) {
