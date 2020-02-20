@@ -1,86 +1,86 @@
 {
-    "name": "gxclient",
-    "version": "2.1.12",
-    "description": "A client to interact with gxchain via http",
-    "main": "./dist/index.js",
-    "jsnext:main": "./es/index.js",
-    "bin": {
-        "gxclient": "./bin/gxclient"
-    },
-    "scripts": {
-        "clean": "rm -rf ./dist/* & rm -rf ./build/* & rm -rf ./es/*",
-        "prebuild": "npm run clean && rm -rf ./build/*",
-        "build": "BABEL_ENV=cjs babel lib -d dist",
-        "build-es": "BABEL_ENV=es babel lib -d es",
-        "postbuild": "npm run browserify && npm run build-es",
-        "build:watch": "babel lib -d dist --watch",
-        "webpack": "webpack",
-        "prepublish": "npm run build",
-        "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d",
-        "test": "mocha --compilers js:@babel/register --recursive --timeout 20000",
-        "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/copy/API.md && npm run copy:doc",
-        "dev:doc": "vuepress dev docs",
-        "build:doc": "vuepress build docs",
-        "deploy:doc": "gh-pages -d docs-dist",
-        "copy:doc": "./docs/bin/copy.sh",
-        "analysis": "browserify-breakdown build/gxclient.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/gxchain/gxchain-client-node.git"
-    },
-    "keywords": [
-        "gxchain",
-        "client",
-        "exchange-api",
-        "gxs",
-        "gxc"
-    ],
-    "author": "David Lan <lanhaoxiang@qq.com> (https://github.com/lanhaoxiang)",
-    "contributors": [
-        "David Lan <lanhaoxiang@qq.com> (https://github.com/lanhaoxiang/)"
-    ],
-    "engines": {
-        "node": ">= 6.0.0"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/gxchain/gxchain-client-node/issues"
-    },
-    "homepage": "https://github.com/gxchain/gxchain-client-node#readme",
-    "devDependencies": {
-        "@babel/cli": "^7.2.3",
-        "@babel/core": "^7.3.4",
-        "@babel/plugin-transform-runtime": "^7.3.4",
-        "@babel/preset-env": "^7.3.4",
-        "@babel/register": "^7.0.0",
-        "assert": "^1.4.1",
-        "babel-eslint": "^10.0.1",
-        "babel-loader": "^8.0.5",
-        "browserify": "^16.2.3",
-        "browserify-breakdown": "^1.0.4",
-        "chai": "^4.2.0",
-        "eslint": "^5.0.1",
-        "eslint-friendly-formatter": "^4.0.1",
-        "gh-pages": "^2.0.1",
-        "mocha": "^5.2.0",
-        "uglify-js": "^3.4.6",
-        "unminified-webpack-plugin": "^2.0.0",
-        "vuepress": "^1.0.0",
-        "vuepress-jsdoc": "^1.7.3",
-        "webpack": "^4.29.6",
-        "webpack-cli": "^3.2.3",
-        "webpack-dev-middleware": "^3.6.1"
-    },
-    "dependencies": {
-        "@babel/runtime": "^7.3.4",
-        "axios": "^0.19.0",
-        "chalk": "^2.4.1",
-        "commander": "^2.17.1",
-        "create-hash": "^1.2.0",
-        "debug": "^3.1.0",
-        "gxbjs": "^1.4.2",
-        "lodash": "^4.17.11",
-        "randombytes": "^2.1.0"
-    }
+  "name": "gxclient",
+  "version": "2.1.12",
+  "description": "A client to interact with gxchain via http",
+  "main": "./dist/index.js",
+  "jsnext:main": "./es/index.js",
+  "bin": {
+    "gxclient": "./bin/gxclient"
+  },
+  "scripts": {
+    "clean": "rm -rf ./dist/* & rm -rf ./build/* & rm -rf ./es/*",
+    "prebuild": "npm run clean && rm -rf ./build/*",
+    "build": "BABEL_ENV=cjs babel lib -d dist",
+    "build-es": "BABEL_ENV=es babel lib -d es",
+    "postbuild": "npm run browserify && npm run build-es",
+    "build:watch": "babel lib -d dist --watch",
+    "webpack": "webpack",
+    "prepublish": "npm run build",
+    "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d",
+    "test": "mocha --compilers js:@babel/register --recursive --timeout 20000",
+    "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/copy/API.md && npm run copy:doc",
+    "dev:doc": "vuepress dev docs",
+    "build:doc": "vuepress build docs",
+    "deploy:doc": "gh-pages -d docs-dist",
+    "copy:doc": "./docs/bin/copy.sh",
+    "analysis": "browserify-breakdown build/gxclient.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gxchain/gxchain-client-node.git"
+  },
+  "keywords": [
+    "gxchain",
+    "client",
+    "exchange-api",
+    "gxs",
+    "gxc"
+  ],
+  "author": "David Lan <lanhaoxiang@qq.com> (https://github.com/lanhaoxiang)",
+  "contributors": [
+    "David Lan <lanhaoxiang@qq.com> (https://github.com/lanhaoxiang/)"
+  ],
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gxchain/gxchain-client-node/issues"
+  },
+  "homepage": "https://github.com/gxchain/gxchain-client-node#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "assert": "^1.4.1",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "browserify": "^16.2.3",
+    "browserify-breakdown": "^1.0.4",
+    "chai": "^4.2.0",
+    "eslint": "^5.0.1",
+    "eslint-friendly-formatter": "^4.0.1",
+    "gh-pages": "^2.0.1",
+    "mocha": "^5.2.0",
+    "uglify-js": "^3.4.6",
+    "unminified-webpack-plugin": "^2.0.0",
+    "vuepress": "^1.0.0",
+    "vuepress-jsdoc": "^1.7.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-middleware": "^3.6.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.3.4",
+    "axios": "^0.19.0",
+    "chalk": "^2.4.1",
+    "commander": "^2.17.1",
+    "create-hash": "^1.2.0",
+    "debug": "^3.1.0",
+    "gxbjs": "^1.5.1",
+    "lodash": "^4.17.11",
+    "randombytes": "^2.1.0"
+  }
 }
