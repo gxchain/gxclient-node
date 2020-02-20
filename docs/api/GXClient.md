@@ -45,6 +45,10 @@ GXClient Class
     * [.getBlock(blockHeight)](#GXClient+getBlock) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.detectTransaction(blockHeight, callback)](#GXClient+detectTransaction)
     * [.transfer(to, memo, amount_asset, broadcast, options)](#GXClient+transfer) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getStakingPrograms()](#GXClient+getStakingPrograms)
+    * [.createStaking(to, amount, program_id, options)](#GXClient+createStaking) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.updateStaking(to, staking_id, options)](#GXClient+updateStaking) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.claimStaking(to, staking_id, options)](#GXClient+claimStaking) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getContractABI(contract_name)](#GXClient+getContractABI) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getContractTable(contract_name)](#GXClient+getContractTable) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getTableObjects(contract_name, table_name, start, limit)](#GXClient+getTableObjects) ⇒ <code>Promise.&lt;any&gt;</code>
@@ -242,6 +246,49 @@ send transfer request to witness node
 | options | <code>Object</code> |  |  |
 | options.fee_symbol | <code>String</code> |  | e.g: 'GXC' |
 
+<a name="GXClient+getStakingPrograms"></a>
+
+### gxClient.getStakingPrograms()
+get staking programs
+
+**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+<a name="GXClient+createStaking"></a>
+
+### gxClient.createStaking(to, amount, program_id, options) ⇒ <code>Promise.&lt;any&gt;</code>
+**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| to | <code>String</code> | trust node account name |
+| amount | <code>Number</code> | the amount of GXC to staking |
+| program_id | <code>String</code> | the staking program id |
+| options | <code>Object</code> |  |
+| options.fee_symbol | <code>String</code> | e.g: 'GXC' |
+
+<a name="GXClient+updateStaking"></a>
+
+### gxClient.updateStaking(to, staking_id, options) ⇒ <code>Promise.&lt;any&gt;</code>
+**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| to | <code>String</code> | trust node account name |
+| staking_id | <code>String</code> | the staking id |
+| options | <code>Object</code> |  |
+| options.fee_symbol | <code>String</code> | e.g: 'GXC' |
+
+<a name="GXClient+claimStaking"></a>
+
+### gxClient.claimStaking(to, staking_id, options) ⇒ <code>Promise.&lt;any&gt;</code>
+**Kind**: instance method of [<code>GXClient</code>](#GXClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| to | <code>String</code> | trust node account name |
+| staking_id | <code>String</code> | the staking id |
+| options | <code>Object</code> |  |
+| options.fee_symbol | <code>String</code> | e.g: 'GXC' |
+
 <a name="GXClient+getContractABI"></a>
 
 ### gxClient.getContractABI(contract_name) ⇒ <code>Promise.&lt;any&gt;</code>
@@ -352,7 +399,7 @@ call smart contract method
 vote for accounts
 
 **Kind**: instance method of [<code>GXClient</code>](#GXClient)  
-**Params**: options.append {bool}  
+**Params**: options.append {bool} - default: true  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
