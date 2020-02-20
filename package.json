@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gxchain/gxchain-client-node.git"
+    "url": "git+https://github.com/gxchain/gxclient-node.git"
   },
   "keywords": [
     "gxchain",
