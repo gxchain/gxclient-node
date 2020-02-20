@@ -1,363 +1,474 @@
 #!/usr/bin/env node
 
-"use strict";
+'use strict';
 
-var commander = require("commander");
-var chalk = require("chalk");
-var pkg = require("../package.json");
-var GXClient = require("../dist/index.js").GXClient;
+var commander = require('commander');
+var chalk = require('chalk');
+var pkg = require('../package.json');
+var GXClient = require('../dist/index.js').GXClient;
 
 var client = new GXClient();
 
-if (process.argv.indexOf("-v") > -1) {
-    console.log(pkg.version);
-    process.exit(0);
+if (process.argv.indexOf('-v') > -1) {
+  console.log(pkg.version);
+  process.exit(0);
 }
 
-commander.version(pkg.version)
-    .option("-v --version", "print gxclient version")
-    .usage("[cmd]");
+commander
+  .version(pkg.version)
+  .option('-v --version', 'print gxclient version')
+  .usage('[cmd]');
 
-const MSG_PREFIX = chalk.green("[GXClient]");
+const MSG_PREFIX = chalk.green('[GXClient]');
 
 function displayUsage() {
-    console.log("");
-    console.log(chalk.green("[USAGE]"), ": gxclient <command> [options]");
-    console.log("");
-    console.log("gxclient -h, --help            all available commands and options");
-    console.log("gxclient list|ls               list all apis");
-    console.log("gxclient <command> -h          help on a specific command");
-    console.log("");
+  console.log('');
+  console.log(chalk.green('[USAGE]'), ': gxclient <command> [options]');
+  console.log('');
+  console.log('gxclient -h, --help            all available commands and options');
+  console.log('gxclient list|ls               list all apis');
+  console.log('gxclient <command> -h          help on a specific command');
+  console.log('');
 }
 
 function displayExamples() {
+  console.log('- KeyPair api:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient generate_key [optional brain_key]'));
+  console.log(chalk.cyan('  $ gxclient private_to_public 5JPhC4ZqxmqVAhwphbBMahpu1KPJb2...'));
+  console.log(chalk.cyan('  $ gxclient is_valid_private 5JPhC4ZqxmqVAhwphbBMahpu1KPJb2...'));
+  console.log(chalk.cyan('  $ gxclient is_valid_public  GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx'));
+  console.log('');
 
-    console.log("- KeyPair api:");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient generate_key [optional brain_key]"));
-    console.log(chalk.cyan("  $ gxclient private_to_public 5JPhC4ZqxmqVAhwphbBMahpu1KPJb2..."));
-    console.log(chalk.cyan("  $ gxclient is_valid_private 5JPhC4ZqxmqVAhwphbBMahpu1KPJb2..."));
-    console.log(chalk.cyan("  $ gxclient is_valid_public  GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
-    console.log("");
+  console.log('- Chain API:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient get_chain_id -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient get_dynamic_global_properties -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient get_block 100 -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient transfer gxb123 "10 GXC" "Hi There" -p <private_key> -a <account_id> -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient vote ["gxb123"] -p <private_key> -a <account_id> -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient broadcast <tx> -t <true|false>'));
+  console.log('');
 
-    console.log("- Chain API:");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient get_chain_id -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient get_dynamic_global_properties -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient get_block 100 -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient transfer gxb123 \"10 GXC\" \"Hi There\" -p <private_key> -a <account_id> -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient vote [\"gxb123\"] -p <private_key> -a <account_id> -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient broadcast <tx> -t <true|false>"));
-    console.log("");
+  console.log('- Faucet API:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient register my-account GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx'));
+  console.log('');
 
-    console.log("- Faucet API:");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient register my-account GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
-    console.log("");
+  console.log('- Account API:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient get_account gxchain-test-account'));
+  console.log(chalk.cyan('  $ gxclient get_account_by_public_key GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx'));
+  console.log(chalk.cyan('  $ gxclient get_account_balances gxchain-test-account'));
+  console.log('');
 
-    console.log("- Account API:");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient get_account gxchain-test-account"));
-    console.log(chalk.cyan("  $ gxclient get_account_by_public_key GXC5XPhC4ZqxmqVAhwphbBMahpu1KPJb22KeQMpYFBHB14EF76tsx"));
-    console.log(chalk.cyan("  $ gxclient get_account_balances gxchain-test-account"));
-    console.log("");
+  console.log('- Asset API:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient get_asset GXC'));
+  console.log('');
 
-    console.log("- Asset API:");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient get_asset GXC"));
-    console.log("");
+  console.log('- Object API:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient get_object 2.1.0'));
+  console.log('');
 
-    console.log("- Object API:");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient get_object 2.1.0"));
-    console.log("");
+  console.log('- Staking API:');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient get_staking_programs -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient create_staking init1 10 1 -p <private_key> -a <account_id> -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient update_staking init0 1.27.1 -p <private_key> -a <account_id> -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient claim_staking 1.27.1 -p <private_key> -a <account_id> -t <true|false>'));
+  console.log('');
 
-    console.log("- Contract API :");
-    console.log("");
-    console.log(chalk.cyan("  $ gxclient get_contract_abi bank -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient get_contract_tables bank -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient get_table_objects redpacket packet 0 100 -t <true|false>"));
-    console.log(chalk.cyan("  $ gxclient call_contract bank deposit \"\" \"10 GXS\" -p <private_key> -a <account_id> -t <true|false>"));
-    console.log("");
+  console.log('- Contract API :');
+  console.log('');
+  console.log(chalk.cyan('  $ gxclient get_contract_abi bank -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient get_contract_tables bank -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient get_table_objects redpacket packet 0 100 -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient call_contract bank deposit "" "10 GXS" -p <private_key> -a <account_id> -t <true|false>'));
+  console.log('');
 
-    console.log("Check the full documentation on https://github.com/gxchain/gxclient-node");
-    console.log("");
+  console.log('Check the full documentation on https://github.com/gxchain/gxclient-node');
+  console.log('');
 }
 
-commander.command("list")
-    .alias("ls")
-    .description("List all apis")
-    .action(() => {
-        console.log(MSG_PREFIX + chalk.grey(" usage examples:\n"));
-        displayExamples();
+commander
+  .command('list')
+  .alias('ls')
+  .description('List all apis')
+  .action(() => {
+    console.log(MSG_PREFIX + chalk.grey(' usage examples:\n'));
+    displayExamples();
+    process.exit(1);
+  });
+
+commander
+  .command('generate_key [brain_key]')
+  .description('Generate gxchain key pairs')
+  .action((brain_key) => {
+    let result = client.generateKey(brain_key);
+    console.log(chalk.green(JSON.stringify(result, null, '  ')));
+    process.exit(1);
+  });
+
+commander
+  .command('private_to_public <private_key>')
+  .description('Export public key from private key')
+  .action((private_key) => {
+    let result = client.privateToPublic(private_key);
+    console.log(chalk.green(result));
+    process.exit(1);
+  });
+
+commander
+  .command('is_valid_private <private_key>')
+  .description('Check if private key is valid')
+  .action((private_key) => {
+    let result = client.isValidPrivate(private_key);
+    console.log(chalk.green(result));
+    process.exit(1);
+  });
+
+commander
+  .command('is_valid_public <public_key>')
+  .description('Check if public key is valid')
+  .action((public_key) => {
+    let result = client.isValidPublic(public_key);
+    console.log(chalk.green(result));
+    process.exit(1);
+  });
+
+commander
+  .command('register <account_name> <public_key>')
+  .description('Register gxchain account')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((account_name, public_key, opt) => {
+    client.register(account_name, public_key, public_key, public_key, opt.testnet ? 'https://testnet.faucet.gxchain.org' : 'https://opengateway.gxb.io').then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
+    });
+  });
+
+commander
+  .command('get_account <account_name>')
+  .description('Get account information by account_name')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((account_name, opt) => {
+    if (opt.testnet) {
+      client = new GXClient('', '', 'wss://testnet.gxchain.org');
+    }
+    client.getAccount(account_name).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
+    });
+  });
+
+commander
+  .command('get_account_by_public_key <public_key>')
+  .description('Get account information by account_name')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((public_key, opt) => {
+    if (opt.testnet) {
+      client = new GXClient('', '', 'wss://testnet.gxchain.org');
+    }
+    client.getAccountByPublicKey(public_key).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
+    });
+  });
+
+commander
+  .command('get_object <object_id>')
+  .description('Get object by object_id')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((object_id, opt) => {
+    if (opt.testnet) {
+      client = new GXClient('', '', 'wss://testnet.gxchain.org');
+    }
+    client.getObject(object_id).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
+    });
+  });
+
+commander
+  .command('get_account_balances <account_name>')
+  .alias('get_account_balance')
+  .description('Get account balances by account_name')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((account_name, opt) => {
+    if (opt.testnet) {
+      client = new GXClient('', '', 'wss://testnet.gxchain.org');
+    }
+    client.getAccountBalances(account_name).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
+    });
+  });
+
+commander
+  .command('get_asset <symbol>')
+  .description('Get asset info by asset symbol')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((symbol, opt) => {
+    if (opt.testnet) {
+      client = new GXClient('', '', 'wss://testnet.gxchain.org');
+    }
+    client
+      .getAsset(symbol.toUpperCase())
+      .then((result) => {
+        console.log(chalk.green(JSON.stringify(result, null, '  ')));
         process.exit(1);
-    });
-
-
-commander.command("generate_key [brain_key]")
-    .description("Generate gxchain key pairs")
-    .action((brain_key) => {
-        let result = client.generateKey(brain_key);
-        console.log(chalk.green(JSON.stringify(result, null, "  ")));
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
         process.exit(1);
-    });
+      });
+  });
 
-commander.command("private_to_public <private_key>")
-    .description("Export public key from private key")
-    .action((private_key) => {
-        let result = client.privateToPublic(private_key);
-        console.log(chalk.green(result));
+commander
+  .command('get_block <block_height>')
+  .description('Get block by block height')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action((block_height, opt) => {
+    if (opt.testnet) {
+      client = new GXClient('', '', 'wss://testnet.gxchain.org');
+    }
+    client.getBlock(block_height).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
+    });
+  });
+
+commander
+  .command('transfer <to> <memo> <amount_asset> [boradcast]')
+  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Send a transfer transaction')
+  .action((to, memo, amount_asset, broadcast, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    if (amount_asset.indexOf(' ') == -1) {
+      console.error(chalk.red('Incorrect format of asset, eg. "100 GXS"'));
+      process.exit(1);
+    }
+    client
+      .transfer(to, memo, amount_asset, broadcast)
+      .then((result) => {
+        console.log(chalk.green(JSON.stringify(result, null, '  ')));
         process.exit(1);
-    });
-
-commander.command("is_valid_private <private_key>")
-    .description("Check if private key is valid")
-    .action((private_key) => {
-        let result = client.isValidPrivate(private_key);
-        console.log(chalk.green(result));
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
         process.exit(1);
-    });
+      });
+  });
 
-commander.command("is_valid_public <public_key>")
-    .description("Check if public key is valid")
-    .action((public_key) => {
-        let result = client.isValidPublic(public_key);
-        console.log(chalk.green(result));
+commander
+  .command('vote <account_ids> [overwrite] [fee_asset_id] [boradcast]')
+  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Vote for TrustNodes')
+  .action((account_ids, overwrite, fee_asset_id, broadcast, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    account_ids = JSON.parse(account_ids || '[]');
+    client
+      .vote(account_ids, overwrite, fee_asset_id, broadcast)
+      .then((result) => {
+        console.log(result);
         process.exit(1);
-    });
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
+        process.exit(1);
+      });
+  });
 
-commander.command("register <account_name> <public_key>")
-    .description("Register gxchain account")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((account_name, public_key, opt) => {
-        client.register(account_name, public_key, public_key, public_key, opt.testnet ? "https://testnet.faucet.gxchain.org" : "https://opengateway.gxb.io").then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
+commander
+  .command('call_contract <contract_name> <method_name> <params> [amount_asset] [boradcast]')
+  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Call smart contract method')
+  .action((contract_name, method_name, params, amount_asset, broadcast, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    params = JSON.parse(params || '{}');
+    client
+      .callContract(contract_name, method_name, params, amount_asset, broadcast)
+      .then((result) => {
+        console.log(result);
+        process.exit(1);
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
+        process.exit(1);
+      });
+  });
 
-commander.command("get_account <account_name>")
-    .description("Get account information by account_name")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((account_name, opt) => {
-        if (opt.testnet) {
-            client = new GXClient("", "", "wss://testnet.gxchain.org");
-        }
-        client.getAccount(account_name).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
+commander
+  .command('get_contract_tables <contract_name>')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Get contract table by contract_name')
+  .action((contract_name, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client.getContractTable(contract_name).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("get_account_by_public_key <public_key>")
-    .description("Get account information by account_name")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((public_key, opt) => {
-        if (opt.testnet) {
-            client = new GXClient("", "", "wss://testnet.gxchain.org");
-        }
-        client.getAccountByPublicKey(public_key).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
+commander
+  .command('get_contract_abi <contract_name>')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Get contract abi by contract_name')
+  .action((contract_name, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client.getContractABI(contract_name).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("get_object <object_id>")
-    .description("Get object by object_id")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((object_id, opt) => {
-        if (opt.testnet) {
-            client = new GXClient("", "", "wss://testnet.gxchain.org");
-        }
-        client.getObject(object_id).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
+commander
+  .command('get_table_objects <contract_name> <table_name> [start] [limit]')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Get table records by contract_name and table_name')
+  .action((contract_name, table_name, start = 0, limit = 100, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("get_account_balances <account_name>")
-    .alias("get_account_balance")
-    .description("Get account balances by account_name")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((account_name, opt) => {
-        if (opt.testnet) {
-            client = new GXClient("", "", "wss://testnet.gxchain.org");
-        }
-        client.getAccountBalances(account_name).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
+commander
+  .command('broadcast <tx>')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Broadcast transaction')
+  .action((tx, opt) => {
+    client = new GXClient('', '', opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    tx = JSON.parse(tx || '{}');
+    client.broadcast(tx).then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("get_asset <symbol>")
-    .description("Get asset info by asset symbol")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((symbol, opt) => {
-        if (opt.testnet) {
-            client = new GXClient("", "", "wss://testnet.gxchain.org");
-        }
-        client.getAsset(symbol.toUpperCase()).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        }).catch(ex => {
-            console.error(chalk.red(ex));
-            process.exit(1);
-        });
+commander
+  .command('get_chain_id')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Get blockchain id')
+  .action((opt) => {
+    client = new GXClient('', '', opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client.getChainID().then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("get_block <block_height>")
-    .description("Get block by block height")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .action((block_height, opt) => {
-        if (opt.testnet) {
-            client = new GXClient("", "", "wss://testnet.gxchain.org");
-        }
-        client.getBlock(block_height).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
+commander
+  .command('get_dynamic_global_properties')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Get dynamic global properties')
+  .action((opt) => {
+    client = new GXClient('', '', opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client.getDynamicGlobalProperties().then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("transfer <to> <memo> <amount_asset> [boradcast]")
-    .option("-a --account_id [account_id]", "[string] account id")
-    .option("-p --private_key [private_key]", "[string] private key")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Send a transfer transaction")
-    .action((to, memo, amount_asset, broadcast, opt) => {
-        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        if (amount_asset.indexOf(" ") == -1) {
-            console.error(chalk.red("Incorrect format of asset, eg. \"100 GXS\""));
-            process.exit(1);
-        }
-        client.transfer(to, memo, amount_asset, broadcast).then(result => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        }).catch(ex => {
-            console.error(chalk.red(ex));
-            process.exit(1);
-        });
+commander
+  .command('get_staking_programs')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('Get staking programs')
+  .action((opt) => {
+    client = new GXClient('', '', opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client.getStakingPrograms().then((result) => {
+      console.log(chalk.green(JSON.stringify(result, null, '  ')));
+      process.exit(1);
     });
+  });
 
-commander.command("vote <account_ids> [overwrite] [fee_asset_id] [boradcast]")
-    .option("-a --account_id [account_id]", "[string] account id")
-    .option("-p --private_key [private_key]", "[string] private key")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Vote for TrustNodes")
-    .action((account_ids, overwrite, fee_asset_id, broadcast, opt) => {
-        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        account_ids = JSON.parse(account_ids || "[]");
-        client.vote(account_ids, overwrite, fee_asset_id, broadcast).then(result => {
-            console.log(result);
-            process.exit(1);
-        }).catch(ex => {
-            console.error(chalk.red(ex));
-            process.exit(1);
-        });
-    });
+commander
+  .command('create_staking <account_name> <amount> <program_id> [boradcast]')
+  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('create staking for specified account with specified amount and program_id')
+  .action((account_name, amount, program_id, broadcast, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client
+      .createStaking(account_name, amount, program_id, broadcast)
+      .then((result) => {
+        console.log(result);
+        process.exit(1);
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
+        process.exit(1);
+      });
+  });
 
-commander.command("call_contract <contract_name> <method_name> <params> [amount_asset] [boradcast]")
-    .option("-a --account_id [account_id]", "[string] account id")
-    .option("-p --private_key [private_key]", "[string] private key")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Call smart contract method")
-    .action((contract_name, method_name, params, amount_asset, broadcast, opt) => {
-        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        params = JSON.parse(params || "{}");
-        client.callContract(contract_name, method_name, params, amount_asset, broadcast).then(result => {
-            console.log(result);
-            process.exit(1);
-        }).catch(ex => {
-            console.error(chalk.red(ex));
-            process.exit(1);
-        });
-    });
+commander
+  .command('update_staking <account_name> <staking_id> [boradcast]')
+  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('update staking for specified account with specified staking_id')
+  .action((account_name, staking_id, broadcast, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client
+      .updateStaking(account_name, staking_id, broadcast)
+      .then((result) => {
+        console.log(result);
+        process.exit(1);
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
+        process.exit(1);
+      });
+  });
 
-commander.command("get_contract_tables <contract_name>")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Get contract table by contract_name")
-    .action((contract_name, opt) => {
-        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        client.getContractTable(contract_name).then((result) => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
-
-commander.command("get_contract_abi <contract_name>")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Get contract abi by contract_name")
-    .action((contract_name, opt) => {
-        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        client.getContractABI(contract_name).then((result) => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
-
-commander.command("get_table_objects <contract_name> <table_name> [start] [limit]")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Get table records by contract_name and table_name")
-    .action((contract_name, table_name, start = 0, limit = 100, opt) => {
-        client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        client.getTableObjects(contract_name, table_name, start, limit).then((result) => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
-
-commander.command("broadcast <tx>")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Broadcast transaction")
-    .action((tx, opt) => {
-        client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        tx = JSON.parse(tx || "{}");
-        client.broadcast(tx).then((result) => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
-
-commander.command("get_chain_id")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Get blockchain id")
-    .action((opt) => {
-        client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        client.getChainID().then((result) => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
-
-commander.command("get_dynamic_global_properties")
-    .option("-t --testnet [testnet]", "[boolean] testnet")
-    .description("Get dynamic global properties")
-    .action((opt) => {
-        client = new GXClient("", "", opt.testnet ? "wss://testnet.gxchain.org" : "wss://node1.gxb.io");
-        client.getDynamicGlobalProperties().then((result) => {
-            console.log(chalk.green(JSON.stringify(result, null, "  ")));
-            process.exit(1);
-        });
-    });
+commander
+  .command('claim_staking <staking_id> [boradcast]')
+  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .description('claim staking by staking_id')
+  .action((staking_id, broadcast, opt) => {
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    client
+      .claimStaking(staking_id, broadcast)
+      .then((result) => {
+        console.log(result);
+        process.exit(1);
+      })
+      .catch((ex) => {
+        console.error(chalk.red(ex));
+        process.exit(1);
+      });
+  });
 
 //
 // Catch all
 //
-commander.command("*")
-    .action(function () {
-        console.log(MSG_PREFIX + " Command not found\n");
-        displayUsage();
-        // Check if it does not forget to close fds from RPC
-        process.exit(1);
-    });
+commander.command('*').action(function() {
+  console.log(MSG_PREFIX + ' Command not found\n');
+  displayUsage();
+  // Check if it does not forget to close fds from RPC
+  process.exit(1);
+});
 
 //
 // Display help if 0 arguments passed to pm2
 //
 if (process.argv.length == 2) {
-    commander.parse(process.argv);
-    displayUsage();
-    // Check if it does not forget to close fds from RPC
-    process.exit(1);
+  commander.parse(process.argv);
+  displayUsage();
+  // Check if it does not forget to close fds from RPC
+  process.exit(1);
 } else {
-    commander.parse(process.argv);
+  commander.parse(process.argv);
 }
