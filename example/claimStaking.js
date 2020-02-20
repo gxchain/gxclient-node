@@ -1,8 +1,9 @@
 import client from './client';
+
 client
-  .getAsset('GXC')
-  .then((asset) => {
-    console.log(asset);
+  .claimStaking('1.27.10123', true)
+  .then((result) => {
+    console.log(result);
   })
   .catch((ex) => {
     console.error(ex);
