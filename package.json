@@ -16,7 +16,7 @@
     "build:watch": "babel lib -d dist --watch",
     "webpack": "webpack",
     "prepublish": "npm run build",
-    "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d",
+    "browserify": "browserify --full-paths dist/browser.js -u node_modules/react-native-randombytes/index.js --standalone gxclient -o build/gxclient.js -d -t ",
     "test": "mocha --compilers js:@babel/register --recursive --timeout 20000",
     "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/copy/API.md && npm run copy:doc",
     "dev:doc": "vuepress dev docs",
@@ -48,6 +48,18 @@
     "url": "https://github.com/gxchain/gxchain-client-node/issues"
   },
   "homepage": "https://github.com/gxchain/gxchain-client-node#readme",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env"
+          ]
+        }
+      ]
+    ]
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
@@ -57,13 +69,15 @@
     "assert": "^1.4.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
-    "browserify": "^16.2.3",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.1",
     "browserify-breakdown": "^1.0.4",
     "chai": "^4.2.0",
     "eslint": "^5.0.1",
     "eslint-friendly-formatter": "^4.0.1",
     "gh-pages": "^2.0.1",
     "mocha": "^5.2.0",
+    "rn-nodeify": "github:tradle/rn-nodeify",
     "uglify-js": "^3.4.6",
     "unminified-webpack-plugin": "^2.0.0",
     "vuepress": "^1.0.0",
@@ -79,8 +93,10 @@
     "commander": "^2.17.1",
     "create-hash": "^1.2.0",
     "debug": "^3.1.0",
-    "gxbjs": "^1.5.1",
-    "lodash": "^4.17.11",
-    "randombytes": "^2.1.0"
+    "events": "^1.1.1",
+    "gxbjs": "^1.5.7",
+    "lodash": "^4.17.19",
+    "randombytes": "^2.1.0",
+    "react-native-randombytes": "^3.5.3"
   }
 }
