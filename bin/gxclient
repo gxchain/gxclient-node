@@ -45,8 +45,8 @@ function displayExamples() {
   console.log(chalk.cyan('  $ gxclient get_chain_id -t <true|false>'));
   console.log(chalk.cyan('  $ gxclient get_dynamic_global_properties -t <true|false>'));
   console.log(chalk.cyan('  $ gxclient get_block 100 -t <true|false>'));
-  console.log(chalk.cyan('  $ gxclient transfer gxb123 "10 GXC" "Hi There" -p <private_key> -a <account_id> -t <true|false>'));
-  console.log(chalk.cyan('  $ gxclient vote ["gxb123"] -p <private_key> -a <account_id> -t <true|false>'));
+  console.log(chalk.cyan('  $ gxclient transfer gxb123 "Hi There" "10 GXC" -p <private_key> -a <account_id> -t <true|false>'));
+  // console.log(chalk.cyan('  $ gxclient vote ["gxb123"] -p <private_key> -a <account_id> -t <true|false>'));
   console.log(chalk.cyan('  $ gxclient broadcast <tx> -t <true|false>'));
   console.log('');
 
@@ -88,7 +88,7 @@ function displayExamples() {
   console.log(chalk.cyan('  $ gxclient call_contract bank deposit "" "10 GXS" -p <private_key> -a <account_id> -t <true|false>'));
   console.log('');
 
-  console.log('Check the full documentation on https://github.com/gxchain/gxclient-node');
+  console.log('Check the full documents at https://github.com/gxchain/gxclient-node');
   console.log('');
 }
 
@@ -248,35 +248,15 @@ commander
   .description('Send a transfer transaction')
   .action((to, memo, amount_asset, broadcast, opt) => {
     client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    broadcast = broadcast == 'false' || broadcast == '0' ? false : true;
     if (amount_asset.indexOf(' ') == -1) {
-      console.error(chalk.red('Incorrect format of asset, eg. "100 GXS"'));
+      console.error(chalk.red('Incorrect format of asset, eg. "100 GXC"'));
       process.exit(1);
     }
     client
       .transfer(to, memo, amount_asset, broadcast)
       .then((result) => {
         console.log(chalk.green(JSON.stringify(result, null, '  ')));
-        process.exit(1);
-      })
-      .catch((ex) => {
-        console.error(chalk.red(ex));
-        process.exit(1);
-      });
-  });
-
-commander
-  .command('vote <account_ids> [overwrite] [fee_asset_id] [boradcast]')
-  .option('-a --account_id [account_id]', '[string] account id')
-  .option('-p --private_key [private_key]', '[string] private key')
-  .option('-t --testnet [testnet]', '[boolean] testnet')
-  .description('Vote for TrustNodes')
-  .action((account_ids, overwrite, fee_asset_id, broadcast, opt) => {
-    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
-    account_ids = JSON.parse(account_ids || '[]');
-    client
-      .vote(account_ids, overwrite, fee_asset_id, broadcast)
-      .then((result) => {
-        console.log(result);
         process.exit(1);
       })
       .catch((ex) => {
@@ -294,6 +274,7 @@ commander
   .action((contract_name, method_name, params, amount_asset, broadcast, opt) => {
     client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
     params = JSON.parse(params || '{}');
+    broadcast = broadcast == 'false' || broadcast == '0' ? false : true;
     client
       .callContract(contract_name, method_name, params, amount_asset, broadcast)
       .then((result) => {
@@ -396,13 +377,14 @@ commander
   .option('-a --account_id [account_id]', '[string] account id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
-  .description('create staking for specified account with specified amount and program_id')
+  .description('Create staking for specified account with specified amount and program_id')
   .action((account_name, amount, program_id, broadcast, opt) => {
     client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    broadcast = broadcast == 'false' || broadcast == '0' ? false : true;
     client
       .createStaking(account_name, amount, program_id, broadcast)
       .then((result) => {
-        console.log(result);
+        console.log(chalk.green(JSON.stringify(result, null, '  ')));
         process.exit(1);
       })
       .catch((ex) => {
@@ -416,13 +398,14 @@ commander
   .option('-a --account_id [account_id]', '[string] account id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
-  .description('update staking for specified account with specified staking_id')
+  .description('Update staking for specified account with specified staking_id')
   .action((account_name, staking_id, broadcast, opt) => {
     client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    broadcast = broadcast == 'false' || broadcast == '0' ? false : true;
     client
       .updateStaking(account_name, staking_id, broadcast)
       .then((result) => {
-        console.log(result);
+        console.log(chalk.green(JSON.stringify(result, null, '  ')));
         process.exit(1);
       })
       .catch((ex) => {
@@ -436,13 +419,14 @@ commander
   .option('-a --account_id [account_id]', '[string] account id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
-  .description('claim staking by staking_id')
+  .description('Claim staking by staking_id')
   .action((staking_id, broadcast, opt) => {
     client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    broadcast = broadcast == 'false' || broadcast == '0' ? false : true;
     client
       .claimStaking(staking_id, broadcast)
       .then((result) => {
-        console.log(result);
+        console.log(chalk.green(JSON.stringify(result, null, '  ')));
         process.exit(1);
       })
       .catch((ex) => {
