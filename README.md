@@ -18,6 +18,14 @@ You can get more info on [docs](https://gxchain.github.io/gxclient-node).
 npm install gxclient --save
 ```
 
+For **react-native**, the following extra command should be executed before using gxclient:
+
+``` bash
+npm i --save react-native-randombytes
+npm i --save-dev rn-nodeify@latest
+./node_modules/.bin/rn-nodeify --hack --install
+```
+
 ## Usage(CLI)
 
 ``` bash
