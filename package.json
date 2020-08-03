@@ -96,7 +96,7 @@
     "events": "^1.1.1",
     "gxbjs": "^1.5.7",
     "lodash": "^4.17.19",
-    "randombytes": "^2.1.0",
-    "react-native-randombytes": "^3.5.3"
+    "prompts": "^2.3.2",
+    "randombytes": "^2.1.0"
   }
 }

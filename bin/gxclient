@@ -4,8 +4,12 @@
 
 var commander = require('commander');
 var chalk = require('chalk');
+var prompts = require('prompts');
 var pkg = require('../package.json');
 var GXClient = require('../dist/index.js').GXClient;
+var fs = require('fs');
+var path = require('path');
+const { create } = require('lodash');
 
 var client = new GXClient();
 
@@ -242,7 +246,7 @@ commander
 
 commander
   .command('transfer <to> <memo> <amount_asset> [boradcast]')
-  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-a --account_id [account_id]', '[string] account name or id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
   .description('Send a transfer transaction')
@@ -267,7 +271,7 @@ commander
 
 commander
   .command('call_contract <contract_name> <method_name> <params> [amount_asset] [boradcast]')
-  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-a --account_id [account_id]', '[string] account name or id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
   .description('Call smart contract method')
@@ -374,7 +378,7 @@ commander
 
 commander
   .command('create_staking <account_name> <amount> <program_id> [boradcast]')
-  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-a --account_id [account_id]', '[string] account name or id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
   .description('Create staking for specified account with specified amount and program_id')
@@ -395,7 +399,7 @@ commander
 
 commander
   .command('update_staking <account_name> <staking_id> [boradcast]')
-  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-a --account_id [account_id]', '[string] account name or id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
   .description('Update staking for specified account with specified staking_id')
@@ -416,7 +420,7 @@ commander
 
 commander
   .command('claim_staking <staking_id> [boradcast]')
-  .option('-a --account_id [account_id]', '[string] account id')
+  .option('-a --account_id [account_id]', '[string] account name or id')
   .option('-p --private_key [private_key]', '[string] private key')
   .option('-t --testnet [testnet]', '[boolean] testnet')
   .description('Claim staking by staking_id')
@@ -434,6 +438,18 @@ commander
         process.exit(1);
       });
   });
+
+commander
+  .command('console')
+  .option('-a --account_id [account_id]', '[string] account name or id')
+  .option('-p --private_key [private_key]', '[string] private key')
+  .option('-t --testnet [testnet]', '[boolean] testnet')
+  .action(async (opt)=>{
+    client = new GXClient(opt.private_key, opt.account_id, opt.testnet ? 'wss://testnet.gxchain.org' : 'wss://node1.gxb.io');
+    require('repl').start({
+      prompt: opt.testnet?'testnet> ':'mainnet> '
+    }).context.client = client;
+  })
 
 //
 // Catch all
