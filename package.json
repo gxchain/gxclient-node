@@ -16,7 +16,7 @@
     "build:watch": "babel lib -d dist --watch",
     "webpack": "webpack",
     "prepublish": "npm run build",
-    "browserify": "browserify --full-paths dist/browser.js -u node_modules/react-native-randombytes/index.js --standalone gxclient -o build/gxclient.js -d -t ",
+    "browserify": "browserify --full-paths dist/browser.js --standalone gxclient -o build/gxclient.js -d -t ",
     "test": "mocha --compilers js:@babel/register --recursive --timeout 20000",
     "jsdoc": "vuepress-jsdoc --source=./lib/src --dist=./docs --folder=api --readme=./docs/copy/API.md && npm run copy:doc",
     "dev:doc": "vuepress dev docs",
