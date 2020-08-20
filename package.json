@@ -1,6 +1,6 @@
 {
   "name": "gxclient",
-  "version": "2.1.17",
+  "version": "2.1.18",
   "description": "A client to interact with gxchain via http",
   "main": "./dist/index.js",
   "jsnext:main": "./es/index.js",
@@ -94,7 +94,7 @@
     "create-hash": "^1.2.0",
     "debug": "^3.1.0",
     "events": "^1.1.1",
-    "gxbjs": "^1.5.7",
+    "gxbjs": "^1.5.8",
     "lodash": "^4.17.19",
     "prompts": "^2.3.2",
     "randombytes": "^2.1.0"
