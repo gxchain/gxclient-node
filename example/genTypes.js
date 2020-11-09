@@ -3,13 +3,23 @@ import fs from 'fs';
 
 var content = '';
 var opertaions = [];
+var repeatedFlag = false;
+
 for (let op of Object.keys(ops)) {
   if (typeof ops[op].genInterface === 'function') {
-    content += ops[op].genInterface.call(ops[op]) + '\n\n';
+    content += ops[op].genInterface.call(ops[op], (name) => {
+      if (name === 'free_data_product_update' && !repeatedFlag) {
+        repeatedFlag = true;
+        return 'stale_' + name;
+      }
+      else {
+        return name;
+      }
+    }) + '\n\n';
   }
 }
 
-var repeatedFlag = false;
+repeatedFlag = false;
 for (let op of ops.operation.st_operations) {
   if (op.operation_name === 'free_data_product_update' && !repeatedFlag) {
     repeatedFlag = true;

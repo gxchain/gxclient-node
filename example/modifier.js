@@ -164,8 +164,8 @@ Serializer.prototype.genTypes = function (count = 1) {
   return result;
 };
 
-Serializer.prototype.genInterface = function () {
-  let result = `export interface ${this.operation_name} {\n${this.genTypes()}}`;
+Serializer.prototype.genInterface = function (changeName) {
+  let result = `export interface ${changeName ? changeName(this.operation_name) : this.operation_name} {\n${this.genTypes()}}`;
   return result;
 };
 

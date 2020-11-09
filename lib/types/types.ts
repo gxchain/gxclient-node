@@ -1092,7 +1092,7 @@ export interface stale_ata_market_category_update {
 export interface stale_free_data_product_create {
 }
 
-export interface free_data_product_update {
+export interface stale_free_data_product_update {
 }
 
 export interface stale_league_data_product_create {
