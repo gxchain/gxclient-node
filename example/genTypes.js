@@ -2,19 +2,27 @@ import * as ops from './opertaions.js';
 import fs from 'fs';
 
 var content = '';
-var opertaions = '';
+var opertaions = [];
 for (let op of Object.keys(ops)) {
   if (typeof ops[op].genInterface === 'function') {
     content += ops[op].genInterface.call(ops[op]) + '\n\n';
   }
+}
 
-  if (op.indexOf('_operation_fee_parameters') !== -1) {
-    opertaions = opertaions === '' ? op : opertaions + ' | ' + op;
+var repeatedFlag = false;
+for (let op of ops.operation.st_operations) {
+  if (op.operation_name === 'free_data_product_update' && !repeatedFlag) {
+    repeatedFlag = true;
+    opertaions.push('stale_' + op.operation_name);
+  }
+  else {
+    opertaions.push(op.operation_name);
   }
 }
 
-content += `export type singleOperation = ${opertaions};\n`;
-content += 'export type operation = [number, singleOperation];\n';
-content += 'export type operations = Array<operation>;';
+content += `export type singleOperation = ${opertaions.join(' | ')};\n`;
+content += 'export type operation = [GXChainOperation, singleOperation];\n';
+content += 'export type operations = Array<operation>;\n\n';
+content += `export enum GXChainOperation {\n\t${opertaions.join(',\n\t')}\n};`;
 
 fs.writeFileSync('./lib/types/types.ts', content);
