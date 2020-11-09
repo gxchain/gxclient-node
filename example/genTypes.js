@@ -30,8 +30,13 @@ for (let op of ops.operation.st_operations) {
   }
 }
 
-content += `export type singleOperation = ${opertaions.join(' | ')};\n`;
-content += 'export type operation = [GXChainOperation, singleOperation];\n';
+content += 'export type operation = ';
+for (let i = 0; i < opertaions.length; i++) {
+  let op = opertaions[i];
+  content += i === 0 ? `[GXChainOperation.${op}, ${op}]` : ` | [GXChainOperation.${op}, ${op}]`;
+}
+content += '\n';
+
 content += 'export type operations = Array<operation>;\n\n';
 content += `export enum GXChainOperation {\n\t${opertaions.join(',\n\t')}\n};`;
 
