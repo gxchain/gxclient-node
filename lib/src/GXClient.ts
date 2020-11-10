@@ -195,7 +195,65 @@ class GXClient {
    * @param account_name {String}
    * @returns {Promise<any>}
    */
-  getAccount(account_name: string): Promise<any> {
+  getAccount(account_name: string): Promise<
+  {
+       id :  string , 
+       membership_expiration_date :  string , 
+       merchant_expiration_date :  string , 
+       datasource_expiration_date :  string , 
+       data_transaction_member_expiration_date :  string , 
+       registrar :  string , 
+       referrer :  string , 
+       lifetime_referrer : string ,
+       merchant_auth_referrer :  string , 
+       datasource_auth_referrer :  string , 
+       network_fee_percentage : number, 
+       lifetime_referrer_fee_percentage : number, 
+       referrer_rewards_percentage : number, 
+       name :  string, 
+       vm_type : string , 
+       vm_version :string, 
+       code :string, 
+       code_version :string, 
+       abi : { 
+           version :  string ,
+           types : any[],
+           structs : any[],
+           actions : any[],
+           tables : any[],
+           error_messages : any[],
+           abi_extensions : any[]
+      },
+       owner : { 
+           weight_threshold : number,
+           account_auths : any[],
+           key_auths : [string, number][],
+           address_auths : any[]
+      },
+       active : { 
+           weight_threshold : number,
+           account_auths : any[],
+           key_auths : [ string , number][],
+           address_auths : any[]
+      },
+       options : {
+           memo_key :  string , 
+           voting_account : string ,
+           num_witness : number,
+           num_committee : number,
+           votes : any[],
+           extensions : any[]
+      },
+       statistics :  string , 
+       whitelisting_accounts : any[],
+       blacklisting_accounts : any[],
+       whitelisted_accounts : any[],
+       blacklisted_accounts : any[],
+       cashback_vb :  string , 
+       owner_special_authority : any[],
+       active_special_authority : any[],
+       top_n_control_flags : number
+  }> {
     return this._query('get_account_by_name', [account_name]);
   }
 
@@ -257,13 +315,41 @@ class GXClient {
     });
   }
 
-  // TODO
   /**
    * get asset info by symbol
    * @param symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  getAsset(symbol: string): Promise<any> {
+  getAsset(symbol: string): Promise<{
+    id: string, 
+    symbol: string, 
+    precision: number, 
+    issuer: string , 
+    options: {
+      max_supply: number , 
+      market_fee_percent: number,
+      max_market_fee: number,
+      issuer_permissions: number,
+      flags: number,
+      core_exchange_rate: { 
+        base: {
+          amount: number,
+          asset_id: string 
+        },
+        quote: {
+          amount: number,
+          asset_id: string 
+      }
+    },
+    whitelist_authorities : any[],
+    blacklist_authorities : any[],
+    whitelist_markets : any[],
+    blacklist_markets : any[],
+    description : string ,
+    extensions : any[]
+    },
+    dynamic_asset_data_id :  string
+  }> {
     return this._query('lookup_asset_symbols', [[symbol]]).then((assets) => assets[0]);
   }
 
@@ -758,7 +844,7 @@ class GXClient {
       }
       let amount: any = amount_asset ? Number(amount_asset.split(' ').filter((o) => !!o)[0]) : 0;
       let asset = amount_asset ? amount_asset.split(' ').filter((o) => !!o)[1] : 'GXC';
-      const promises = [this.getAccount(contract_name), this.getAsset(asset)];
+      const promises: Promise<any>[] = [this.getAccount(contract_name), this.getAsset(asset)];
       if (fee_symbol) {
         promises.push(this.getAsset(fee_symbol));
       }
