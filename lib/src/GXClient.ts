@@ -663,10 +663,10 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  createContract(contract_name: string, code: string, abi, vm_type?: string, vm_version?: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
-  createContract(contract_name: string, code: string, abi, vm_type?: string, vm_version?: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
-  createContract(contract_name: string, code: string, abi, vm_type?: string, vm_version?: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
-  createContract(contract_name: string, code: string, abi, vm_type: string = '0', vm_version: string = '0', broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
+  createContract(contract_name: string, code: string, abi: types.abi_def, vm_type?: string, vm_version?: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  createContract(contract_name: string, code: string, abi: types.abi_def, vm_type?: string, vm_version?: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  createContract(contract_name: string, code: string, abi: types.abi_def, vm_type?: string, vm_version?: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  createContract(contract_name: string, code: string, abi: types.abi_def, vm_type: string = '0', vm_version: string = '0', broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this.getAsset(options.fee_symbol).then((feeInfo) => {
       return this._connect().then(() => {
         let tr = this._createTransaction();
@@ -700,7 +700,10 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  updateContract(contract_name: string, newOwner: string, code, abi, broadcast = false, options: { fee_symbol?: string } = {}) {
+  updateContract(contract_name: string, newOwner: string, code: string, abi: types.abi_def, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  updateContract(contract_name: string, newOwner: string, code: string, abi: types.abi_def, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  updateContract(contract_name: string, newOwner: string, code: string, abi: types.abi_def, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  updateContract(contract_name: string, newOwner: string, code: string, abi: types.abi_def, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(async () => {
       let feeInfo: any = {};
@@ -745,7 +748,10 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  callContract(contract_name, method_name, params, amount_asset, broadcast = false, options: { fee_symbol?: string } = {}) {
+  callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: "GXC"}): ProcessTransactionResult {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(() => {
       if (amount_asset) {
@@ -815,7 +821,10 @@ class GXClient {
    * @params options.append {bool} - default: true
    * @returns {Promise<any>}
    */
-  vote(accounts = [], broadcast = false, options = { fee_symbol: 'GXC', append: true }) {
+  vote(accounts?: string[], broadcast?: false, options?: { fee_symbol?: string, append?: boolean }): SerializeTransactionResult;
+  vote(accounts?: string[], broadcast?: true, options?: { fee_symbol?: string, append?: boolean }): BroadcaseTransactionResult;
+  vote(accounts?: string[], broadcast?: boolean, options?: { fee_symbol?: string, append?: boolean }): ProcessTransactionResult;
+  vote(accounts: string[] = [], broadcast: boolean = false, options: { fee_symbol?: string, append?: boolean } = { fee_symbol: 'GXC', append: true }): ProcessTransactionResult {
     const fee_symbol = options.fee_symbol || 'GXC';
     return new Promise((resolve) => {
       resolve(
@@ -908,7 +917,10 @@ class GXClient {
    * @param {Object} new_params Same structure as getObject('2.0.0').parameters
    * @param {Object} options
    */
-  async proposeUpdateGPO(new_params, broadcast = false, options = { fee_symbol: 'GXC' }) {
+  proposeUpdateGPO(new_params: any, broadcast?: false, options?: { fee_symbol?: string, append?: boolean }): SerializeTransactionResult;
+  proposeUpdateGPO(new_params: any, broadcast?: true, options?: { fee_symbol?: string, append?: boolean }): BroadcaseTransactionResult;
+  proposeUpdateGPO(new_params: any, broadcast?: boolean, options?: { fee_symbol?: string, append?: boolean }): ProcessTransactionResult;
+  async proposeUpdateGPO(new_params: any, broadcast: boolean = false, options: { fee_symbol?: string, append?: boolean } = { fee_symbol: 'GXC' }) {
     const fee_symbol = options.fee_symbol || 'GXC';
     await this._connect();
     let fee_asset = await this.getAsset(fee_symbol);
@@ -942,7 +954,10 @@ class GXClient {
    * @param {Boolean} broadcast
    * @param {Object} options
    */
-  async createProposal(ops, expiration_time, review_period_seconds = 0, broadcast = false, options = { fee_symbol: 'GXC' }) {
+  createProposal(ops: types.op_wrapper[], expiration_time: number | string, review_period_seconds?: number, broadcast?: false, options?: { fee_symbol?: string }) : SerializeTransactionResult;
+  createProposal(ops: types.op_wrapper[], expiration_time: number | string, review_period_seconds?: number, broadcast?: true, options?: { fee_symbol?: string }) : BroadcaseTransactionResult;
+  createProposal(ops: types.op_wrapper[], expiration_time: number | string, review_period_seconds?: number, broadcast?: boolean, options?: { fee_symbol?: string }) : ProcessTransactionResult;
+  async createProposal(ops: types.op_wrapper[], expiration_time: number | string, review_period_seconds: number = 0, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }) {
     const fee_symbol = options.fee_symbol || 'GXC';
     await this._connect();
     let fee_asset = await this.getAsset(fee_symbol);
@@ -973,7 +988,10 @@ class GXClient {
    * @param feeAssetId {String}
    * @returns {Promise<any>}
    */
-  fee(operation, feeAssetId = '1.3.1') {
+  fee(operation: types.operation, feeAssetId: string = '1.3.1'): Promise<{
+    amount: number,
+    asset_id: string
+  }[]> {
     return this._query('get_required_fees', [operation, feeAssetId]);
   }
 
@@ -1083,7 +1101,7 @@ class GXClient {
    * @param {TransactionBuilder} tx
    * @returns {Promise<any>}
    */
-  broadcast(tx) {
+  broadcast(tx: TransactionBuilder): Promise<string[]> {
     return this.rpc.broadcast(tx);
   }
 }
