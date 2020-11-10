@@ -23,7 +23,8 @@
     "build:doc": "vuepress build docs",
     "deploy:doc": "gh-pages -d docs-dist",
     "copy:doc": "./docs/bin/copy.sh",
-    "analysis": "browserify-breakdown build/gxclient.js"
+    "analysis": "browserify-breakdown build/gxclient.js",
+    "build:ts": "rm -rf ./ts-build && cp -rf lib ts-build && tsc --build tsconfig.json"
   },
   "repository": {
     "type": "git",

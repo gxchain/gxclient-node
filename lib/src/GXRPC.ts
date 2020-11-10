@@ -1,17 +1,20 @@
 import axios from 'axios';
+import * as types from '../types/types';
 
 let callID = 0;
 
 class GXRPC {
-  constructor(service) {
+  service: string
+
+  constructor(service: string) {
     this.service = service;
   }
 
-  static instance(service) {
+  static instance(service: string): GXRPC {
     return new GXRPC(service);
   }
 
-  query(method, params) {
+  query(method: string, params: any): Promise<any> {
     return axios.post(this.service, {
       jsonrpc: '2.0',
       method: method,
@@ -26,7 +29,7 @@ class GXRPC {
     });
   }
 
-  broadcast(tx) {
+  broadcast(tx: types.signed_transaction): Promise<string[]> {
     return axios.post(this.service, {
       jsonrpc: '2.0',
       method: 'call',

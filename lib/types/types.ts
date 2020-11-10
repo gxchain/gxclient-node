@@ -1,298 +1,298 @@
 export interface transfer_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface limit_order_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface limit_order_cancel_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface call_order_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface fill_order_operation_fee_parameters {
 }
 
 export interface account_create_operation_fee_parameters {
-	basic_fee: string
-	premium_fee: string
+	basic_fee: number | string
+	premium_fee: number | string
 	price_per_kbyte: number
 }
 
 export interface account_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface account_whitelist_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface account_upgrade_operation_fee_parameters {
-	membership_annual_fee: string
-	membership_lifetime_fee: string
+	membership_annual_fee: number | string
+	membership_lifetime_fee: number | string
 }
 
 export interface account_transfer_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_create_operation_fee_parameters {
-	symbol3: string
-	symbol4: string
-	long_symbol: string
+	symbol3: number | string
+	symbol4: number | string
+	long_symbol: number | string
 	price_per_kbyte: number
 }
 
 export interface asset_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface asset_update_bitasset_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_update_feed_producers_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_issue_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface asset_reserve_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_fund_fee_pool_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_settle_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_global_settle_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_publish_feed_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface witness_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface witness_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface proposal_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface proposal_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface proposal_delete_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface withdraw_permission_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface withdraw_permission_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface withdraw_permission_claim_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface withdraw_permission_delete_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface committee_member_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface committee_member_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface committee_member_update_global_parameters_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface vesting_balance_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface vesting_balance_withdraw_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface worker_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface custom_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface assert_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface balance_claim_operation_fee_parameters {
 }
 
 export interface override_transfer_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface transfer_to_blind_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_output: number
 }
 
 export interface blind_transfer_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_output: number
 }
 
 export interface transfer_from_blind_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface asset_settle_cancel_operation_fee_parameters {
 }
 
 export interface asset_claim_fees_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface fba_distribute_operation_fee_parameters {
 }
 
 export interface account_upgrade_merchant_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface account_upgrade_datasource_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_data_market_category_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_data_market_category_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_free_data_product_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_free_data_product_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_league_data_product_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_league_data_product_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_league_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface stale_league_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_transaction_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_transaction_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface pay_data_transaction_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface account_upgrade_data_transaction_member_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_transaction_datasource_upload_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_transaction_datasource_validate_error_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_market_category_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_market_category_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface free_data_product_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface free_data_product_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface league_data_product_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface league_data_product_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface league_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface league_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface datasource_copyright_clear_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface data_transaction_complain_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface balance_lock_operation_fee_parameters {
@@ -302,56 +302,56 @@ export interface balance_unlock_operation_fee_parameters {
 }
 
 export interface proxy_transfer_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface contract_deploy_operation_fee_parameters {
-	fee: string
-	price_per_kbyte: string
+	fee: number | string
+	price_per_kbyte: number | string
 }
 
 export interface contract_call_operation_fee_parameters {
-	fee: string
-	price_per_kbyte_ram: string
-	price_per_ms_cpu: string
+	fee: number | string
+	price_per_kbyte_ram: number | string
+	price_per_ms_cpu: number | string
 }
 
 export interface contract_update_operation_fee_parameters {
-	fee: string
-	price_per_kbyte: string
+	fee: number | string
+	price_per_kbyte: number | string
 }
 
 export interface trust_node_pledge_withdraw_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface inline_transfer_operation_fee_parameters {
-	fee: string
+	fee: number | string
 	price_per_kbyte: number
 }
 
 export interface inter_contract_call_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface staking_create_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface staking_update_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface staking_claim_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface witness_set_commission_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface witness_unbanned_operation_fee_parameters {
-	fee: string
+	fee: number | string
 }
 
 export interface fee_schedule {
@@ -363,14 +363,14 @@ export interface void_result {
 }
 
 export interface asset {
-	amount: string
-	asset_id: string
+	amount: number | string
+	asset_id: number | string
 }
 
 export interface processed_transaction {
 	ref_block_num: number
 	ref_block_prefix: number
-	expiration: string
+	expiration: number | string
 	operations: operations
 	extensions: Array<any>
 	signatures: Array<string>
@@ -379,8 +379,8 @@ export interface processed_transaction {
 
 export interface signed_block {
 	previous: string
-	timestamp: string
-	witness: string
+	timestamp: number | string
+	witness: number | string
 	transaction_merkle_root: string
 	extensions: Array<any>
 	witness_signature: string
@@ -389,16 +389,16 @@ export interface signed_block {
 
 export interface block_header {
 	previous: string
-	timestamp: string
-	witness: string
+	timestamp: number | string
+	witness: number | string
 	transaction_merkle_root: string
 	extensions: Array<any>
 }
 
 export interface signed_block_header {
 	previous: string
-	timestamp: string
-	witness: string
+	timestamp: number | string
+	witness: number | string
 	transaction_merkle_root: string
 	extensions: Array<any>
 	witness_signature: string
@@ -407,14 +407,14 @@ export interface signed_block_header {
 export interface memo_data {
 	from: string
 	to: string
-	nonce: string
+	nonce: number | string
 	message: string
 }
 
 export interface transfer {
 	fee: asset
-	from: string
-	to: string
+	from: number | string
+	to: number | string
 	amount: asset
 	memo?: memo_data
 	extensions: Array<any>
@@ -422,24 +422,24 @@ export interface transfer {
 
 export interface limit_order_create {
 	fee: asset
-	seller: string
+	seller: number | string
 	amount_to_sell: asset
 	min_to_receive: asset
-	expiration: string
+	expiration: number | string
 	fill_or_kill: boolean
 	extensions: Array<any>
 }
 
 export interface limit_order_cancel {
 	fee: asset
-	fee_paying_account: string
-	order: string
+	fee_paying_account: number | string
+	order: number | string
 	extensions: Array<any>
 }
 
 export interface call_order_update {
 	fee: asset
-	funding_account: string
+	funding_account: number | string
 	delta_collateral: asset
 	delta_debt: asset
 	extensions: Array<any>
@@ -448,21 +448,21 @@ export interface call_order_update {
 export interface fill_order {
 	fee: asset
 	order_id: string
-	account_id: string
+	account_id: number | string
 	pays: asset
 	receives: asset
 }
 
 export interface authority {
 	weight_threshold: number
-	account_auths: Array<[string, number]>
+	account_auths: Array<[number | string, number]>
 	key_auths: Array<[string, number]>
 	address_auths: Array<[string, number]>
 }
 
 export interface account_options {
 	memo_key: string
-	voting_account: string
+	voting_account: number | string
 	num_witness: number
 	num_committee: number
 	votes: Array<string>
@@ -471,8 +471,8 @@ export interface account_options {
 
 export interface account_create {
 	fee: asset
-	registrar: string
-	referrer: string
+	registrar: number | string
+	referrer: number | string
 	referrer_percent: number
 	name: string
 	owner: authority
@@ -483,7 +483,7 @@ export interface account_create {
 
 export interface account_update {
 	fee: asset
-	account: string
+	account: number | string
 	owner?: authority
 	active?: authority
 	new_options?: account_options
@@ -492,15 +492,15 @@ export interface account_update {
 
 export interface account_whitelist {
 	fee: asset
-	authorizing_account: string
-	account_to_list: string
+	authorizing_account: number | string
+	account_to_list: number | string
 	new_listing: number
 	extensions: Array<any>
 }
 
 export interface account_upgrade {
 	fee: asset
-	account_to_upgrade: string
+	account_to_upgrade: number | string
 	upgrade_to_lifetime_member: boolean
 	extensions: Array<any>
 }
@@ -512,8 +512,8 @@ export interface fba_distribute_operation {
 
 export interface account_transfer {
 	fee: asset
-	account_id: string
-	new_owner: string
+	account_id: number | string
+	new_owner: number | string
 	extensions: Array<any>
 }
 
@@ -523,16 +523,16 @@ export interface price {
 }
 
 export interface asset_options {
-	max_supply: string
+	max_supply: number | string
 	market_fee_percent: number
-	max_market_fee: string
+	max_market_fee: number | string
 	issuer_permissions: number
 	flags: number
 	core_exchange_rate: price
-	whitelist_authorities: Array<string>
-	blacklist_authorities: Array<string>
-	whitelist_markets: Array<string>
-	blacklist_markets: Array<string>
+	whitelist_authorities: Array<number | string>
+	blacklist_authorities: Array<number | string>
+	whitelist_markets: Array<number | string>
+	blacklist_markets: Array<number | string>
 	description: string
 	extensions: Array<any>
 }
@@ -543,13 +543,13 @@ export interface bitasset_options {
 	force_settlement_delay_sec: number
 	force_settlement_offset_percent: number
 	maximum_force_settlement_volume: number
-	short_backing_asset: string
+	short_backing_asset: number | string
 	extensions: Array<any>
 }
 
 export interface asset_create {
 	fee: asset
-	issuer: string
+	issuer: number | string
 	symbol: string
 	precision: number
 	common_options: asset_options
@@ -560,64 +560,64 @@ export interface asset_create {
 
 export interface asset_update {
 	fee: asset
-	issuer: string
-	asset_to_update: string
-	new_issuer?: string
+	issuer: number | string
+	asset_to_update: number | string
+	new_issuer?: number | string
 	new_options: asset_options
 	extensions: Array<any>
 }
 
 export interface asset_update_bitasset {
 	fee: asset
-	issuer: string
-	asset_to_update: string
+	issuer: number | string
+	asset_to_update: number | string
 	new_options: bitasset_options
 	extensions: Array<any>
 }
 
 export interface asset_update_feed_producers {
 	fee: asset
-	issuer: string
-	asset_to_update: string
-	new_feed_producers: Array<string>
+	issuer: number | string
+	asset_to_update: number | string
+	new_feed_producers: Array<number | string>
 	extensions: Array<any>
 }
 
 export interface asset_issue {
 	fee: asset
-	issuer: string
+	issuer: number | string
 	asset_to_issue: asset
-	issue_to_account: string
+	issue_to_account: number | string
 	memo?: memo_data
 	extensions: Array<any>
 }
 
 export interface asset_reserve {
 	fee: asset
-	payer: string
+	payer: number | string
 	amount_to_reserve: asset
 	extensions: Array<any>
 }
 
 export interface asset_fund_fee_pool {
 	fee: asset
-	from_account: string
-	asset_id: string
-	amount: string
+	from_account: number | string
+	asset_id: number | string
+	amount: number | string
 	extensions: Array<any>
 }
 
 export interface asset_settle {
 	fee: asset
-	account: string
+	account: number | string
 	amount: asset
 	extensions: Array<any>
 }
 
 export interface asset_global_settle {
 	fee: asset
-	issuer: string
-	asset_to_settle: string
+	issuer: number | string
+	asset_to_settle: number | string
 	settle_price: price
 	extensions: Array<any>
 }
@@ -631,23 +631,23 @@ export interface price_feed {
 
 export interface asset_publish_feed {
 	fee: asset
-	publisher: string
-	asset_id: string
+	publisher: number | string
+	asset_id: number | string
 	feed: price_feed
 	extensions: Array<any>
 }
 
 export interface witness_create {
 	fee: asset
-	witness_account: string
+	witness_account: number | string
 	url: string
 	block_signing_key: string
 }
 
 export interface witness_update {
 	fee: asset
-	witness: string
-	witness_account: string
+	witness: number | string
+	witness_account: number | string
 	new_url?: string
 	new_signing_key?: string
 }
@@ -658,8 +658,8 @@ export interface op_wrapper {
 
 export interface proposal_create {
 	fee: asset
-	fee_paying_account: string
-	expiration_time: string
+	fee_paying_account: number | string
+	expiration_time: number | string
 	proposed_ops: Array<op_wrapper>
 	review_period_seconds?: number
 	extensions: Array<any>
@@ -667,12 +667,12 @@ export interface proposal_create {
 
 export interface proposal_update {
 	fee: asset
-	fee_paying_account: string
-	proposal: string
-	active_approvals_to_add: Array<string>
-	active_approvals_to_remove: Array<string>
-	owner_approvals_to_add: Array<string>
-	owner_approvals_to_remove: Array<string>
+	fee_paying_account: number | string
+	proposal: number | string
+	active_approvals_to_add: Array<number | string>
+	active_approvals_to_remove: Array<number | string>
+	owner_approvals_to_add: Array<number | string>
+	owner_approvals_to_remove: Array<number | string>
 	key_approvals_to_add: Array<string>
 	key_approvals_to_remove: Array<string>
 	extensions: Array<any>
@@ -680,59 +680,59 @@ export interface proposal_update {
 
 export interface proposal_delete {
 	fee: asset
-	fee_paying_account: string
+	fee_paying_account: number | string
 	using_owner_authority: boolean
-	proposal: string
+	proposal: number | string
 	extensions: Array<any>
 }
 
 export interface withdraw_permission_create {
 	fee: asset
-	withdraw_from_account: string
-	authorized_account: string
+	withdraw_from_account: number | string
+	authorized_account: number | string
 	withdrawal_limit: asset
 	withdrawal_period_sec: number
 	periods_until_expiration: number
-	period_start_time: string
+	period_start_time: number | string
 }
 
 export interface withdraw_permission_update {
 	fee: asset
-	withdraw_from_account: string
-	authorized_account: string
-	permission_to_update: string
+	withdraw_from_account: number | string
+	authorized_account: number | string
+	permission_to_update: number | string
 	withdrawal_limit: asset
 	withdrawal_period_sec: number
-	period_start_time: string
+	period_start_time: number | string
 	periods_until_expiration: number
 }
 
 export interface withdraw_permission_claim {
 	fee: asset
-	withdraw_permission: string
-	withdraw_from_account: string
-	withdraw_to_account: string
+	withdraw_permission: number | string
+	withdraw_from_account: number | string
+	withdraw_to_account: number | string
 	amount_to_withdraw: asset
 	memo?: memo_data
 }
 
 export interface withdraw_permission_delete {
 	fee: asset
-	withdraw_from_account: string
-	authorized_account: string
-	withdrawal_permission: string
+	withdraw_from_account: number | string
+	authorized_account: number | string
+	withdrawal_permission: number | string
 }
 
 export interface committee_member_create {
 	fee: asset
-	committee_member_account: string
+	committee_member_account: number | string
 	url: string
 }
 
 export interface committee_member_update {
 	fee: asset
-	committee_member: string
-	committee_member_account: string
+	committee_member: number | string
+	committee_member_account: number | string
 	new_url?: string
 }
 
@@ -755,13 +755,13 @@ export interface chain_parameters {
 	network_percent_of_fee: number
 	lifetime_referrer_percent_of_fee: number
 	cashback_vesting_period_seconds: number
-	cashback_vesting_threshold: string
+	cashback_vesting_threshold: number | string
 	count_non_member_votes: boolean
 	allow_non_member_whitelists: boolean
-	witness_pay_per_block: string
-	worker_budget_per_day: string
+	witness_pay_per_block: number | string
+	worker_budget_per_day: number | string
 	max_predicate_opcode: number
-	fee_liquidation_threshold: string
+	fee_liquidation_threshold: number | string
 	accounts_per_fee_scale: number
 	account_fee_scale_bitshifts: number
 	max_authority_depth: number
@@ -774,28 +774,28 @@ export interface committee_member_update_global_parameters {
 }
 
 export interface linear_vesting_policy_initializer {
-	begin_timestamp: string
+	begin_timestamp: number | string
 	vesting_cliff_seconds: number
 	vesting_duration_seconds: number
 }
 
 export interface cdd_vesting_policy_initializer {
-	start_claim: string
+	start_claim: number | string
 	vesting_seconds: number
 }
 
 export interface vesting_balance_create {
 	fee: asset
-	creator: string
-	owner: string
+	creator: number | string
+	owner: number | string
 	amount: asset
 	policy: [number, any]
 }
 
 export interface vesting_balance_withdraw {
 	fee: asset
-	vesting_balance: string
-	owner: string
+	vesting_balance: number | string
+	owner: number | string
 	amount: asset
 }
 
@@ -811,10 +811,10 @@ export interface burn_worker_initializer {
 
 export interface worker_create {
 	fee: asset
-	owner: string
-	work_begin_date: string
-	work_end_date: string
-	daily_pay: string
+	owner: number | string
+	work_begin_date: number | string
+	work_end_date: number | string
+	daily_pay: number | string
 	name: string
 	url: string
 	initializer: [number, any]
@@ -822,19 +822,19 @@ export interface worker_create {
 
 export interface custom {
 	fee: asset
-	payer: string
-	required_auths: Array<string>
+	payer: number | string
+	required_auths: Array<number | string>
 	id: number
 	data: string
 }
 
 export interface account_name_eq_lit_predicate {
-	account_id: string
+	account_id: number | string
 	name: string
 }
 
 export interface asset_symbol_eq_lit_predicate {
-	asset_id: string
+	asset_id: number | string
 	symbol: string
 }
 
@@ -844,25 +844,25 @@ export interface block_id_predicate {
 
 export interface assert {
 	fee: asset
-	fee_paying_account: string
+	fee_paying_account: number | string
 	predicates: Array<[number, any]>
-	required_auths: Array<string>
+	required_auths: Array<number | string>
 	extensions: Array<any>
 }
 
 export interface balance_claim {
 	fee: asset
-	deposit_to_account: string
-	balance_to_claim: string
+	deposit_to_account: number | string
+	balance_to_claim: number | string
 	balance_owner_key: string
 	total_claimed: asset
 }
 
 export interface override_transfer {
 	fee: asset
-	issuer: string
-	from: string
-	to: string
+	issuer: number | string
+	from: number | string
+	to: number | string
 	amount: asset
 	memo?: memo_data
 	extensions: Array<any>
@@ -884,7 +884,7 @@ export interface blind_output {
 export interface transfer_to_blind {
 	fee: asset
 	amount: asset
-	from: string
+	from: number | string
 	blinding_factor: string
 	outputs: Array<blind_output>
 }
@@ -903,22 +903,22 @@ export interface blind_transfer {
 export interface transfer_from_blind {
 	fee: asset
 	amount: asset
-	to: string
+	to: number | string
 	blinding_factor: string
 	inputs: Array<blind_input>
 }
 
 export interface asset_settle_cancel {
 	fee: asset
-	settlement: string
-	account: string
+	settlement: number | string
+	account: number | string
 	amount: asset
 	extensions: Array<any>
 }
 
 export interface asset_claim_fees {
 	fee: asset
-	issuer: string
+	issuer: number | string
 	amount_to_claim: asset
 	extensions: Array<any>
 }
@@ -959,7 +959,7 @@ export interface clause_pair {
 }
 
 export interface error_message {
-	error_code: string
+	error_code: number | string
 	error_msg: string
 }
 
@@ -974,14 +974,14 @@ export interface abi_def {
 }
 
 export interface contract_asset {
-	amount: string
-	asset_id: string
+	amount: number | string
+	asset_id: number | string
 }
 
 export interface create_contract {
 	fee: asset
 	name: string
-	account: string
+	account: number | string
 	vm_type: string
 	vm_version: string
 	code: string
@@ -991,8 +991,8 @@ export interface create_contract {
 
 export interface call_contract {
 	fee: asset
-	account: string
-	contract_id: string
+	account: number | string
+	contract_id: number | string
 	amount?: asset
 	method_name: string
 	data: string
@@ -1001,9 +1001,9 @@ export interface call_contract {
 
 export interface update_contract {
 	fee: asset
-	owner: string
-	new_owner?: string
-	contract: string
+	owner: number | string
+	new_owner?: number | string
+	contract: number | string
 	code: string
 	abi: abi_def
 	extensions: Array<any>
@@ -1011,13 +1011,13 @@ export interface update_contract {
 
 export interface trust_node_pledge_withdraw {
 	fee: asset
-	witness_account: string
+	witness_account: number | string
 }
 
 export interface inline_transfer {
 	fee: asset
-	from: string
-	to: string
+	from: number | string
+	to: number | string
 	amount: asset
 	memo: string
 	extensions: Array<any>
@@ -1025,8 +1025,8 @@ export interface inline_transfer {
 
 export interface inter_contract_call {
 	fee: asset
-	sender_contract: string
-	contract_id: string
+	sender_contract: number | string
+	contract_id: number | string
 	amount: asset
 	method_name: string
 	data: string
@@ -1035,8 +1035,8 @@ export interface inter_contract_call {
 
 export interface staking_create {
 	fee: asset
-	owner: string
-	trust_node: string
+	owner: number | string
+	trust_node: number | string
 	amount: asset
 	program_id: string
 	weight: number
@@ -1046,31 +1046,31 @@ export interface staking_create {
 
 export interface staking_update {
 	fee: asset
-	owner: string
-	trust_node: string
-	staking_id: string
+	owner: number | string
+	trust_node: number | string
+	staking_id: number | string
 	extensions: Array<any>
 }
 
 export interface staking_claim {
 	fee: asset
-	owner: string
-	staking_id: string
+	owner: number | string
+	staking_id: number | string
 	extensions: Array<any>
 }
 
 export interface witness_set_commission {
 	fee: asset
-	witness: string
-	witness_account: string
+	witness: number | string
+	witness_account: number | string
 	commission_rate: number
 	extensions: Array<any>
 }
 
 export interface witness_unbanned {
 	fee: asset
-	witness: string
-	witness_account: string
+	witness: number | string
+	witness_account: number | string
 	extensions: Array<any>
 }
 
@@ -1139,8 +1139,8 @@ export interface data_transaction_complain {
 
 export interface balance_lock {
 	fee: asset
-	account: string
-	create_date_time: string
+	account: number | string
+	create_date_time: number | string
 	program_id: string
 	amount: asset
 	lock_days: number
@@ -1151,8 +1151,8 @@ export interface balance_lock {
 
 export interface balance_unlock {
 	fee: asset
-	account: string
-	lock_id: string
+	account: number | string
+	lock_id: number | string
 	extensions: Array<any>
 }
 
@@ -1162,9 +1162,9 @@ export interface data_transaction_create {
 	version: string
 	params: string
 	fee: asset
-	requester: string
-	create_date_time: string
-	league_id?: string
+	requester: number | string
+	create_date_time: number | string
+	league_id?: number | string
 	extensions: Array<any>
 }
 
@@ -1172,15 +1172,15 @@ export interface data_transaction_update {
 	request_id: string
 	new_status: number
 	fee: asset
-	new_requester: string
+	new_requester: number | string
 	memo: string
 	extensions: Array<any>
 }
 
 export interface data_transaction_pay {
 	fee: asset
-	from: string
-	to: string
+	from: number | string
+	to: number | string
 	amount: asset
 	request_id: string
 	extensions: Array<any>
@@ -1188,37 +1188,37 @@ export interface data_transaction_pay {
 
 export interface data_transaction_datasource_upload {
 	request_id: string
-	requester: string
-	datasource: string
+	requester: number | string
+	datasource: number | string
 	fee: asset
 	extensions: Array<any>
 }
 
 export interface data_transaction_datasource_validate_error {
 	request_id: string
-	datasource: string
+	datasource: number | string
 	fee: asset
 	extensions: Array<any>
 }
 
 export interface proxy_transfer_params {
-	from: string
-	to: string
-	proxy_account: string
+	from: number | string
+	to: number | string
+	proxy_account: number | string
 	amount: asset
 	percentage: number
 	memo: string
-	expiration: string
+	expiration: number | string
 }
 
 export interface signed_proxy_transfer_params {
-	from: string
-	to: string
-	proxy_account: string
+	from: number | string
+	to: number | string
+	proxy_account: number | string
 	amount: asset
 	percentage: number
 	memo: string
-	expiration: string
+	expiration: number | string
 	signatures: Array<string>
 }
 
@@ -1232,7 +1232,7 @@ export interface proxy_transfer {
 export interface transaction {
 	ref_block_num: number
 	ref_block_prefix: number
-	expiration: string
+	expiration: number | string
 	operations: operations
 	extensions: Array<any>
 }
@@ -1240,7 +1240,7 @@ export interface transaction {
 export interface signed_transaction {
 	ref_block_num: number
 	ref_block_prefix: number
-	expiration: string
+	expiration: number | string
 	operations: operations
 	extensions: Array<any>
 	signatures: Array<string>

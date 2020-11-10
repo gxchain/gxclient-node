@@ -45,7 +45,7 @@ export default {
      */
   instance({keyProvider, account, network = '', signatureProvider, nonceProvider}) {
     if (!!ins) {
-      if (needNewIns(ins, {keyProvider, account, network, signatureProvider,nonceProvider})) {
+      if (needNewIns(ins, { account, network })) {
         ins = createNewIns({keyProvider, account, network, signatureProvider,nonceProvider});
       } else {
         resetInsProperty(ins, {keyProvider, signatureProvider,nonceProvider});

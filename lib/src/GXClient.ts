@@ -6,6 +6,7 @@ import uniq from 'lodash/uniq';
 import { DEFUALT_EXPIRE_SEC } from '../const/const';
 import axios from 'axios';
 import GXRPC from './GXRPC';
+import * as types from '../types/types'
 
 /**
  * This callback is displayed as a global member.
@@ -18,6 +19,21 @@ import GXRPC from './GXRPC';
  * GXClient Class
  */
 class GXClient {
+
+  private_key: string;
+  account_id_or_name: number | string;
+  account_id: string;
+  account: number;
+  connected: boolean;
+  chain_id: string;
+  witness: string;
+  signProvider: (transaction: TransactionBuilder, chain_id: string) => Promise<Buffer>;
+  nonceProvider: () => string;
+  host: string;
+  rpc: GXRPC;
+  isTaskStarted: boolean;
+  latestBlock: number;
+
   /**
    *
    * @param {String} private_key - private key
@@ -25,13 +41,16 @@ class GXClient {
    * @param {String} entry_point - entry point network address
    * @param {signatureProvider} signProvider
    */
-  constructor(private_key, account_id_or_name, entry_point = 'wss://node1.gxb.io', signProvider = null, nonceProvider = null) {
+  constructor(private_key: string, account_id_or_name: number | string, entry_point: string = 'wss://node1.gxb.io', signProvider?: (transaction: TransactionBuilder, chain_id: string) => Promise<Buffer>, nonceProvider?: () => string) {
     this.private_key = private_key;
     this.account_id_or_name = account_id_or_name;
-    if (/^1.2.\d+$/.test(account_id_or_name)) {
+    if (typeof account_id_or_name === 'string' && /^1.2.\d+$/.test(account_id_or_name)) {
       this.account_id = account_id_or_name;
-    } else {
+    } else if (typeof account_id_or_name === 'number') {
       this.account = account_id_or_name;
+    }
+    if (this.account_id === undefined && this.account === undefined) {
+      throw new Error('illegal account id or name');
     }
     this.connected = false;
     this.chain_id = '';
@@ -46,7 +65,11 @@ class GXClient {
    * generate key pair locally
    * @returns {{brainKey: *, privateKey: *, publicKey: *}}
    */
-  generateKey(brainKey) {
+  generateKey(brainKey: string): {
+    brainKey: string,
+    privateKey: string,
+    publicKey: string
+  } {
     brainKey = brainKey || generateMnemonic(160); // generate a new brain key if not assigned
     let privateKey = key.get_brainPrivateKey(brainKey);
     let publicKey = privateKey.toPublicKey().toPublicKeyString();
@@ -62,7 +85,7 @@ class GXClient {
    * @param privateKey {String}
    * @returns {String}
    */
-  privateToPublic(privateKey) {
+  privateToPublic(privateKey: string): string {
     return PrivateKey.fromWif(privateKey)
       .toPublicKey()
       .toPublicKeyString();
@@ -73,7 +96,7 @@ class GXClient {
    * @param publicKey {String}
    * @returns {boolean}
    */
-  isValidPublic(publicKey) {
+  isValidPublic(publicKey: string): boolean {
     return !!PublicKey.fromPublicKeyString(publicKey);
   }
 
@@ -82,7 +105,7 @@ class GXClient {
    * @param privateKey {String}
    * @returns {boolean}
    */
-  isValidPrivate(privateKey) {
+  isValidPrivate(privateKey: string): boolean {
     try {
       return !!PrivateKey.fromWif(privateKey);
     } catch (ex) {
@@ -101,7 +124,7 @@ class GXClient {
    * @example
    * curl ‘https://opengateway.gxb.io/account/register' -H 'Content-type: application/json' -H 'Accept: application/json’ -d ‘{“account”:{“name”:”gxb123”,”owner_key”:”GXC5wQ4RtjouyobBV57vTx7boBj4Kt3BUxZEMsUD3TU369d3C9DqZ”,”active_key”:”GXC7cPVyB9F1Pfiaaxw4nY3xKADo5993hEsTjFs294LKwhqsUrFZs”,”memo_key”:”GXC7cPVyB9F1Pfiaaxw4nY3xKADo5993hEsTjFs294LKwhqsUrFZs”,”refcode”:null,”referrer”:null}}’
    */
-  register(account, activeKey, ownerKey, memoKey, faucet = 'https://opengateway.gxb.io') {
+  register(account: string, activeKey: string, ownerKey: string, memoKey: string, faucet: string = 'https://opengateway.gxb.io') {
     return new Promise((resolve, reject) => {
       if (!activeKey) {
         reject(new Error('active key is required'));
@@ -149,30 +172,33 @@ class GXClient {
     });
   }
 
+  // TODO
   /**
    * get object by id
    * @param object_id {String} - e.g: '1.2.3'
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  getObject(object_id) {
+  getObject(object_id: string): Promise<any> {
     return this._query('get_objects', [[object_id]]).then((results) => results[0]);
   }
 
+  // TODO
   /**
    * get objects
    * @param {String[]} object_ids
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  getObjects(object_ids) {
+  getObjects(object_ids: string[]): Promise<any[]> {
     return this._query('get_objects', [object_ids]);
   }
 
+  // TODO
   /**
    * get account info by account name
    * @param account_name {String}
    * @returns {Promise<any>}
    */
-  getAccount(account_name) {
+  getAccount(account_name: string): Promise<any> {
     return this._query('get_account_by_name', [account_name]);
   }
 
@@ -180,7 +206,7 @@ class GXClient {
    * get current blockchain id
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  getChainID() {
+  getChainID(): Promise<string> {
     return this._query('get_chain_id', []);
   }
 
@@ -188,7 +214,22 @@ class GXClient {
    * get dynamic global properties
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  getDynamicGlobalProperties() {
+  getDynamicGlobalProperties(): Promise<{
+    id: string,
+    head_block_number :number,
+    head_block_id: string,
+    time: string,
+    current_witness: string,
+    next_maintenance_time: string
+    last_budget_time: string,
+    witness_budget: number,
+    accounts_registered_this_interval: number,
+    recently_missed_count: number,
+    current_aslot: number,
+    recent_slots_filled: string,
+    dynamic_flags: number,
+    last_irreversible_block_num: number
+  }> {
     return this._query('get_dynamic_global_properties', []);
   }
 
@@ -197,7 +238,7 @@ class GXClient {
    * @param publicKey {String}
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  getAccountByPublicKey(publicKey) {
+  getAccountByPublicKey(publicKey: string): Promise<string[]> {
     return this._query('get_key_references', [[publicKey]]).then((results) => uniq(results[0]));
   }
 
@@ -206,7 +247,10 @@ class GXClient {
    * @param account_name {String}
    * @returns {Promise<any>}
    */
-  getAccountBalances(account_name) {
+  getAccountBalances(account_name: string): Promise<{
+    amount: string,
+    asset_id: string
+  }[]> {
     return new Promise((resolve, reject) => {
       this.getAccount(account_name)
         .then((account) => {
@@ -216,12 +260,13 @@ class GXClient {
     });
   }
 
+  // TODO
   /**
    * get asset info by symbol
    * @param symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  getAsset(symbol) {
+  getAsset(symbol: string): Promise<any> {
     return this._query('lookup_asset_symbols', [[symbol]]).then((assets) => assets[0]);
   }
 
@@ -230,7 +275,18 @@ class GXClient {
    * @param blockHeight {Number} - block height
    * @returns {Promise<any>}
    */
-  getBlock(blockHeight) {
+  getBlock(blockHeight: number): Promise<{
+    previous: string,
+    timestamp: string,
+    witness: string,
+    transaction_merkle_root: string,
+    extensions: any[],
+    witness_signature: string,
+    transactions: types.signed_transaction[],
+    block_id: string,
+    signing_key: string
+    transaction_ids: string[]
+  }> {
     return this._query('get_block', [blockHeight]);
   }
 
@@ -239,7 +295,7 @@ class GXClient {
    * @param blockHeight {Number} - block height
    * @param callback {Function}
    */
-  detectTransaction(blockHeight, callback) {
+  detectTransaction(blockHeight: number, callback?: (blockHeight: number, txid: string, op: types.operation) => void): void {
     let detect = () => {
       this.getBlock(blockHeight)
         .then((block) => {
@@ -294,21 +350,18 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  transfer(to, memo, amount_asset, broadcast = false, options = {}) {
+  transfer(to: string, memo: string | ((from: string, to: string) => Promise<types.memo_data>), amount_asset: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  transfer(to: string, memo: string | ((from: string, to: string) => Promise<types.memo_data>), amount_asset: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  transfer(to: string, memo: string | ((from: string, to: string) => Promise<types.memo_data>), amount_asset: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  transfer(to: string, memo: string | ((from: string, to: string) => Promise<types.memo_data>), amount_asset: string, broadcast: boolean = false, options: { fee_symbol?: string } = {}): ProcessTransactionResult {
     const fee_symbol = options.fee_symbol;
     let memo_private = this.private_key;
-    let isMemoProvider = false;
-
-    // if memo is function, it can receive fromAccount and toAccount, and should return a full memo object
-    if (typeof memo === 'function') {
-      isMemoProvider = true;
-    }
 
     return new Promise((resolve, reject) => {
       if (amount_asset.indexOf(' ') == -1) {
         reject(new Error('Incorrect format of amount params, eg. "100 GXC"'));
       } else {
-        let amount = Number(amount_asset.split(' ').filter((o) => !!o)[0]);
+        let amount: any = Number(amount_asset.split(' ').filter((o) => !!o)[0]);
         let asset = amount_asset.split(' ').filter((o) => !!o)[1];
         resolve(
           this._connect().then(() => {
@@ -337,7 +390,7 @@ class GXClient {
                 asset_id: assetInfo.id
               };
 
-              if (!isMemoProvider) {
+              if (typeof memo === 'string') {
                 let memo_from_public, memo_to_public;
                 if (memo) {
                   memo_from_public = fromAcc.options.memo_key;
@@ -400,7 +453,11 @@ class GXClient {
   /**
    * get staking programs
    */
-  getStakingPrograms() {
+  getStakingPrograms(): Promise<[string, {
+      staking_days: number,
+      weight: number,
+      is_valid: boolean
+  }][]> {
     return this.getObject('2.0.0').then((obj) => {
       let programs = obj.parameters.extensions.find((item) => {
         return item[0] === 11;
@@ -421,7 +478,10 @@ class GXClient {
    * @param {String} options.fee_symbol  - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  createStaking(to, amount, program_id, broadcast = false, options = { fee_symbol: 'GXC' }) {
+  createStaking(to: string, amount: number, program_id: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  createStaking(to: string, amount: number, program_id: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  createStaking(to: string, amount: number, program_id: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  createStaking(to: string, amount: number, program_id: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this._connect().then(() => {
       return Promise.all([this.getStakingPrograms(), this.getAccount(to), this.getAsset(options.fee_symbol)]).then(async (results) => {
         let trustNodeAccount = results[1];
@@ -470,7 +530,10 @@ class GXClient {
    * @param {String} options.fee_symbol  - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  updateStaking(to, staking_id, broadcast = false, options = { fee_symbol: 'GXC' }) {
+  updateStaking(to: string, staking_id: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  updateStaking(to: string, staking_id: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  updateStaking(to: string, staking_id: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  updateStaking(to: string, staking_id: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this._connect().then(() => {
       return Promise.all([this.getAccount(to), this.getAsset(options.fee_symbol)]).then(async (results) => {
         let trustNodeAccount = results[0];
@@ -501,15 +564,17 @@ class GXClient {
   }
 
   /**
-   * @param {String} to - trust node account name
    * @param {String} staking_id - the staking id
    * @param {Object} options
    * @param {String} options.fee_symbol  - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  claimStaking(staking_id, broadcast, options = { fee_symbol: 'GXC' }) {
+  claimStaking(staking_id: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  claimStaking(staking_id: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  claimStaking(staking_id: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  claimStaking(staking_id: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this._connect().then(() => {
-      this.getAsset(options.fee_symbol).then(async (feeInfo) => {
+      return this.getAsset(options.fee_symbol).then((feeInfo) => {
         let tr = this._createTransaction();
         tr.add_operation(
           tr.get_type_operation('staking_claim', {
@@ -531,7 +596,7 @@ class GXClient {
    * @param contract_name {String}
    * @returns {Promise<any>}
    */
-  getContractABI(contract_name) {
+  getContractABI(contract_name: string): Promise<any> {
     return this.getAccount(contract_name).then((acc) => acc.abi);
   }
 
@@ -540,7 +605,7 @@ class GXClient {
    * @param contract_name {String}
    * @returns {Promise<any>}
    */
-  getContractTable(contract_name) {
+  getContractTable(contract_name: string): Promise<any> {
     return this.getAccount(contract_name).then((acc) => acc.abi && acc.abi.tables);
   }
 
@@ -552,7 +617,7 @@ class GXClient {
    * @param limit {Number}
    * @returns {Promise<any>}
    */
-  getTableObjects(contract_name, table_name, start = 0, limit = 100) {
+  getTableObjects(contract_name: string, table_name: string, start: number = 0, limit: number = 100): Promise<any> {
     return this.getAccount(contract_name).then((acc) => {
       if (acc) {
         let contract_id = object_id_type(acc.id).toString();
@@ -573,7 +638,7 @@ class GXClient {
    * @param reverse
    * @returns {*}
    */
-  getTableObjectsEX(contract_name, table_name, lower_bound = 0, upper_bound = -1, limit = 100, reverse = false) {
+  getTableObjectsEX(contract_name: string, table_name: string, lower_bound: number = 0, upper_bound: number = -1, limit: number = 100, reverse: boolean = false): Promise<any> {
     return this._query('get_table_rows_ex', [
       contract_name,
       table_name,
@@ -598,31 +663,30 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  async createContract(contract_name, code, abi, vm_type = '0', vm_version = '0', broadcast = false, options = {}) {
-    const fee_symbol = options.fee_symbol;
-    let feeInfo = {};
-    if (fee_symbol) {
-      feeInfo = await this.getAsset(fee_symbol);
-    }
-
-    return this._connect().then(() => {
-      let tr = this._createTransaction();
-      tr.add_operation(
-        tr.get_type_operation('create_contract', {
-          fee: {
-            amount: 0,
-            asset_id: feeInfo.id || '1.3.1'
-          },
-          name: contract_name,
-          account: this.account_id,
-          vm_type,
-          vm_version,
-          code,
-          abi
-        })
-      );
-      return this._processTransaction(tr, broadcast);
-    });
+  createContract(contract_name: string, code: string, abi, vm_type?: string, vm_version?: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  createContract(contract_name: string, code: string, abi, vm_type?: string, vm_version?: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  createContract(contract_name: string, code: string, abi, vm_type?: string, vm_version?: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  createContract(contract_name: string, code: string, abi, vm_type: string = '0', vm_version: string = '0', broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
+    return this.getAsset(options.fee_symbol).then((feeInfo) => {
+      return this._connect().then(() => {
+        let tr = this._createTransaction();
+        tr.add_operation(
+          tr.get_type_operation('create_contract', {
+            fee: {
+              amount: 0,
+              asset_id: feeInfo.id || '1.3.1'
+            },
+            name: contract_name,
+            account: this.account_id,
+            vm_type,
+            vm_version,
+            code,
+            abi
+          })
+        );
+        return this._processTransaction(tr, broadcast);
+      });
+    })
   }
 
   /**
@@ -636,10 +700,10 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  updateContract(contract_name, newOwner, code, abi, broadcast = false, options = {}) {
+  updateContract(contract_name: string, newOwner: string, code, abi, broadcast = false, options: { fee_symbol?: string } = {}) {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(async () => {
-      let feeInfo = {};
+      let feeInfo: any = {};
       let promises = [this.getAccount(contract_name)];
       if (newOwner) {
         promises.push(this.getAccount(newOwner));
@@ -658,7 +722,8 @@ class GXClient {
           owner: this.account_id,
           contract: results[0].id,
           code,
-          abi
+          abi,
+          new_owner: undefined
         };
         if (newOwner) {
           opt.new_owner = results[1].id;
@@ -680,7 +745,7 @@ class GXClient {
    * @param options.fee_symbol {String} - e.g: 'GXC'
    * @returns {Promise<any>}
    */
-  callContract(contract_name, method_name, params, amount_asset, broadcast = false, options = {}) {
+  callContract(contract_name, method_name, params, amount_asset, broadcast = false, options: { fee_symbol?: string } = {}) {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(() => {
       if (amount_asset) {
@@ -688,7 +753,7 @@ class GXClient {
           throw new Error('Incorrect format of asset, eg. "100 GXC"');
         }
       }
-      let amount = amount_asset ? Number(amount_asset.split(' ').filter((o) => !!o)[0]) : 0;
+      let amount: any = amount_asset ? Number(amount_asset.split(' ').filter((o) => !!o)[0]) : 0;
       let asset = amount_asset ? amount_asset.split(' ').filter((o) => !!o)[1] : 'GXC';
       const promises = [this.getAccount(contract_name), this.getAsset(asset)];
       if (fee_symbol) {
@@ -725,7 +790,8 @@ class GXClient {
             account: this.account_id,
             contract_id: acc.id,
             method_name: act.method_name,
-            data: act.data
+            data: act.data,
+            amount: undefined
           };
 
           if (!!amount.amount) {
@@ -770,7 +836,10 @@ class GXClient {
 
               let new_options = {
                 memo_key: acc.options.memo_key,
-                voting_account: acc.options.voting_account || '1.2.5'
+                voting_account: acc.options.voting_account || '1.2.5',
+                votes: undefined,
+                num_committee: undefined,
+                num_witness: undefined
               };
 
               let promises = [];
@@ -895,7 +964,7 @@ class GXClient {
       })
     );
 
-    return await this._processTransaction(tr, broadcast);
+    return await this._processTransaction(tr, broadcast)
   }
 
   /**
@@ -932,13 +1001,13 @@ class GXClient {
    *
    * @private
    */
-  _connect() {
+  _connect(): Promise<void> {
     return new Promise((resolve) => {
       if (this.connected) {
         resolve();
       } else {
         resolve(
-          Promise.all([this.getAccount(this.account), this.getChainID()]).then((results) => {
+          Promise.all([this.getAccount(this.account.toString()), this.getChainID()]).then((results) => {
             let acc = results[0];
             this.chain_id = results[1];
             this.account_id = acc.id;
@@ -984,8 +1053,11 @@ class GXClient {
    * @param broadcast
    * @returns {Promise<any[]>}
    */
-  _processTransaction(tr, broadcast, useRemoteSerializer = false) {
-    return new Promise((resolve) => {
+  _processTransaction(tr, broadcast: true, useRemoteSerializer?: boolean): BroadcaseTransactionResult;
+  _processTransaction(tr, broadcast: false, useRemoteSerializer?: boolean): SerializeTransactionResult;
+  _processTransaction(tr, broadcast: boolean, useRemoteSerializer?: boolean): ProcessTransactionResult;
+  _processTransaction(tr, broadcast: boolean, useRemoteSerializer: boolean = false): ProcessTransactionResult {
+    return new Promise<any>((resolve) => {
       resolve(
         Promise.all([tr.update_head_block(), tr.set_required_fees()]).then(() => {
           if (!this.signProvider) {
@@ -1015,5 +1087,9 @@ class GXClient {
     return this.rpc.broadcast(tx);
   }
 }
+
+type BroadcaseTransactionResult = Promise<string[]>;
+type SerializeTransactionResult = Promise<types.signed_transaction>;
+type ProcessTransactionResult = Promise<types.signed_transaction | string[]>;
 
 export default GXClient;
