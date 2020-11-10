@@ -10,7 +10,7 @@ function formatNetwork(network = '') {
 }
 
 function needNewIns(oldIns, {account, network = ''}) {
-  if (account != oldIns.account_id_or_name || (formatNetwork(network) != oldIns.witness)) {
+  if (account !== oldIns.account_id_or_name || (formatNetwork(network) !== oldIns.witness)) {
     return true;
   } else {
     return false;
@@ -36,13 +36,13 @@ export default {
   },
 
   /**
-     * get GXClient instance
-     * @param keyProvider {String} - private key
-     * @param account {String} - '1.2.12'|'gxcaccount'
-     * @param network {String} - entry point network address
-     * @param signatureProvider {signatureProvider} 
-     * @returns {GXClient}
-     */
+   * get GXClient instance
+   * @param keyProvider {String} - private key
+   * @param account {String} - '1.2.12'|'gxcaccount'
+   * @param network {String} - entry point network address
+   * @param signatureProvider {signatureProvider}
+   * @returns {GXClient}
+   */
   instance({keyProvider, account, network = '', signatureProvider, nonceProvider}) {
     if (!!ins) {
       if (needNewIns(ins, { account, network })) {

@@ -17,8 +17,8 @@ class GXRPC {
   query(method: string, params: any): Promise<any> {
     return axios.post(this.service, {
       jsonrpc: '2.0',
-      method: method,
-      params: params,
+      method,
+      params,
       id: ++callID
     }).then(resp => {
       if (resp.data.error) {
