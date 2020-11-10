@@ -68,8 +68,8 @@ class GXClient {
     publicKey: string
   } {
     brainKey = brainKey || generateMnemonic(160); // generate a new brain key if not assigned
-    let privateKey = key.get_brainPrivateKey(brainKey);
-    let publicKey = privateKey.toPublicKey().toPublicKeyString();
+    const privateKey = key.get_brainPrivateKey(brainKey);
+    const publicKey = privateKey.toPublicKey().toPublicKeyString();
     return {
       brainKey,
       privateKey: privateKey.toWif(),
@@ -154,7 +154,7 @@ class GXClient {
     this.isTaskStarted = true;
     this.getDynamicGlobalProperties().then((obj) => {
       try {
-        let latestBlock = obj.last_irreversible_block_num;
+        const latestBlock = obj.last_irreversible_block_num;
         if (this.latestBlock !== latestBlock) {
           this.latestBlock = latestBlock;
           console.log('latest block:', this.latestBlock);
@@ -197,25 +197,25 @@ class GXClient {
    */
   getAccount(account_name: string): Promise<
   {
-       id :  string , 
-       membership_expiration_date :  string , 
-       merchant_expiration_date :  string , 
-       datasource_expiration_date :  string , 
-       data_transaction_member_expiration_date :  string , 
-       registrar :  string , 
-       referrer :  string , 
+       id :  string ,
+       membership_expiration_date :  string ,
+       merchant_expiration_date :  string ,
+       datasource_expiration_date :  string ,
+       data_transaction_member_expiration_date :  string ,
+       registrar :  string ,
+       referrer :  string ,
        lifetime_referrer : string ,
-       merchant_auth_referrer :  string , 
-       datasource_auth_referrer :  string , 
-       network_fee_percentage : number, 
-       lifetime_referrer_fee_percentage : number, 
-       referrer_rewards_percentage : number, 
-       name :  string, 
-       vm_type : string , 
-       vm_version :string, 
-       code :string, 
-       code_version :string, 
-       abi : { 
+       merchant_auth_referrer :  string ,
+       datasource_auth_referrer :  string ,
+       network_fee_percentage : number,
+       lifetime_referrer_fee_percentage : number,
+       referrer_rewards_percentage : number,
+       name :  string,
+       vm_type : string ,
+       vm_version :string,
+       code :string,
+       code_version :string,
+       abi : {
            version :  string ,
            types : any[],
            structs : any[],
@@ -224,32 +224,32 @@ class GXClient {
            error_messages : any[],
            abi_extensions : any[]
       },
-       owner : { 
+       owner : {
            weight_threshold : number,
            account_auths : any[],
            key_auths : [string, number][],
            address_auths : any[]
       },
-       active : { 
+       active : {
            weight_threshold : number,
            account_auths : any[],
            key_auths : [ string , number][],
            address_auths : any[]
       },
        options : {
-           memo_key :  string , 
+           memo_key :  string ,
            voting_account : string ,
            num_witness : number,
            num_committee : number,
            votes : any[],
            extensions : any[]
       },
-       statistics :  string , 
+       statistics :  string ,
        whitelisting_accounts : any[],
        blacklisting_accounts : any[],
        whitelisted_accounts : any[],
        blacklisted_accounts : any[],
-       cashback_vb :  string , 
+       cashback_vb :  string ,
        owner_special_authority : any[],
        active_special_authority : any[],
        top_n_control_flags : number
@@ -321,24 +321,24 @@ class GXClient {
    * @returns {Promise<any>}
    */
   getAsset(symbol: string): Promise<{
-    id: string, 
-    symbol: string, 
-    precision: number, 
-    issuer: string , 
+    id: string,
+    symbol: string,
+    precision: number,
+    issuer: string ,
     options: {
-      max_supply: number , 
+      max_supply: number ,
       market_fee_percent: number,
       max_market_fee: number,
       issuer_permissions: number,
       flags: number,
-      core_exchange_rate: { 
+      core_exchange_rate: {
         base: {
           amount: number,
-          asset_id: string 
+          asset_id: string
         },
         quote: {
           amount: number,
-          asset_id: string 
+          asset_id: string
       }
     },
     whitelist_authorities : any[],
@@ -379,21 +379,25 @@ class GXClient {
    * @param callback {Function}
    */
   detectTransaction(blockHeight: number, callback?: (blockHeight: number, txid: string, op: types.operation) => void): void {
-    let detect = () => {
+    const detect = () => {
       this.getBlock(blockHeight)
         .then((block) => {
           if (block) {
             block.transactions.forEach((transaction, i) => {
-              let txid = block.transaction_ids[i];
+              const txid = block.transaction_ids[i];
               transaction.operations.forEach((op) => {
                 let exist = false;
-                for (var key in op[1]) {
-                  let val = op[1][key];
+                for (const idx in op[1]) {
+                  if (op[i][idx]) {
+                    const val = op[1][idx];
 
-                  if (val === this.account_id) {
-                    exist = true;
+                    if (val === this.account_id) {
+                      exist = true;
+                    }
                   }
                 }
+
+                // tslint:disable-next-line: no-unused-expression
                 exist && callback && callback(blockHeight, txid, op);
               });
             });
@@ -438,14 +442,14 @@ class GXClient {
   transfer(to: string, memo: string | ((from: string, to: string) => Promise<types.memo_data>), amount_asset: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
   transfer(to: string, memo: string | ((from: string, to: string) => Promise<types.memo_data>), amount_asset: string, broadcast: boolean = false, options: { fee_symbol?: string } = {}): ProcessTransactionResult {
     const fee_symbol = options.fee_symbol;
-    let memo_private = this.private_key;
+    const memo_private = this.private_key;
 
     return new Promise((resolve, reject) => {
-      if (amount_asset.indexOf(' ') == -1) {
+      if (amount_asset.indexOf(' ') === -1) {
         reject(new Error('Incorrect format of amount params, eg. "100 GXC"'));
       } else {
         let amount: any = Number(amount_asset.split(' ').filter((o) => !!o)[0]);
-        let asset = amount_asset.split(' ').filter((o) => !!o)[1];
+        const asset = amount_asset.split(' ').filter((o) => !!o)[1];
         resolve(
           this._connect().then(() => {
             const promises = [this._query('get_objects', [[this.account_id]]), this.getAccount(to), this.getAsset(asset)];
@@ -455,10 +459,10 @@ class GXClient {
 
             return Promise.all(promises).then(async (results) => {
               let memo_object;
-              let fromAcc = results[0][0];
-              let toAcc = results[1];
-              let assetInfo = results[2];
-              let feeInfo = results[3] || {};
+              const fromAcc = results[0][0];
+              const toAcc = results[1];
+              const assetInfo = results[2];
+              const feeInfo = results[3] || {};
               if (!toAcc) {
                 throw new Error(`Account ${to} not exist`);
               }
@@ -474,7 +478,8 @@ class GXClient {
               };
 
               if (typeof memo === 'string') {
-                let memo_from_public, memo_to_public;
+                let memo_from_public;
+                let memo_to_public;
                 if (memo) {
                   memo_from_public = fromAcc.options.memo_key;
 
@@ -487,14 +492,14 @@ class GXClient {
                   if (/111111111111111111111/.test(memo_to_public)) {
                     memo_to_public = null;
                   }
-                  let fromPrivate = PrivateKey.fromWif(memo_private);
-                  if (memo_from_public != fromPrivate.toPublicKey().toPublicKeyString()) {
+                  const fromPrivate = PrivateKey.fromWif(memo_private);
+                  if (memo_from_public !== fromPrivate.toPublicKey().toPublicKeyString()) {
                     throw new Error('memo signer not exist');
                   }
                 }
 
                 if (memo && memo_to_public && memo_from_public) {
-                  let nonce = this.nonceProvider ? this.nonceProvider() : TransactionHelper.unique_nonce_uint64();
+                  const nonce = this.nonceProvider ? this.nonceProvider() : TransactionHelper.unique_nonce_uint64();
                   memo_object = {
                     from: memo_from_public,
                     to: memo_to_public,
@@ -511,7 +516,7 @@ class GXClient {
                 }
               }
 
-              let tr = this._createTransaction();
+              const tr = this._createTransaction();
 
               tr.add_operation(
                 tr.get_type_operation('transfer', {
@@ -521,7 +526,7 @@ class GXClient {
                   },
                   from: fromAcc.id,
                   to: toAcc.id,
-                  amount: amount,
+                  amount,
                   memo: memo_object
                 })
               );
@@ -542,7 +547,7 @@ class GXClient {
       is_valid: boolean
   }][]> {
     return this.getObject('2.0.0').then((obj) => {
-      let programs = obj.parameters.extensions.find((item) => {
+      const programs = obj.parameters.extensions.find((item) => {
         return item[0] === 11;
       });
       if (programs) {
@@ -567,23 +572,23 @@ class GXClient {
   createStaking(to: string, amount: number, program_id: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this._connect().then(() => {
       return Promise.all([this.getStakingPrograms(), this.getAccount(to), this.getAsset(options.fee_symbol)]).then(async (results) => {
-        let trustNodeAccount = results[1];
+        const trustNodeAccount = results[1];
         if (!trustNodeAccount) {
           throw new Error(`Account ${to} not exist`);
         }
-        let tustNodeInfo = await this._query('get_witness_by_account', [trustNodeAccount.id]);
+        const tustNodeInfo = await this._query('get_witness_by_account', [trustNodeAccount.id]);
         if (!tustNodeInfo) {
           throw new Error(`Account ${to} is not a trustnode`);
         }
-        let feeInfo = results[2];
-        var program = results[0].find((item) => item[0] == program_id);
+        const feeInfo = results[2];
+        const program = results[0].find((item) => item[0] === program_id);
         if (!program) {
           throw new Error(`Program ${program_id} not exist`);
         }
         if (!program[1].is_valid) {
           throw new Error(`Program ${program_id} disabled`);
         }
-        let tr = this._createTransaction();
+        const tr = this._createTransaction();
         tr.add_operation(
           tr.get_type_operation('staking_create', {
             fee: {
@@ -619,17 +624,17 @@ class GXClient {
   updateStaking(to: string, staking_id: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this._connect().then(() => {
       return Promise.all([this.getAccount(to), this.getAsset(options.fee_symbol)]).then(async (results) => {
-        let trustNodeAccount = results[0];
+        const trustNodeAccount = results[0];
         if (!trustNodeAccount) {
           throw new Error(`Account ${to} not exist`);
         }
-        let tustNodeInfo = await this._query('get_witness_by_account', [trustNodeAccount.id]);
+        const tustNodeInfo = await this._query('get_witness_by_account', [trustNodeAccount.id]);
         if (!tustNodeInfo) {
           throw new Error(`Account ${to} is not a trustnode`);
         }
-        let feeInfo = results[1];
+        const feeInfo = results[1];
 
-        let tr = this._createTransaction();
+        const tr = this._createTransaction();
         tr.add_operation(
           tr.get_type_operation('staking_update', {
             fee: {
@@ -638,7 +643,7 @@ class GXClient {
             },
             owner: this.account_id,
             trust_node: tustNodeInfo.id,
-            staking_id: staking_id
+            staking_id
           })
         );
         return this._processTransaction(tr, broadcast);
@@ -658,7 +663,7 @@ class GXClient {
   claimStaking(staking_id: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this._connect().then(() => {
       return this.getAsset(options.fee_symbol).then((feeInfo) => {
-        let tr = this._createTransaction();
+        const tr = this._createTransaction();
         tr.add_operation(
           tr.get_type_operation('staking_claim', {
             fee: {
@@ -666,7 +671,7 @@ class GXClient {
               asset_id: (feeInfo && feeInfo.id) || '1.3.1'
             },
             owner: this.account_id,
-            staking_id: staking_id
+            staking_id
           })
         );
         return this._processTransaction(tr, broadcast);
@@ -703,7 +708,7 @@ class GXClient {
   getTableObjects(contract_name: string, table_name: string, start: number = 0, limit: number = 100): Promise<any> {
     return this.getAccount(contract_name).then((acc) => {
       if (acc) {
-        let contract_id = object_id_type(acc.id).toString();
+        const contract_id = object_id_type(acc.id).toString();
         return this._query('get_table_objects', [contract_id, contract_id, string_to_name(table_name).toString(), start, -1, limit]);
       } else {
         throw new Error('Contract not found');
@@ -726,10 +731,10 @@ class GXClient {
       contract_name,
       table_name,
       {
-        lower_bound: lower_bound,
-        upper_bound: upper_bound,
-        reverse: reverse,
-        limit: limit
+        lower_bound,
+        upper_bound,
+        reverse,
+        limit
       }
     ]);
   }
@@ -752,7 +757,7 @@ class GXClient {
   createContract(contract_name: string, code: string, abi: types.abi_def, vm_type: string = '0', vm_version: string = '0', broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
     return this.getAsset(options.fee_symbol).then((feeInfo) => {
       return this._connect().then(() => {
-        let tr = this._createTransaction();
+        const tr = this._createTransaction();
         tr.add_operation(
           tr.get_type_operation('create_contract', {
             fee: {
@@ -790,7 +795,7 @@ class GXClient {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(async () => {
       let feeInfo: any = {};
-      let promises = [this.getAccount(contract_name)];
+      const promises = [this.getAccount(contract_name)];
       if (newOwner) {
         promises.push(this.getAccount(newOwner));
       }
@@ -798,9 +803,9 @@ class GXClient {
         feeInfo = await this.getAsset(fee_symbol);
       }
       return Promise.all(promises).then((results) => {
-        let tr = this._createTransaction();
+        const tr = this._createTransaction();
 
-        let opt = {
+        const opt = {
           fee: {
             amount: 0,
             asset_id: feeInfo.id || '1.3.1'
@@ -838,21 +843,21 @@ class GXClient {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(() => {
       if (amount_asset) {
-        if (amount_asset.indexOf(' ') == -1) {
+        if (amount_asset.indexOf(' ') === -1) {
           throw new Error('Incorrect format of asset, eg. "100 GXC"');
         }
       }
       let amount: any = amount_asset ? Number(amount_asset.split(' ').filter((o) => !!o)[0]) : 0;
-      let asset = amount_asset ? amount_asset.split(' ').filter((o) => !!o)[1] : 'GXC';
+      const asset = amount_asset ? amount_asset.split(' ').filter((o) => !!o)[1] : 'GXC';
       const promises: Promise<any>[] = [this.getAccount(contract_name), this.getAsset(asset)];
       if (fee_symbol) {
         promises.push(this.getAsset(fee_symbol));
       }
 
       return Promise.all(promises).then((results) => {
-        let acc = results[0];
-        let assetInfo = results[1];
-        let feeInfo = results[2] || {};
+        const acc = results[0];
+        const assetInfo = results[1];
+        const feeInfo = results[2] || {};
         if (!assetInfo) {
           throw new Error(`Asset ${asset} not exist`);
         }
@@ -864,14 +869,14 @@ class GXClient {
           asset_id: assetInfo.id
         };
         if (acc) {
-          let abi = acc.abi;
-          let act = {
-            method_name: method_name,
+          const abi = acc.abi;
+          const act = {
+            method_name,
             data: serializeCallData(method_name, params, abi)
           };
 
-          let tr = this._createTransaction();
-          let opts = {
+          const tr = this._createTransaction();
+          const opts = {
             fee: {
               amount: 0,
               asset_id: feeInfo.id || amount.asset_id
@@ -912,13 +917,13 @@ class GXClient {
     return new Promise((resolve) => {
       resolve(
         this._connect().then(() => {
-          let accountPromises = accounts.map((a) => this.getAccount(a));
-          return Promise.all(accountPromises).then((accounts) => {
-            let account_ids = accounts.map((a) => a.id);
+          const accountPromises = accounts.map((a) => this.getAccount(a));
+          return Promise.all(accountPromises).then((accounts2) => {
+            const account_ids = accounts2.map((a) => a.id);
             return Promise.all([this._query('get_objects', [[this.account_id, '2.0.0']]), this.getAsset(fee_symbol)]).then((results) => {
-              let acc = results[0][0];
-              let globalObject = results[0][1];
-              let fee_asset = results[1];
+              const acc = results[0][0];
+              const globalObject = results[0][1];
+              const fee_asset = results[1];
               if (!acc) {
                 throw Error(`account_id ${this.account_id} not exist`);
               }
@@ -926,7 +931,7 @@ class GXClient {
                 throw Error(`asset ${fee_symbol} not exist`);
               }
 
-              let new_options = {
+              const new_options = {
                 memo_key: acc.options.memo_key,
                 voting_account: acc.options.voting_account || '1.2.5',
                 votes: undefined,
@@ -934,7 +939,7 @@ class GXClient {
                 num_witness: undefined
               };
 
-              let promises = [];
+              const promises = [];
 
               account_ids.forEach((account_id) => {
                 promises.push(this._query('get_witness_by_account', [account_id]));
@@ -942,9 +947,9 @@ class GXClient {
               });
 
               // fetch vote_ids
-              return Promise.all(promises).then((results) => {
+              return Promise.all(promises).then((results2) => {
                 // filter empty records since some of the account are not witness or committee
-                let votes = results.filter((r) => r).map((r) => r.vote_id);
+                const votes = results2.filter((r) => r).map((r) => r.vote_id);
 
                 if (options.append) {
                   new_options.votes = uniq(votes.concat(acc.options.votes));
@@ -955,23 +960,24 @@ class GXClient {
                 let num_witness = 0;
                 let num_committee = 0;
                 new_options.votes.forEach((v) => {
-                  let vote_type = v.split(':')[0];
-                  if (vote_type == '0') {
+                  const vote_type = v.split(':')[0];
+                  if (vote_type === '0') {
                     num_committee += 1;
                   }
-                  if (vote_type == 1) {
+                  if (vote_type === 1) {
                     num_witness += 1;
                   }
                 });
                 new_options.num_committee = Math.min(num_committee, globalObject.parameters.maximum_committee_count);
                 new_options.num_witness = Math.min(num_witness, globalObject.parameters.maximum_witness_count);
                 new_options.votes = new_options.votes.sort((a, b) => {
-                  let a_split = a.split(':');
-                  let b_split = b.split(':');
+                  const a_split = a.split(':');
+                  const b_split = b.split(':');
+                  // tslint:disable-next-line: radix
                   return parseInt(a_split[1]) - parseInt(b_split[1]);
                 });
 
-                let tr = this._createTransaction();
+                const tr = this._createTransaction();
 
                 tr.add_operation(
                   tr.get_type_operation('account_update', {
@@ -980,7 +986,7 @@ class GXClient {
                       asset_id: fee_asset.id
                     },
                     account: this.account_id,
-                    new_options: new_options
+                    new_options
                   })
                 );
 
@@ -1006,16 +1012,17 @@ class GXClient {
   async proposeUpdateGPO(new_params: any, broadcast: boolean = false, options: { fee_symbol?: string, append?: boolean } = { fee_symbol: 'GXC' }) {
     const fee_symbol = options.fee_symbol || 'GXC';
     await this._connect();
-    let fee_asset = await this.getAsset(fee_symbol);
+    const fee_asset = await this.getAsset(fee_symbol);
     if (!fee_asset) {
       throw Error(`asset ${fee_symbol} not exist`);
     }
-    let GPO = await this.getObject('2.0.0');
-    let new_parameters = GPO.parameters;
-    for (var key in new_params) {
-      new_parameters[key] = new_params[key];
+    const GPO = await this.getObject('2.0.0');
+    const new_parameters = GPO.parameters;
+    // tslint:disable-next-line: forin
+    for (const idx in new_params) {
+      new_parameters[idx] = new_params[idx];
     }
-    let tr = this._createTransaction();
+    const tr = this._createTransaction();
     tr.add_operation(
       tr.get_type_operation('committee_member_update_global_parameters', {
         fee: {
@@ -1043,11 +1050,11 @@ class GXClient {
   async createProposal(ops: types.op_wrapper[], expiration_time: number | string, review_period_seconds: number = 0, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }) {
     const fee_symbol = options.fee_symbol || 'GXC';
     await this._connect();
-    let fee_asset = await this.getAsset(fee_symbol);
+    const fee_asset = await this.getAsset(fee_symbol);
     if (!fee_asset) {
       throw Error(`asset ${fee_symbol} not exist`);
     }
-    let tr = this._createTransaction();
+    const tr = this._createTransaction();
     tr.add_operation(
       tr.get_type_operation('proposal_create', {
         fee: {
@@ -1087,13 +1094,15 @@ class GXClient {
    */
   _accMult(arg1, arg2) {
     let m = 0;
-    let s1 = arg1.toString();
-    let s2 = arg2.toString();
+    const s1 = arg1.toString();
+    const s2 = arg2.toString();
     try {
       m += s1.split('.')[1].length;
+    // tslint:disable-next-line: no-empty
     } catch (e) {}
     try {
       m += s2.split('.')[1].length;
+    // tslint:disable-next-line: no-empty
     } catch (e) {}
     return (Number(s1.replace('.', '')) * Number(s2.replace('.', ''))) / Math.pow(10, m);
   }
@@ -1109,7 +1118,7 @@ class GXClient {
       } else {
         resolve(
           Promise.all([this.getAccount(this.account), this.getChainID()]).then((results) => {
-            let acc = results[0];
+            const acc = results[0];
             this.chain_id = results[1];
             this.account_id = acc.id;
             this.connected = true;
@@ -1162,6 +1171,7 @@ class GXClient {
       resolve(
         Promise.all([tr.update_head_block(), tr.set_required_fees()]).then(() => {
           if (!this.signProvider) {
+            // tslint:disable-next-line: no-unused-expression
             this.private_key && tr.add_signer(PrivateKey.fromWif(this.private_key));
           }
           tr.set_expire_seconds(DEFUALT_EXPIRE_SEC);

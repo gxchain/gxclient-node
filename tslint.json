@@ -5,6 +5,8 @@
     ],
     "jsRules": {},
     "rules": {
+        "variable-name": false,
+        "no-console": false,
         "quotes": [2, "single", "avoid-escape"]
     },
     "rulesDirectory": []
