@@ -1,6 +1,6 @@
 import { Aes, key, object_id_type, PrivateKey, PublicKey, string_to_name, TransactionHelper } from 'gxbjs/dist/index';
 import { serializeCallData } from 'gxbjs/dist/tx_serializer';
-import TransactionBuilder from './TransactionBuilder';
+import { TransactionBuilder } from './TransactionBuilder';
 import { generateMnemonic } from './util/memonic';
 import uniq from 'lodash/uniq';
 import { DEFUALT_EXPIRE_SEC } from '../const/const';
@@ -23,7 +23,7 @@ class GXClient {
   private_key: string;
   account_id_or_name: number | string;
   account_id: string;
-  account: number;
+  account: string;
   connected: boolean;
   chain_id: string;
   witness: string;
@@ -41,16 +41,13 @@ class GXClient {
    * @param {String} entry_point - entry point network address
    * @param {signatureProvider} signProvider
    */
-  constructor(private_key: string, account_id_or_name: number | string, entry_point: string = 'wss://node1.gxb.io', signProvider?: (transaction: TransactionBuilder, chain_id: string) => Promise<Buffer>, nonceProvider?: () => string) {
+  constructor(private_key: string, account_id_or_name: string, entry_point: string = 'wss://node1.gxb.io', signProvider?: (transaction: TransactionBuilder, chain_id: string) => Promise<Buffer>, nonceProvider?: () => string) {
     this.private_key = private_key;
     this.account_id_or_name = account_id_or_name;
-    if (typeof account_id_or_name === 'string' && /^1.2.\d+$/.test(account_id_or_name)) {
+    if (/^1.2.\d+$/.test(account_id_or_name)) {
       this.account_id = account_id_or_name;
-    } else if (typeof account_id_or_name === 'number') {
+    } else {
       this.account = account_id_or_name;
-    }
-    if (this.account_id === undefined && this.account === undefined) {
-      throw new Error('illegal account id or name');
     }
     this.connected = false;
     this.chain_id = '';
@@ -1025,7 +1022,7 @@ class GXClient {
         resolve();
       } else {
         resolve(
-          Promise.all([this.getAccount(this.account.toString()), this.getChainID()]).then((results) => {
+          Promise.all([this.getAccount(this.account), this.getChainID()]).then((results) => {
             let acc = results[0];
             this.chain_id = results[1];
             this.account_id = acc.id;
