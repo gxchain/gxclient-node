@@ -1,6 +1,6 @@
 {
   "name": "gxclient",
-  "version": "2.1.19",
+  "version": "3.0.0",
   "description": "A client to interact with gxchain via http",
   "main": "./dist/index.js",
   "bin": {
