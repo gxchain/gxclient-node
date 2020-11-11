@@ -1,4 +1,4 @@
-exports.DEFAULT_WORDLIST = [
+export default [
   'abandon',
   'ability',
   'able',

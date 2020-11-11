@@ -1,4 +1,4 @@
-const { types, Serializer } = require('gxbjs/dist/index');
+import { types, Serializer } from "gxbjs/dist/index";
 
 /**
  * @module serialize
@@ -10,12 +10,12 @@ const { types, Serializer } = require('gxbjs/dist/index');
  * @param data {*} - a buffer
  * @param type {Object} - you can import types from as: `import {Types} from 'gxclient'`
  * @returns {Object} a buffer
- * @example 
+ * @example
  * import { serialize, Types } from 'gxclient'
  * serialize('hello', Types.string).toString('hex') // => 0568656c6c6f
  */
-function serialize(data, type = types.string){
-  if(type instanceof Serializer){ 
+export default function serialize(data, type = types.string){
+  if(type instanceof Serializer){
     return type.toBuffer(data);
   }else {
     const ser = new Serializer('temp', {
@@ -26,5 +26,3 @@ function serialize(data, type = types.string){
     });
   }
 }
-
-exports = { serialize };

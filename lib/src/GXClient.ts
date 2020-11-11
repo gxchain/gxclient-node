@@ -143,32 +143,6 @@ class GXClient {
     });
   }
 
-  /**
-   * fetching latest block each 3 seconds
-   * @private
-   */
-  _latestBlockTask(force) {
-    if (this.isTaskStarted && !force) {
-      return false;
-    }
-    this.isTaskStarted = true;
-    this.getDynamicGlobalProperties().then((obj) => {
-      try {
-        const latestBlock = obj.last_irreversible_block_num;
-        if (this.latestBlock !== latestBlock) {
-          this.latestBlock = latestBlock;
-          console.log('latest block:', this.latestBlock);
-        }
-      } catch (ex) {
-        console.error('error when fetching block header,', ex);
-      } finally {
-        setTimeout(() => {
-          this._latestBlockTask(true);
-        }, 3000);
-      }
-    });
-  }
-
   // TODO
   /**
    * get object by id
@@ -195,8 +169,7 @@ class GXClient {
    * @param account_name {String}
    * @returns {Promise<any>}
    */
-  getAccount(account_name: string): Promise<
-  {
+  getAccount(account_name: string): Promise<{
        id :  string ,
        membership_expiration_date :  string ,
        merchant_expiration_date :  string ,
@@ -223,19 +196,19 @@ class GXClient {
            tables : any[],
            error_messages : any[],
            abi_extensions : any[]
-      },
+       },
        owner : {
            weight_threshold : number,
            account_auths : any[],
            key_auths : [string, number][],
            address_auths : any[]
-      },
+       },
        active : {
            weight_threshold : number,
            account_auths : any[],
            key_auths : [ string , number][],
            address_auths : any[]
-      },
+       },
        options : {
            memo_key :  string ,
            voting_account : string ,
@@ -243,7 +216,7 @@ class GXClient {
            num_committee : number,
            votes : any[],
            extensions : any[]
-      },
+       },
        statistics :  string ,
        whitelisting_accounts : any[],
        blacklisting_accounts : any[],
@@ -293,7 +266,10 @@ class GXClient {
    * @param publicKey {String}
    * @returns {Request|PromiseLike<T>|Promise<T>}
    */
-  getAccountByPublicKey(publicKey: string): Promise<string[]> {
+  getAccountByPublicKey(publicKey: string): Promise<{
+    amount: string,
+    asset_id: string
+  }[]> {
     return this._query('get_key_references', [[publicKey]]).then((results) => uniq(results[0]));
   }
 
@@ -326,7 +302,7 @@ class GXClient {
     precision: number,
     issuer: string ,
     options: {
-      max_supply: number ,
+      max_supply: string ,
       market_fee_percent: number,
       max_market_fee: number,
       issuer_permissions: number,
@@ -339,14 +315,14 @@ class GXClient {
         quote: {
           amount: number,
           asset_id: string
-      }
-    },
-    whitelist_authorities : any[],
-    blacklist_authorities : any[],
-    whitelist_markets : any[],
-    blacklist_markets : any[],
-    description : string ,
-    extensions : any[]
+        }
+      },
+      whitelist_authorities : any[],
+      blacklist_authorities : any[],
+      whitelist_markets : any[],
+      blacklist_markets : any[],
+      description : string ,
+      extensions : any[]
     },
     dynamic_asset_data_id :  string
   }> {
@@ -371,60 +347,6 @@ class GXClient {
     transaction_ids: string[]
   }> {
     return this._query('get_block', [blockHeight]);
-  }
-
-  /**
-   * detect new transactions related to this.account_id
-   * @param blockHeight {Number} - block height
-   * @param callback {Function}
-   */
-  detectTransaction(blockHeight: number, callback?: (blockHeight: number, txid: string, op: types.operation) => void): void {
-    const detect = () => {
-      this.getBlock(blockHeight)
-        .then((block) => {
-          if (block) {
-            block.transactions.forEach((transaction, i) => {
-              const txid = block.transaction_ids[i];
-              transaction.operations.forEach((op) => {
-                let exist = false;
-                for (const idx in op[1]) {
-                  if (op[i][idx]) {
-                    const val = op[1][idx];
-
-                    if (val === this.account_id) {
-                      exist = true;
-                    }
-                  }
-                }
-
-                // tslint:disable-next-line: no-unused-expression
-                exist && callback && callback(blockHeight, txid, op);
-              });
-            });
-            if (blockHeight < this.latestBlock) {
-              process.nextTick(() => {
-                this.detectTransaction(blockHeight + 1, callback);
-              });
-            } else {
-              setTimeout(() => {
-                this.detectTransaction(blockHeight, callback);
-              }, 1000);
-            }
-          } else {
-            setTimeout(() => {
-              this.detectTransaction(blockHeight, callback);
-            }, 1000);
-          }
-        })
-        .catch((ex) => {
-          console.error('get block error', ex);
-          setTimeout(() => {
-            this.detectTransaction(blockHeight, callback);
-          }, 1000);
-        });
-    };
-    this._latestBlockTask(false);
-    detect();
   }
 
   /**
@@ -1194,7 +1116,7 @@ class GXClient {
    * @param {TransactionBuilder} tx
    * @returns {Promise<any>}
    */
-  broadcast(tx: TransactionBuilder): Promise<string[]> {
+  broadcast(tx: types.signed_transaction): Promise<string[]> {
     return this.rpc.broadcast(tx);
   }
 }

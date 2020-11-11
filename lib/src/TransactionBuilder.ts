@@ -1,13 +1,27 @@
-const assert = require('assert');
-const { ChainTypes, hash, ops, PublicKey, Signature } = require('gxbjs/dist/index');
+import assert from 'assert';
+import { ChainTypes, hash, ops, PublicKey, Signature } from 'gxbjs/dist/index';
 
-let expire_in_secs = 120;
-let expire_in_secs_proposal = 24 * 60 * 60;
-let review_in_secs_committee = 24 * 60 * 60;
+const expire_in_secs = 120;
+const expire_in_secs_proposal = 24 * 60 * 60;
+const review_in_secs_committee = 24 * 60 * 60;
 
-var head_block_time_string, committee_min_review;
+let head_block_time_string;
+let committee_min_review;
 
 export class TransactionBuilder {
+  signProvider
+  rpc
+  chain_id
+  ref_block_num
+  ref_block_prefix
+  expiration
+  operations
+  signatures
+  signer_private_keys
+  tr_buffer
+  signed
+  _broadcast
+
   constructor(signProvider = null, rpc, chain_id) {
     if (!!signProvider) {
       // a function,first param is transaction instance,second is chain_id, must return array buffer like [buffer,buffer]
@@ -31,9 +45,9 @@ export class TransactionBuilder {
   }
 
   /**
-     @arg {string} name - like "transfer"
-     @arg {object} operation - JSON matchching the operation's format
-     */
+   * @arg {string} name - like "transfer"
+   * @arg {object} operation - JSON matchching the operation's format
+   */
   add_type_operation(name, operation) {
     this.add_operation(this.get_type_operation(name, operation));
     return;
@@ -52,14 +66,14 @@ export class TransactionBuilder {
           if (this.expiration === 0) {
             this.expiration = base_expiration_sec() + expire_in_secs;
           }
-          let last_irreversible_block_num = r[0].last_irreversible_block_num;
+          const last_irreversible_block_num = r[0].last_irreversible_block_num;
           return this.rpc.query('get_block', [last_irreversible_block_num]).then((block) => {
             this.ref_block_num = last_irreversible_block_num & 0xffff;
             this.ref_block_prefix = Buffer.from(block.block_id, 'hex').readUInt32LE(4);
-            var iterable = this.operations;
-            for (var i = 0, op; i < iterable.length; i++) {
+            const iterable = this.operations;
+            for (let i = 0, op; i < iterable.length; i++) {
               op = iterable[i];
-              if (op[1]['finalize']) {
+              if (op[1].finalize) {
                 op[1].finalize();
               }
             }
@@ -90,9 +104,9 @@ export class TransactionBuilder {
   }
 
   /**
-     Typically one will use {@link this.add_type_operation} instead.
-     @arg {array} operation - [operation_id, operation]
-     */
+   * Typically one will use {@link this.add_type_operation} instead.
+   * @arg {array} operation - [operation_id, operation]
+   */
   add_operation(operation) {
     if (this.tr_buffer) {
       throw new Error('already finalized');
@@ -111,9 +125,9 @@ export class TransactionBuilder {
     }
     assert(name, 'name');
     assert(operation, 'operation');
-    var _type = ops[name];
+    const _type = ops[name];
     assert(_type, `Unknown operation ${name}`);
-    var operation_id = ChainTypes.operations[_type.operation_name];
+    const operation_id = ChainTypes.operations[_type.operation_name];
     if (operation_id === undefined) {
       throw new Error(`unknown operation: ${_type.operation_name}`);
     }
@@ -125,8 +139,8 @@ export class TransactionBuilder {
        * Proposals involving the committee account require a review
        * period to be set, look for them here
        */
-      let requiresReview = false,
-        extraReview = 0;
+      let requiresReview = false;
+      let extraReview = 0;
       operation.proposed_ops.forEach((op) => {
         const COMMITTE_ACCOUNT = 0;
         let key;
@@ -136,7 +150,7 @@ export class TransactionBuilder {
             key = 'from';
             break;
 
-          case 6: //account_update
+          case 6: // account_update
           case 17: // asset_settle
             key = 'account';
             break;
@@ -174,6 +188,7 @@ export class TransactionBuilder {
           requiresReview = true;
         }
       });
+      // tslint:disable-next-line: no-unused-expression
       operation.expiration_time || (operation.expiration_time = base_expiration_sec() + expire_in_secs_proposal);
       if (requiresReview) {
         operation.review_period_seconds = extraReview + Math.max(committee_min_review, review_in_secs_committee);
@@ -184,15 +199,15 @@ export class TransactionBuilder {
         operation.expiration_time += 60 * 60 + extraReview;
       }
     }
-    var operation_instance = _type.fromObject(operation);
+    const operation_instance = _type.fromObject(operation);
     return [operation_id, operation_instance];
   }
 
   /* optional: fetch the current head block */
 
   update_head_block() {
-    return Promise.all([this.rpc.query('get_objects', [['2.0.0']]), this.rpc.query('get_objects', [['2.1.0']])]).then(function(res) {
-      let [g, r] = res;
+    return Promise.all([this.rpc.query('get_objects', [['2.0.0']]), this.rpc.query('get_objects', [['2.1.0']])]).then((res) => {
+      const [g, r] = res;
       head_block_time_string = r[0].time;
       committee_min_review = g[0].parameters.committee_proposal_review_period;
     });
@@ -218,8 +233,8 @@ export class TransactionBuilder {
     assert(proposal_create_options, 'proposal_create_options');
     assert(proposal_create_options.fee_paying_account, 'proposal_create_options.fee_paying_account');
 
-    let proposed_ops = this.operations.map((op) => {
-      return { op: op };
+    const proposed_ops = this.operations.map((op) => {
+      return { op };
     });
 
     this.operations = [];
@@ -232,21 +247,21 @@ export class TransactionBuilder {
 
   /** optional: the fees can be obtained from the witness node */
   set_required_fees(asset_id) {
-    var fee_pool;
+    let fee_pool;
     if (this.tr_buffer) {
       throw new Error('already finalized');
     }
     if (!this.operations.length) {
       throw new Error('add operations first');
     }
-    var operations = [];
-    for (var i = 0, op; i < this.operations.length; i++) {
+    const operations = [];
+    for (let i = 0, op; i < this.operations.length; i++) {
       op = this.operations[i];
       operations.push(ops.operation.toObject(op));
     }
 
     if (!asset_id) {
-      var op1_fee = operations[0][1].fee;
+      const op1_fee = operations[0][1].fee;
       if (op1_fee && op1_fee.asset_id !== null) {
         asset_id = op1_fee.asset_id;
       } else {
@@ -254,7 +269,7 @@ export class TransactionBuilder {
       }
     }
 
-    var promises = [this.rpc.query('get_required_fees', [operations, asset_id])];
+    const promises = [this.rpc.query('get_required_fees', [operations, asset_id])];
 
     // let feeAssetPromise = null;
     if (asset_id !== '1.3.1') {
@@ -264,13 +279,14 @@ export class TransactionBuilder {
     }
 
     return Promise.all(promises).then((results) => {
+      // tslint:disable-next-line: prefer-const
       let [fees, coreFees, asset] = results;
       asset = asset ? asset[0] : null;
 
-      let dynamicPromise =
+      const dynamicPromise =
         asset_id !== '1.3.1' && asset
           ? this.rpc.query('get_objects', [[asset.dynamic_asset_data_id]])
-          : new Promise(function(resolve) {
+          : new Promise((resolve) => {
             resolve();
           });
 
@@ -290,10 +306,10 @@ export class TransactionBuilder {
         }
 
         // Proposed transactions need to be flattened
-        var flat_assets = [];
-        var flatten = function(obj) {
+        const flat_assets = [];
+        const flatten = (obj) => {
           if (Array.isArray(obj)) {
-            for (var k = 0, item; k < obj.length; k++) {
+            for (let k = 0, item; k < obj.length; k++) {
               item = obj[k];
               flatten(item);
             }
@@ -304,9 +320,9 @@ export class TransactionBuilder {
         };
         flatten(fees);
 
-        var asset_index = 0;
+        let asset_index = 0;
 
-        var set_fee = (operation) => {
+        const set_fee = (operation) => {
           if (
             !operation.fee ||
             operation.fee.amount === 0 ||
@@ -319,12 +335,14 @@ export class TransactionBuilder {
           }
           asset_index++;
           if (operation.proposed_ops) {
-            var result = [];
-            for (var y = 0; y < operation.proposed_ops.length; y++) result.push(set_fee(operation.proposed_ops[y].op[1]));
+            const result = [];
+            // tslint:disable-next-line: prefer-for-of
+            for (let y = 0; y < operation.proposed_ops.length; y++) result.push(set_fee(operation.proposed_ops[y].op[1]));
 
             return result;
           }
         };
+        // tslint:disable-next-line: prefer-for-of
         for (let i = 0; i < this.operations.length; i++) {
           set_fee(this.operations[i][1]);
         }
@@ -342,8 +360,8 @@ export class TransactionBuilder {
       public_key = PublicKey.fromPublicKeyString(public_key);
     }
     // prevent duplicates
-    let spHex = private_key.toHex();
-    for (let sp of this.signer_private_keys) {
+    const spHex = private_key.toHex();
+    for (const sp of this.signer_private_keys) {
       if (sp[0].toHex() === spHex) return;
     }
     this.signer_private_keys.push([private_key, public_key]);
@@ -362,10 +380,10 @@ export class TransactionBuilder {
         if (!this.signer_private_keys.length) {
           throw new Error('Transaction was not signed. Do you have a private key? [no_signers]');
         }
-        var end = this.signer_private_keys.length;
-        for (var i = 0; 0 < end ? i < end : i > end; 0 < end ? i++ : i++) {
-          var [private_key, public_key] = this.signer_private_keys[i];
-          var sig = Signature.signBuffer(Buffer.concat([Buffer.from(this.chain_id, 'hex'), this.tr_buffer]), private_key, public_key);
+        const end = this.signer_private_keys.length;
+        for (let i = 0; 0 < end ? i < end : i > end; 0 < end ? i++ : i++) {
+          const [private_key, public_key] = this.signer_private_keys[i];
+          const sig = Signature.signBuffer(Buffer.concat([Buffer.from(this.chain_id, 'hex'), this.tr_buffer]), private_key, public_key);
           this.signatures.push(sig.toBuffer());
         }
       } else {
@@ -402,9 +420,9 @@ export class TransactionBuilder {
   }
 }
 
-var base_expiration_sec = () => {
-  var head_block_sec = Math.ceil(getHeadBlockDate().getTime() / 1000);
-  var now_sec = Math.ceil(Date.now() / 1000);
+const base_expiration_sec = () => {
+  const head_block_sec = Math.ceil(getHeadBlockDate().getTime() / 1000);
+  const now_sec = Math.ceil(Date.now() / 1000);
   // The head block time should be updated every 3 seconds.  If it isn't
   // then help the transaction to expire (use head_block_sec)
   if (now_sec - head_block_sec > 30) {
@@ -434,11 +452,11 @@ function _broadcast() {
       throw new Error('no operations');
     }
 
-    var tr_object = ops.signed_transaction.toObject(this);
+    const tr_object = ops.signed_transaction.toObject(this);
 
     resolve(
       this.rpc.broadcast(tr_object).catch((error) => {
-        var message = error.message;
+        let message = error.message;
         if (!message) {
           message = '';
         }
@@ -461,7 +479,7 @@ function getHeadBlockDate() {
 function timeStringToDate(time_string) {
   if (!time_string) return new Date('1970-01-01T00:00:00.000Z');
   if (!/Z$/.test(time_string))
-    //does not end in Z
+    // does not end in Z
     // https://github.com/cryptonomex/graphene/issues/368
     time_string = time_string + 'Z';
   return new Date(time_string);

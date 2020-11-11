@@ -1,0 +1,1 @@
+export const DEFUALT_EXPIRE_SEC = 180;

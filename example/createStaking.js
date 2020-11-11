@@ -1,7 +1,7 @@
 import client from './client';
 
 client
-  .createStaking('init0', 10, 5, true)
+  .createStaking('init0', 10, '5', true)
   .then((result) => {
     console.log(result);
   })

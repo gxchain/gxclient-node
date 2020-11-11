@@ -1,4 +1,4 @@
-import { GXRPC } from '../lib';
+import { GXRPC } from '../ts-build';
 
 let rpc = GXRPC.instance('https://node1.gxb.io');
 rpc

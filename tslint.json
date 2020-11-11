@@ -6,6 +6,7 @@
     "jsRules": {},
     "rules": {
         "variable-name": false,
+        "no-bitwise": false,
         "no-console": false,
         "quotes": [2, "single", "avoid-escape"]
     },
