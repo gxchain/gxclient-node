@@ -9,9 +9,9 @@
   "scripts": {
     "clean": "rm -rf ./dist/* ./build/*",
     "prebuild": "npm run clean",
-    "postbuild": "npm run browserify && npm run build",
     "build": "tsc --build tsconfig.json",
     "build:watch": "tsc --build tsconfig.json -w",
+    "postbuild": "npm run browserify",
     "webpack": "webpack",
     "prepublish": "npm run build",
     "browserify": "browserify --full-paths dist/index.js --standalone gxclient -o build/gxclient.js -d -t ",
