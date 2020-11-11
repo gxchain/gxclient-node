@@ -1,4 +1,4 @@
-import { types, Serializer } from "gxbjs/dist/index";
+import { types, Serializer } from 'gxbjs/dist/index';
 
 /**
  * @module serialize

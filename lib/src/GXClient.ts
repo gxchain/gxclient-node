@@ -761,7 +761,7 @@ class GXClient {
   callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
   callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
   callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
-  callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: "GXC"}): ProcessTransactionResult {
+  callContract(contract_name: string, method_name: string, params: any, amount_asset: string, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC'}): ProcessTransactionResult {
     const fee_symbol = options.fee_symbol;
     return this._connect().then(() => {
       if (amount_asset) {

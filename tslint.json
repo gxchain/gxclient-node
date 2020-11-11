@@ -16,7 +16,7 @@
         "no-console": false,
         "array-type": false,
         "no-empty-interface": false,
-        "quotes": [2, "single", "avoid-escape"]
+        "quotemark": [true, "single", "avoid-escape", "avoid-template"]
     },
     "rulesDirectory": []
 }
