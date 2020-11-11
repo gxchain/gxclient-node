@@ -3,7 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "./ts-build",
+    "outDir": "./dist",
     "rootDir": "./lib",
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,6 +13,6 @@
     "node_modules",
     "./example/**/*.ts",
     "./test/**/*.ts",
-    "./ts-build/**/*.ts"
+    "./dist/**/*.ts"
   ]
 }
