@@ -21,7 +21,7 @@ import * as types from '../types/types'
 class GXClient {
 
   private_key: string;
-  account_id_or_name: number | string;
+  account_id_or_name: string;
   account_id: string;
   account: string;
   connected: boolean;
@@ -62,7 +62,7 @@ class GXClient {
    * generate key pair locally
    * @returns {{brainKey: *, privateKey: *, publicKey: *}}
    */
-  generateKey(brainKey: string): {
+  generateKey(brainKey?: string): {
     brainKey: string,
     privateKey: string,
     publicKey: string

@@ -1,6 +1,7 @@
 import client from './client';
+import * as types from '../ts-build/types/types'
 
-let tx = {
+const tx: types.signed_transaction = {
   ref_block_num: 63800,
   ref_block_prefix: 244986909,
   expiration: '2019-01-21T08:15:22',

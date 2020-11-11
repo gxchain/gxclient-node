@@ -2,6 +2,7 @@
  * @module GXClientFactory
  */
 import GXClient from './GXClient';
+import { TransactionBuilder } from './TransactionBuilder';
 
 let ins = null;
 
@@ -43,7 +44,10 @@ export default {
    * @param signatureProvider {signatureProvider}
    * @returns {GXClient}
    */
-  instance({keyProvider, account, network = '', signatureProvider, nonceProvider}) {
+  instance(opt: {keyProvider: string, account: string, network?: string, signatureProvider?: (transaction: TransactionBuilder, chain_id: string) => Promise<Buffer>, nonceProvider?: () => string}): GXClient {
+    // tslint:disable-next-line: prefer-const
+    let {keyProvider, account, network, signatureProvider, nonceProvider} = opt;
+    network = network || ''
     if (!!ins) {
       if (needNewIns(ins, { account, network })) {
         ins = createNewIns({keyProvider, account, network, signatureProvider,nonceProvider});

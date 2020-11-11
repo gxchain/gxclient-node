@@ -1,5 +1,5 @@
 import client from './client';
-let keyPair = client.generateKey();
+const keyPair = client.generateKey();
 console.log(keyPair);
 
 client

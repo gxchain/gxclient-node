@@ -8,14 +8,14 @@ const setTypeString = (target, type) => {
 };
 
 const proxy = (target, type) => {
-  var old = target;
-  return (...args) => { let result = old(...args); setTypeString(result, type); return result; };
+  const old = target;
+  return (...args) => { const result = old(...args); setTypeString(result, type); return result; };
 };
 
 const arrayProxy = (target) => {
-  var old = target;
+  const old = target;
   return (obj) => {
-    let result = old(obj);
+    const result = old(obj);
     if (obj instanceof Serializer) {
       Object.defineProperty(result, 'genTypes', {
         value: (count = 1) => `Array<{\n${obj.genTypes.call(obj, count)}${pretty(count - 1)}}>`,
@@ -37,7 +37,7 @@ const arrayProxy = (target) => {
       writable: false
     });
     return result;
-  }; 
+  };
 };
 
 setTypeString(types.uint8, 'number');
@@ -67,9 +67,9 @@ types.fixed_array = arrayProxy(types.fixed_array);
 types.protocol_id_type = proxy(types.protocol_id_type, 'number | string');
 types.static_variant = proxy(types.static_variant, '[number, any]');
 
-var oldOptional = types.optional;
+const oldOptional = types.optional;
 types.optional = (obj) => {
-  let result = oldOptional(obj);
+  const result = oldOptional(obj);
   if (obj instanceof Serializer) {
     Object.defineProperty(result, 'genTypes', {
       value: obj.genTypes.bind(obj),
@@ -88,9 +88,9 @@ types.optional = (obj) => {
     writable: false
   });
   return result;
-}; 
+};
 
-var oldMap = types.map;
+const oldMap = types.map;
 types.map = (key, val) => {
   const initGenTypes = (obj) => {
     if (obj instanceof Serializer) {
@@ -108,9 +108,9 @@ types.map = (key, val) => {
       return () => 'any';
     }
   };
-  let result = oldMap(key, val);
-  let keyGenTypes = initGenTypes(key);
-  let valGenTypes = initGenTypes(val);
+  const result = oldMap(key, val);
+  const keyGenTypes = initGenTypes(key);
+  const valGenTypes = initGenTypes(val);
   Object.defineProperty(result, 'genTypes', {
     value: (count = 1) => `Array<[${keyGenTypes(count)}, ${valGenTypes(count)}]>`,
     writable: false
@@ -126,10 +126,10 @@ const pretty = (count) => {
   return result;
 };
 
-var typeMap = new Map();
+const typeMap = new Map();
 Serializer.prototype.genTypes = function (count = 1) {
   let result = '';
-  for (let k of Object.keys(this.types)) {
+  for (const k of Object.keys(this.types)) {
     if (k === 'operations') {
       result += `${pretty(count)}operations: operations\n`;
     }
@@ -151,7 +151,7 @@ Serializer.prototype.genTypes = function (count = 1) {
       }
     }
     else {
-      let subResult = this.types[k].genTypes.call(this.types[k], count + 1);
+      const subResult = this.types[k].genTypes.call(this.types[k], count + 1);
       if (subResult[0] !== 'A') {
         result += `${pretty(count)}${k}${this.types[k].optionalFlag === true ? '?:' : ':'} {\n${subResult}${pretty(count)}}\n`;
       }
@@ -165,7 +165,7 @@ Serializer.prototype.genTypes = function (count = 1) {
 };
 
 Serializer.prototype.genInterface = function (changeName) {
-  let result = `export interface ${changeName ? changeName(this.operation_name) : this.operation_name} {\n${this.genTypes()}}`;
+  const result = `export interface ${changeName ? changeName(this.operation_name) : this.operation_name} {\n${this.genTypes()}}`;
   return result;
 };
 

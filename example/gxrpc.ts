@@ -1,6 +1,6 @@
 import { GXRPC } from '../ts-build';
 
-let rpc = GXRPC.instance('https://node1.gxb.io');
+const rpc = GXRPC.instance('https://node1.gxb.io');
 rpc
   .query('get_chain_id', [])
   .then((resp) => {

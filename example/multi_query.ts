@@ -13,7 +13,7 @@ client
   });
 
 client
-  .vote(['math-wallet-test', 'gxc-pacific'], 'GXC', true)
+  .vote(['math-wallet-test', 'gxc-pacific'], true)
   .then((trx) => {
     console.log('vote success', trx);
   })

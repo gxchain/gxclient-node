@@ -1,11 +1,11 @@
 import * as ops from './opertaions.js';
 import fs from 'fs';
 
-var content = '';
-var opertaions = [];
-var repeatedFlag = false;
+let content = '';
+const opertaions = [];
+let repeatedFlag = false;
 
-for (let op of Object.keys(ops)) {
+for (const op of Object.keys(ops)) {
   if (typeof ops[op].genInterface === 'function') {
     content += ops[op].genInterface.call(ops[op], (name) => {
       if (name === 'free_data_product_update' && !repeatedFlag) {
@@ -20,7 +20,7 @@ for (let op of Object.keys(ops)) {
 }
 
 repeatedFlag = false;
-for (let op of ops.operation.st_operations) {
+for (const op of ops.operation.st_operations) {
   if (op.operation_name === 'free_data_product_update' && !repeatedFlag) {
     repeatedFlag = true;
     opertaions.push('stale_' + op.operation_name);
@@ -32,7 +32,7 @@ for (let op of ops.operation.st_operations) {
 
 content += 'export type operation = ';
 for (let i = 0; i < opertaions.length; i++) {
-  let op = opertaions[i];
+  const op = opertaions[i];
   content += i === 0 ? `[GXChainOperation.${op}, ${op}]` : ` | [GXChainOperation.${op}, ${op}]`;
 }
 content += '\n';

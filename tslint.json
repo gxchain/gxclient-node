@@ -6,8 +6,11 @@
     "jsRules": {},
     "rules": {
         "variable-name": false,
+        "class-name": false,
         "no-bitwise": false,
         "no-console": false,
+        "array-type": false,
+        "no-empty-interface": false,
         "quotes": [2, "single", "avoid-escape"]
     },
     "rulesDirectory": []
