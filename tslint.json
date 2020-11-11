@@ -3,6 +3,11 @@
     "extends": [
         "tslint:recommended"
     ],
+    "linterOptions": {
+        "exclude": [
+            "./example/operations.ts"
+        ]
+    },
     "jsRules": {},
     "rules": {
         "variable-name": false,

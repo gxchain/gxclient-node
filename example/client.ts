@@ -1,4 +1,4 @@
-import GXClientFactory from '../ts-build';
+import GXClientFactory from '../lib';
 
 const private_key = '5J7Yu8zZD5oV9Ex7npmsT3XBbpSdPZPBKBzLLQnXz5JHQVQVfNT';
 const account_id = 'gxb122';

@@ -1,4 +1,4 @@
-import * as ops from './opertaions.js';
+import * as ops from './operations';
 import fs from 'fs';
 
 let content = '';
