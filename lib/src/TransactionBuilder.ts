@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { ChainTypes, hash, ops, PublicKey, Signature } from 'gxbjs/dist/index';
+import { ChainTypes, hash, ops, PublicKey, Signature } from 'gxbjs/dist';
 
 const expire_in_secs = 120;
 const expire_in_secs_proposal = 24 * 60 * 60;
@@ -9,18 +9,18 @@ let head_block_time_string;
 let committee_min_review;
 
 export class TransactionBuilder {
-  signProvider
-  rpc
-  chain_id
-  ref_block_num
-  ref_block_prefix
-  expiration
-  operations
-  signatures
-  signer_private_keys
-  tr_buffer
-  signed
-  _broadcast
+  signProvider;
+  rpc;
+  chain_id;
+  ref_block_num;
+  ref_block_prefix;
+  expiration;
+  operations;
+  signatures;
+  signer_private_keys;
+  tr_buffer;
+  signed;
+  _broadcast;
 
   constructor(signProvider = null, rpc, chain_id) {
     if (!!signProvider) {
@@ -80,7 +80,7 @@ export class TransactionBuilder {
             if (useRemoteSerializer) {
               console.log('object to serialize', this.toObject());
               return this.rpc.query('get_transaction_hex', [this.toObject()]).then((hex) => {
-                this.tr_buffer = Buffer.from(hex.substring(0,hex.length-2), 'hex');
+                this.tr_buffer = Buffer.from(hex.substring(0, hex.length - 2), 'hex');
               });
             }
 
@@ -97,10 +97,7 @@ export class TransactionBuilder {
     if (!this.tr_buffer) {
       throw new Error('not finalized');
     }
-    return hash
-      .sha256(this.tr_buffer)
-      .toString('hex')
-      .substring(0, 40);
+    return hash.sha256(this.tr_buffer).toString('hex').substring(0, 40);
   }
 
   /**
@@ -287,8 +284,8 @@ export class TransactionBuilder {
         asset_id !== '1.3.1' && asset
           ? this.rpc.query('get_objects', [[asset.dynamic_asset_data_id]])
           : new Promise((resolve) => {
-            resolve();
-          });
+              resolve();
+            });
 
       return dynamicPromise.then((dynamicObject) => {
         if (asset_id !== '1.3.1') {
