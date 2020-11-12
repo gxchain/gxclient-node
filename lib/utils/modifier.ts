@@ -10,7 +10,11 @@ const setTypeString = (target, type) => {
 
 const proxy = (target, type) => {
   const old = target;
-  return (...args) => { const result = old(...args); setTypeString(result, type); return result; };
+  return (...args) => {
+    const result = old(...args);
+    setTypeString(result, type);
+    return result;
+  };
 };
 
 const arrayProxy = (target) => {
@@ -26,11 +30,9 @@ const arrayProxy = (target) => {
         value: obj.operation_name,
         writable: false
       });
-    }
-    else if (obj.typeString){
+    } else if (obj.typeString) {
       setTypeString(result, `Array<${obj.typeString}>`);
-    }
-    else {
+    } else {
       setTypeString(result, 'Array<any>');
     }
     Object.defineProperty(result, 'arrayFlag', {
@@ -80,8 +82,7 @@ types.optional = (obj) => {
       value: obj.operation_name,
       writable: false
     });
-  }
-  else {
+  } else {
     setTypeString(result, obj.typeString);
   }
   Object.defineProperty(result, 'optionalFlag', {
@@ -97,15 +98,12 @@ types.map = (key, val) => {
     if (obj instanceof Serializer) {
       if (typeMap.get(obj.operation_name) === true) {
         return () => obj.operation_name;
-      }
-      else {
+      } else {
         return (count = 1) => `{\n${(obj as any).genTypes.call(obj, count)}${pretty(count - 1)}}`;
       }
-    }
-    else if (obj.typeString) {
+    } else if (obj.typeString) {
       return () => obj.typeString;
-    }
-    else {
+    } else {
       return () => 'any';
     }
   };
@@ -133,30 +131,23 @@ Serializer.prototype.genTypes = function (count = 1) {
   for (const k of Object.keys(this.types)) {
     if (k === 'operations') {
       result += `${pretty(count)}operations: operations\n`;
-    }
-    else if (k === 'signatures') {
+    } else if (k === 'signatures') {
       result += `${pretty(count)}signatures: Array<string>\n`;
-    }
-    else if (k === 'operation_results') {
+    } else if (k === 'operation_results') {
       result += `${pretty(count)}operation_results: Array<[number, any]>\n`;
-    }
-    else if (this.types[k].typeString !== undefined) {
+    } else if (this.types[k].typeString !== undefined) {
       result += `${pretty(count)}${k}${this.types[k].optionalFlag === true ? '?:' : ':'} ${this.types[k].typeString}\n`;
-    }
-    else if (typeMap.get(this.types[k].operation_name) === true){
+    } else if (typeMap.get(this.types[k].operation_name) === true) {
       if (this.types[k].arrayFlag === true) {
         result += `${pretty(count)}${k}${this.types[k].optionalFlag === true ? '?:' : ':'} Array<${this.types[k].operation_name}>\n`;
-      }
-      else {
+      } else {
         result += `${pretty(count)}${k}${this.types[k].optionalFlag === true ? '?:' : ':'} ${this.types[k].operation_name}\n`;
       }
-    }
-    else {
+    } else {
       const subResult = this.types[k].genTypes.call(this.types[k], count + 1);
       if (subResult[0] !== 'A') {
         result += `${pretty(count)}${k}${this.types[k].optionalFlag === true ? '?:' : ':'} {\n${subResult}${pretty(count)}}\n`;
-      }
-      else {
+      } else {
         result += `${pretty(count)}${k}${this.types[k].optionalFlag === true ? '?:' : ':'} ${subResult}\n`;
       }
     }

@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { ChainTypes, hash, ops, PublicKey, Signature } from 'gxbjs/dist';
+import { ChainTypes, hash, ops, PublicKey, Signature } from 'gxbjs';
 
 const expire_in_secs = 120;
 const expire_in_secs_proposal = 24 * 60 * 60;

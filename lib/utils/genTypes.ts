@@ -9,15 +9,15 @@ let repeatedFlag = false;
 
 for (const op of Object.keys(ops)) {
   if (typeof ops[op].genInterface === 'function') {
-    content += ops[op].genInterface.call(ops[op], (name) => {
-      if (name === 'free_data_product_update' && !repeatedFlag) {
-        repeatedFlag = true;
-        return 'stale_' + name;
-      }
-      else {
-        return name;
-      }
-    }) + '\n\n';
+    content +=
+      ops[op].genInterface.call(ops[op], (name) => {
+        if (name === 'free_data_product_update' && !repeatedFlag) {
+          repeatedFlag = true;
+          return 'stale_' + name;
+        } else {
+          return name;
+        }
+      }) + '\n\n';
   }
 }
 
@@ -26,8 +26,7 @@ for (const op of ops.operation.st_operations) {
   if (op.operation_name === 'free_data_product_update' && !repeatedFlag) {
     repeatedFlag = true;
     opertaions.push('stale_' + op.operation_name);
-  }
-  else {
+  } else {
     opertaions.push(op.operation_name);
   }
 }
