@@ -1,3 +1,4 @@
+// DO NOT change it to import {Serializer,types} from 'gxbjs', it may cause failed to gen types
 import Serializer from 'gxbjs/dist/serializer/src/serializer';
 import types from 'gxbjs/dist/serializer/src/types';
 
