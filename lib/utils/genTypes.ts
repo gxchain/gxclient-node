@@ -1,5 +1,7 @@
-import * as ops from './operations';
+import './modifier';
+import { ops } from 'gxbjs';
 import fs from 'fs';
+import path from 'path';
 
 let content = '';
 const opertaions = [];
@@ -40,4 +42,4 @@ content += '\n';
 content += 'export type operations = Array<operation>;\n\n';
 content += `export enum GXChainOperation {\n\t${opertaions.join(',\n\t')}\n};`;
 
-fs.writeFileSync('./lib/types/types.ts', content);
+fs.writeFileSync(path.join(__dirname, '../types/types.ts'), content);

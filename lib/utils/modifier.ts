@@ -1,4 +1,5 @@
-import { types, Serializer } from 'gxbjs';
+import Serializer from 'gxbjs/dist/serializer/src/serializer';
+import types from 'gxbjs/dist/serializer/src/types';
 
 const setTypeString = (target, type) => {
   Object.defineProperty(target, 'typeString', {
@@ -18,7 +19,7 @@ const arrayProxy = (target) => {
     const result = old(obj);
     if (obj instanceof Serializer) {
       Object.defineProperty(result, 'genTypes', {
-        value: (count = 1) => `Array<{\n${obj.genTypes.call(obj, count)}${pretty(count - 1)}}>`,
+        value: (count = 1) => `Array<{\n${(obj as any).genTypes.call(obj, count)}${pretty(count - 1)}}>`,
         writable: false
       });
       Object.defineProperty(result, 'operation_name', {
@@ -72,7 +73,7 @@ types.optional = (obj) => {
   const result = oldOptional(obj);
   if (obj instanceof Serializer) {
     Object.defineProperty(result, 'genTypes', {
-      value: obj.genTypes.bind(obj),
+      value: (obj as any).genTypes.bind(obj),
       writable: false
     });
     Object.defineProperty(result, 'operation_name', {
@@ -98,7 +99,7 @@ types.map = (key, val) => {
         return () => obj.operation_name;
       }
       else {
-        return (count = 1) => `{\n${obj.genTypes.call(obj, count)}${pretty(count - 1)}}`;
+        return (count = 1) => `{\n${(obj as any).genTypes.call(obj, count)}${pretty(count - 1)}}`;
       }
     }
     else if (obj.typeString) {
@@ -168,5 +169,3 @@ Serializer.prototype.genInterface = function (changeName) {
   const result = `export interface ${changeName ? changeName(this.operation_name) : this.operation_name} {\n${this.genTypes()}}`;
   return result;
 };
-
-export { types, Serializer };
