@@ -1,5 +1,5 @@
-import { randomBytes } from 'randombytes';
-import { createHash } from 'create-hash';
+import randomBytes from 'randombytes';
+import createHash from 'create-hash';
 import DEFAULT_WORDLIST from '../const/englishWords';
 
 const INVALID_ENTROPY = 'Invalid entropy';
@@ -14,9 +14,11 @@ function binaryToByte(bin) {
 }
 
 function bytesToBinary(bytes) {
-  return bytes.map((x) => {
-    return lpad(x.toString(2), '0', 8);
-  }).join('');
+  return bytes
+    .map((x) => {
+      return lpad(x.toString(2), '0', 8);
+    })
+    .join('');
 }
 
 function deriveChecksumBits(entropyBuffer) {
@@ -53,6 +55,5 @@ export function generateMnemonic(strength, rng?: any, wordlist?: any) {
   strength = strength || 128;
   if (strength % 32 !== 0) throw new TypeError(INVALID_ENTROPY);
   rng = rng || randomBytes;
-
   return entropyToMnemonic(rng(strength / 8), wordlist);
 }
