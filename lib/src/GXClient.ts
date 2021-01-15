@@ -602,6 +602,39 @@ class GXClient {
   }
 
   /**
+   * @param {String} vesting_id - the vesting id
+   * @param {Number} availableAmount - the amount of available withdraw 
+   * @param {Object} options
+   * @param {String} options.fee_symbol  - e.g: 'GXC'
+   * @returns {Promise<any>}
+   */
+  withdrawVestingBalance(vesting_id: string, availableAmount: number, broadcast?: false, options?: { fee_symbol?: string }): SerializeTransactionResult;
+  withdrawVestingBalance(vesting_id: string, availableAmount: number, broadcast?: true, options?: { fee_symbol?: string }): BroadcaseTransactionResult;
+  withdrawVestingBalance(vesting_id: string, availableAmount: number, broadcast?: boolean, options?: { fee_symbol?: string }): ProcessTransactionResult;
+  withdrawVestingBalance(vesting_id: string, availableAmount: number, broadcast: boolean = false, options: { fee_symbol?: string } = { fee_symbol: 'GXC' }): ProcessTransactionResult {
+    return this._connect().then(() => {
+      return this.getAsset(options.fee_symbol).then((feeInfo) => {
+        const tr = this._createTransaction();
+        tr.add_operation(
+          tr.get_type_operation('vesting_balance_withdraw', {
+            fee: {
+              amount: 0,
+              asset_id: (feeInfo && feeInfo.id) || '1.3.1'
+            },
+            owner: this.account_id,
+            vesting_balance: vesting_id,
+            amount: {
+                amount: availableAmount * 1e5,
+                asset_id: '1.3.1'
+            }
+          })
+        );
+        return this._processTransaction(tr, broadcast);
+      });
+    });
+  }
+
+  /**
    * get contract abi by contract_name
    * @param contract_name {String}
    * @returns {Promise<any>}
